@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Water Audit • Sign in / Sign up</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    :root{ --gl-green:#00a651; --gl-green-600:#0b8c4c; --muted:#4b5563; --line:#e5e7eb; }
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0; font-family:Poppins,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif; background:linear-gradient(180deg,#e9f9ee 0%,#eaf2f9 100%)}
+    .wrap{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px}
+    .card{width:min(680px,92vw); background:#fff; border:1px solid var(--line); border-radius:16px; box-shadow:0 18px 40px rgba(17,24,39,.10); overflow:hidden}
+    .head{padding:22px 24px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:12px}
+    .logo{height:34px}
+    .brand{font-weight:800}
+    .body{display:grid; grid-template-columns:1fr; padding:22px 24px; gap:16px}
+    h1{margin:0; font-size:24px}
+    p.sub{margin:0; color:#6b7280}
+    form{display:grid; gap:12px}
+    label{font-weight:600; color:#111827}
+    .row{display:grid; gap:10px; grid-template-columns:1fr 1fr}
+    input, select{width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:10px; background:#f9fafb; outline:none}
+    .btn{appearance:none; border:0; border-radius:10px; padding:12px 16px; font-weight:800; cursor:pointer; background:var(--gl-green); color:#fff; box-shadow:0 8px 22px rgba(0,166,81,.25)}
+    .btn:hover{filter:brightness(1.05)}
+    .switch{margin-top:4px; text-align:center; color:#374151}
+    .switch a{color:var(--gl-green-600); font-weight:800; text-decoration:none}
+    .switch a:hover{text-decoration:underline}
+    .note{min-height:20px; color:#b91c1c; font-weight:600}
+    .hide{display:none !important}
+  </style>
+  <script>
+    // ========= CONFIG =========
+    const API_BASE = "https://better-ravens-melt.loca.lt";
+ // must match your server.js/.env PORT
+
+    // If already signed in, skip login page
+    (function autoRedirectIfSignedIn(){
+      try{ const t = localStorage.getItem('gl_token'); if(t){ window.location.href = 'WaterAudit - Dashboard.html'; } }catch(_){ }
+    })();
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="head">
+        <img class="logo" src="images/GLLOGO.png" alt="Green Leaders" />
+        <div class="brand">Water Audit System</div>
+      </div>
+
+      <!-- LOGIN VIEW -->
+      <div id="loginView" class="body">
+        <div>
+          <h1>Welcome Back</h1>
+          <p class="sub">Login to access your water audit dashboard</p>
+        </div>
+        <div id="login_note" class="note"></div>
+        <form id="loginForm">
+          <div>
+            <label>Email Address</label>
+            <input id="login_email" type="email" placeholder="you@school.edu" required />
+          </div>
+          <div>
+            <label>Password</label>
+            <input id="login_pwd" type="password" placeholder="********" required />
+          </div>
+          <button class="btn" type="submit">Login</button>
+        </form>
+        <div class="switch">Don’t have an account? <a href="#" id="goToSignup">Sign Up</a></div>
+      </div>
+
+      <!-- SIGNUP VIEW -->
+      <div id="signupView" class="body hide">
+        <div>
+          <h1>Create Account</h1>
+          <p class="sub">Sign up to start managing your water audit</p>
+        </div>
+        <div id="signup_note" class="note"></div>
+        <form id="signupForm">
+          <div class="row">
+            <div>
+              <label>Full Name</label>
+              <input id="su_name" type="text" placeholder="Your name" />
+            </div>
+            <div>
+              <label>Email Address</label>
+              <input id="su_email" type="email" placeholder="you@school.edu" required />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label>Password</label>
+              <input id="su_pwd" type="password" placeholder="********" required />
+            </div>
+            <div>
+
+            </div>
+          </div>
+          <button class="btn" type="submit">Create Account</button>
+        </form>
+        <div class="switch">Already have an account? <a href="#" id="goToLogin">Login</a></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Helpers =====
+    const $ = (sel,root=document)=>root.querySelector(sel);
+    const note = (el,msg)=>{ el.textContent = msg || ''; };
+    const saveAndGo = (data)=>{
+      localStorage.setItem('gl_token', data.token);
+      localStorage.setItem('gl_user', JSON.stringify(data.user||{}));
+      window.location.href = 'WaterAudit - Dashboard.html';
+    };
+
+    // ===== Toggle views =====
+    $('#goToSignup').addEventListener('click', (e)=>{ e.preventDefault(); $('#loginView').classList.add('hide'); $('#signupView').classList.remove('hide'); note($('#login_note'),''); });
+    $('#goToLogin').addEventListener('click',  (e)=>{ e.preventDefault(); $('#signupView').classList.add('hide'); $('#loginView').classList.remove('hide'); note($('#signup_note'),''); });
+
+    // ===== Login submit =====
+    $('#loginForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      note($('#login_note'),'');
+      const email = $('#login_email').value.trim();
+      const password = $('#login_pwd').value.trim();
+      if(!email || !password){ return note($('#login_note'),'Please enter email & password.'); }
+      try{
+        const r = await fetch(`${API_BASE}/api/auth/login`, {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ email, password })
+        });
+        if(!r.ok){ return note($('#login_note'), await r.text()); }
+        const data = await r.json();
+        saveAndGo(data);
+      }catch(err){ note($('#login_note'),'Network error — is the API running on :8080?'); }
+    });
+
+    // ===== Signup submit =====
+    $('#signupForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      note($('#signup_note'),'');
+      const name = $('#su_name').value.trim();
+      const email = $('#su_email').value.trim();
+      const password = $('#su_pwd').value.trim();
+      if(!email || !password){ return note($('#signup_note'),'Please enter email & password.'); }
+      try{
+        const r = await fetch(`${API_BASE}/api/auth/register`, {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ name, email, password })
+        });
+        if(!r.ok){ return note($('#signup_note'), await r.text()); }
+        const data = await r.json();
+        saveAndGo(data);
+      }catch(err){ note($('#signup_note'),'Network error — is the API running on :8080?'); }
+    });
+  </script>
+</body>
+</html>
