@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Green Leaders • Water Audit System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+
+  <script>
+    const API_BASE = "https://better-ravens-melt.loca.lt"; // change to your server (e.g., http://192.168.1.10:8080) when testing on phone
+  </script>
+
+  <!-- ======= Lightweight UI i18n labels (ids only) ======= -->
+  <script>
+    // --- Simple i18n dictionary (for key UI labels by ID) ---
+    const I18N = {
+      en: {
+        app_title: "Water Audit System",
+        app_subtitle: "Professional Assessment Portal",
+        nav_title: "Green Leaders – Water Management",
+        tab_dashboard: "Dashboard",
+        tab_building: "Building Data",
+        tab_consumption: "Water Consumption",
+        tab_leak: "Leak Tracking",
+        tab_savings: "Savings Plan",
+        tab_settings: "Settings",
+        kpi_total_out: "TOTAL WATER OUTPUT (Usage + Leakage)",
+        kpi_total_leak: "TOTAL LEAKAGE",
+        kpi_potential: "POTENTIAL SAVINGS",
+        sec_daily_usage: "Daily Average Water Usage",
+        sec_annual: "Annual Water Management Analysis",
+        sec_settings: "System Configuration",
+        profile_btn: "Profile",
+        back_home: "← Back "
+      },
+      fr: {
+        app_title: "Système d’Audit de l’Eau",
+        app_subtitle: "Portail d’évaluation professionnel",
+        nav_title: "Green Leaders – Gestion de l’Eau",
+        tab_dashboard: "Tableau de bord",
+        tab_building: "Données du bâtiment",
+        tab_consumption: "Consommation d’eau",
+        tab_leak: "Détection des fuites",
+        tab_savings: "Plan d’économies",
+        tab_settings: "Paramètres",
+        kpi_total_out: "SORTIE TOTALE D’EAU (Usage + Fuites)",
+        kpi_total_leak: "FUITES TOTALES",
+        kpi_potential: "ÉCONOMIES POTENTIELLES",
+        sec_daily_usage: "Consommation moyenne quotidienne",
+        sec_annual: "Analyse annuelle de la gestion de l’eau",
+        sec_settings: "Configuration du système",
+        profile_btn: "Profil",
+        back_home: "← Retour à l’accueil"
+      },
+      ar: {
+        app_title: "نظام تدقيق المياه",
+        app_subtitle: "بوابة التقييم المهنية",
+        nav_title: "جرين ليدرز – إدارة المياه",
+        tab_dashboard: "لوحة التحكم",
+        tab_building: "بيانات المبنى",
+        tab_consumption: "استهلاك المياه",
+        tab_leak: "تتبّع التسريبات",
+        tab_savings: "خطة التوفير",
+        tab_settings: "الإعدادات",
+        kpi_total_out: "إجمالي خروج المياه (الاستهلاك + التسريب)",
+        kpi_total_leak: "إجمالي التسريبات",
+        kpi_potential: "التوفير المحتمل",
+        sec_daily_usage: "متوسط الاستهلاك اليومي",
+        sec_annual: "التحليل السنوي لإدارة المياه",
+        sec_settings: "ضبط النظام",
+        profile_btn: "الملف الشخصي",
+        back_home: "← رجوع إلى الرئيسية"
+      }
+    };
+
+    function setDirFor(lang){
+      const rtl = (lang === 'ar');
+      document.documentElement.lang = lang;
+      document.documentElement.dir  = rtl ? 'rtl' : 'ltr';
+      document.body.style.direction = rtl ? 'rtl' : 'ltr';
+    }
+
+    function applyI18n(lang){
+      const t = (k)=> (I18N[lang] && I18N[lang][k]) || I18N.en[k] || k;
+      const map = {
+        app_title: 'txt_app_title',
+        app_subtitle: 'txt_app_subtitle',
+        nav_title: 'txt_nav_title',
+        tab_dashboard: 'tab_dashboard',
+        tab_building: 'tab_building',
+        tab_consumption: 'tab_consumption',
+        tab_leak: 'tab_leak',
+        tab_savings: 'tab_savings',
+        tab_settings: 'tab_settings',
+        kpi_total_out: 'kpi_title_total_out',
+        kpi_total_leak: 'kpi_title_total_leak',
+        kpi_potential: 'kpi_title_potential',
+        sec_daily_usage: 'sec_daily_usage',
+        sec_annual: 'sec_annual',
+        sec_settings: 'sec_settings',
+        profile_btn: 'btn_profile',
+        back_home: 'btn_back_home'
+      };
+      Object.entries(map).forEach(([key,id])=>{
+        const el = document.getElementById(id);
+        if (el) el.textContent = t(key);
+      });
+
+      setDirFor(lang);
+    }
+
+    // On load, default to stored language for UI labels
+    (function initBasicI18n(){
+      const lang = localStorage.getItem('gl_lang') || 'en';
+      applyI18n(lang);
+    })();
+  </script>
+
+  <style>
+    :root{
+      --brand:#0A7A4A; --brand-600:#08633C; --brand-700:#064E2F;
+      --accent:#18496D;
+      --bg:#F5F7FB; --surface:#FFFFFF; --soft:#F1F5F9; --line:#E5E7EB;
+      --mint:#E9F6EF; --mint-edge:#CFE9DB; --ring:0 14px 44px rgba(12,18,28,.08);
+      --text:#0E1525; --muted:#566074; --muted-2:#6B7280;
+      --radius:16px;
+      --fs-12:12.5px; --fs-14:14.5px; --fs-16:16px; --fs-18:18px; --fs-20:20px; --fs-28:28px; --fs-36:36px; --fs-44:44px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; background:linear-gradient(180deg,#F7FBF9 0%,#F6F7FB 30%,#F6F7FB 100%); color:var(--text); font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; font-size:var(--fs-16);}
+    :focus-visible{outline:3px solid rgba(10,122,74,.28); outline-offset:3px; border-radius:8px}
+
+    /* ======= Header / Hero ======= */
+    .hero{position:sticky; top:0; z-index:40; background:rgba(255,255,255,.85); backdrop-filter:saturate(160%) blur(10px); border-bottom:1px solid var(--line)}
+    .hero-inner{max-width:1280px; margin:0 auto; padding:14px 22px; display:flex; align-items:center; gap:16px}
+    .logo{display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit}
+    .logo .mark{width:34px; height:34px; border-radius:10px; background:conic-gradient(from 220deg at 50% 50%, #0A7A4A 0 30%, #9BE1C0 30% 55%, #2A6D43 55% 75%, #0A7A4A 75% 100%); box-shadow:inset 0 1px 10px rgba(255,255,255,.35)}
+    .title{font-weight:800; letter-spacing:.2px}
+    .subtitle{font-size:var(--fs-12); color:var(--muted); margin-top:2px}
+    .spacer{flex:1}
+    .user-chip{display:flex; align-items:center; gap:10px; border:1.5px solid #D9F3E5; background:#F2FBF6; color:var(--brand-700); padding:10px 14px; border-radius:999px; font-weight:800; cursor:pointer}
+
+    .nav{background:linear-gradient(90deg, #0A7A4A, #0C8B57); color:#fff}
+    .nav-inner{max-width:1280px; margin:0 auto; padding:24px 22px; display:flex; align-items:center; gap:18px}
+    .nav h1{margin:0; font-size:var(--fs-28); font-weight:900; letter-spacing:.3px}
+    .crumbs{opacity:.9; font-weight:700}
+
+    /* ======= Tabs (pro look) ======= */
+    .tabs{background:#fff; border-bottom:1px solid var(--line)}
+    .tabs-inner{
+      max-width:1280px; margin:0 auto; padding:10px 22px;
+      display:flex; gap:10px; overflow:auto; scroll-snap-type:x mandatory;
+      -ms-overflow-style:none; scrollbar-width:none;
+    }
+    .tabs-inner::-webkit-scrollbar{display:none}
+
+    .tab{
+      display:inline-flex; align-items:center; gap:10px; white-space:nowrap;
+      padding:12px 16px; border-radius:999px;
+      border:1.5px solid #DFE5EC; background:#ffffff; color:#0F172A;
+      font-weight:800; letter-spacing:.2px; cursor:pointer;
+      box-shadow:0 1px 0 rgba(15,23,42,.02), 0 1px 2px rgba(15,23,42,.04);
+      transition:transform .15s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease, color .2s ease;
+      scroll-snap-align:start;
+    }
+    .tab .ico{width:18px; height:18px; opacity:.9}
+    .tab:hover{
+      transform:translateY(-1px);
+      border-color:#CBD8E6;
+      box-shadow:0 8px 22px rgba(15,23,42,.06);
+    }
+
+
+
+    .logout-btn{
+  appearance:none; border:1px solid var(--line); background:#fff;
+  padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer;left: 10;
+}
+.logout-btn:hover{ filter:brightness(0.98); }
+
+    .tab:active{transform:translateY(0)}
+    .tab:focus-visible{outline:3px solid rgba(10,122,74,.28); outline-offset:3px}
+
+    .tab.active{
+      background:linear-gradient(180deg, var(--brand) 0%, #0C8B57 100%);
+      color:#fff; border-color:transparent;
+      box-shadow:0 10px 24px rgba(10,122,74,.24);
+      position:relative;
+    }
+    .tab.active .ico{opacity:1}
+    .tab.active::after{
+      content:""; position:absolute; left:16px; right:16px; bottom:-10px; height:3px;
+      background:linear-gradient(90deg, #0A7A4A, #62D4A0);
+      border-radius:999px; opacity:.9;
+    }
+
+    @media (max-width:760px){
+      .tab{padding:10px 14px}
+      .tab .ico{width:16px; height:16px}
+    }
+
+    /* ======= Layout ======= */
+    .page{max-width:1280px; margin:28px auto; padding:0 22px}
+    .section{background:var(--surface); border-radius:var(--radius); box-shadow:var(--ring); overflow:hidden; margin-bottom:26px}
+    .sec-head{padding:18px 22px; background:linear-gradient(180deg,#F9FBFD 0,#F4F7FA 100%); border-bottom:1px solid var(--line); font-weight:900; font-size:var(--fs-20);}
+    .sec-sub{padding:12px 22px 0; color:var(--muted); font-size:var(--fs-14)}
+    .sec-body{padding:22px}
+    .footer-actions{display:flex; gap:10px; padding:14px 22px; background:var(--soft); border-top:1px solid var(--line); justify-content:flex-end}
+    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+    @media (max-width:980px){.grid-2{grid-template-columns:1fr}}
+
+    /* ======= Cards / KPIs ======= */
+    .kpis{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+    @media (max-width:1020px){.kpis{grid-template-columns:1fr 1fr}} @media(max-width:760px){.kpis{grid-template-columns:1fr}}
+    .kpi{border-radius:14px; padding:20px; background:#F3FBF7; border:1.5px solid #D9F3E5; display:flex; justify-content:space-between; align-items:center}
+    .kpi .k-title{font-size:var(--fs-12); color:var(--muted-2); font-weight:900; letter-spacing:.3px}
+    .kpi .k-val{font-size:var(--fs-36); font-weight:900}
+    .kpi.alert{background:#FEF2F2; border-color:#FBDADA; color:#7A1C1C}
+
+    /* ======= Banners / Notes ======= */
+    .info{border:1px solid #DDE7F6; background:#F4F8FF; color:#0F2350; padding:14px 16px; border-radius:12px; display:flex; gap:12px; align-items:flex-start;}
+    .info .dot{width:10px;height:10px;border-radius:999px;background:var(--accent);margin-top:7px}
+
+    /* ======= Inputs / Table ======= */
+    label{display:block; font-weight:800; margin-bottom:8px}
+    input[type="number"], input[type="text"], select{ width:100%; max-width:340px; padding:12px 14px; border-radius:12px; border:1.5px solid #DFE5EC; background:#fff; font-size:var(--fs-16)}
+    input:focus, select:focus{border-color:#CCD7E3; box-shadow:0 0 0 4px rgba(10,122,74,.10)}
+    input[type="number"]{appearance:textfield}
+    input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button{appearance:none; margin:0}
+
+    .table-wrap{overflow:auto; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,.04)}
+    table{width:100%; border-collapse:separate; border-spacing:0; font-size:var(--fs-16)}
+    thead th{background:#EAF4EE; text-align:left; font-weight:900; letter-spacing:.2px; padding:14px; border-bottom:1.5px solid var(--line)}
+    tbody td{padding:12px; border-bottom:1px solid var(--line)}
+    tbody tr:nth-child(even){background:#F8FBFD}
+    .note{font-size:var(--fs-12); color:var(--muted)}
+
+    .btn{appearance:none; border:0; border-radius:12px; padding:12px 16px; font-weight:800; cursor:pointer}
+    .btn-primary{background:var(--brand); color:#fff; box-shadow:0 10px 24px rgba(10,122,74,.22)}
+    .btn-ghost{background:#EFF2F6; color:#0F172A}
+    .btn-outline{border:1.5px dashed var(--brand); background:#fff; color:var(--brand)}
+    .btn:active{transform:translateY(1px)}
+
+    [data-view]{display:none}
+    [data-view].active{display:block}
+
+    /* ======= Modal ======= */
+    .modal{position:fixed; inset:0; display:none; place-items:center; background:rgba(17,24,39,.44); z-index:100}
+    .modal.open{display:grid}
+    .dialog{background:#fff; width:min(880px,94vw); border-radius:16px; box-shadow:0 28px 80px rgba(0,0,0,.25); overflow:hidden}
+    .dialog-head{display:flex; justify-content:space-between; align-items:center; padding:16px 22px; border-bottom:1px solid var(--line); font-weight:900; font-size:var(--fs-18)}
+    .dialog-body{padding:22px}
+    .close-x{background:transparent; border:0; font-size:22px; cursor:pointer}
+
+    @media print{
+      .hero,.nav,.tabs,.footer-actions,.user-chip {display:none !important}
+      .page{max-width:none; margin:0; padding:0}
+      .section{box-shadow:none; page-break-inside:avoid}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ======= Header ======= -->
+  <header class="hero">
+    <div class="hero-inner">
+      <!-- inside .hero-inner, at the beginning -->
+<button id="btnLogout" class="logout-btn" title="Sign out">⟵ Logout</button>
+
+      <a class="logo" href="#" title="Green Leaders">
+        <div class="mark" aria-hidden="true"></div>
+        <div>
+          <div class="title" id="txt_app_title">Water Audit System</div>
+          <div class="subtitle" id="txt_app_subtitle">Professional Assessment Portal</div>
+        </div>
+      </a>
+
+      <!-- Back Home + Logo -->
+      <div style="display:flex;align-items:center;gap:10px;">
+        <img src="images/GLLOGO2.png" alt="Green Leaders Logo" style="height:44px;width:auto;">
+        <button onclick="window.location.href='WaterAudit.html'" class="btn btn-outline" style="padding:8px 14px;font-size:14px; right:5px" id="btn_back_home">← Back </button>
+      </div>
+
+      <div class="spacer"></div>
+      <button id="openProfile" class="user-chip" aria-haspopup="dialog" aria-controls="profileModal"></button>
+    </div>
+  </header>
+
+  <div class="nav">
+    <div class="nav-inner">
+      <h1 id="txt_nav_title">Green Leaders – Water Management</h1>
+      <div class="spacer"></div>
+      <div class="crumbs"></div>
+    </div>
+  </div>
+
+  <!-- ======= Tabs ======= -->
+  <div class="tabs">
+    <div class="tabs-inner" id="tabs" role="tablist" aria-label="Sections">
+      <button class="tab active" data-target="dashboard" role="tab" aria-selected="true" id="tab_dashboard">
+        <svg class="ico" viewBox="0 0 24 24"><path fill="currentColor" d="M3 13h8V3H3v10Zm0 8h8v-6H3v6Zm10 0h8V11h-8v10Zm0-18v6h8V3h-8Z"/></svg>Dashboard
+      </button>
+      <button class="tab" data-target="building" role="tab" id="tab_building">
+        <svg class="ico" viewBox="0 0 24 24"><path fill="currentColor" d="M3 21V4a1 1 0 0 1 1-1h10l7 7v11h-5v-6H8v6H3Z"/></svg>Building Data
+      </button>
+      <button class="tab" data-target="consumption" role="tab" id="tab_consumption">
+        <svg class="ico" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2s7 7.1 7 12a7 7 0 0 1-14 0c0-4.9 7-12 7-12Z"/></svg>Water Consumption
+      </button>
+      <button class="tab" data-target="leak" role="tab" id="tab_leak">
+        <svg class="ico" viewBox="0 0 24 24"><path fill="currentColor" d="M1 21h22L12 2 1 21Zm12-3h-2v-2h2v2Zm0-4h-2v-4h2v4Z"/></svg>Leak Tracking
+      </button>
+      <button class="tab" data-target="savings" role="tab" id="tab_savings">
+        <svg class="ico" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3c-4.97 0-9 3.13-9 7 0 1.9.97 3.63 2.57 4.93L5 21l3.19-1.91c1.17.33 2.42.51 3.81.51 4.97 0 9-3.13 9-7s-4.03-7-9-7Z"/></svg>Savings Plan
+      </button>
+      <button class="tab" data-target="settings" role="tab" id="tab_settings">
+        <svg class="ico" viewBox="0 0 24 24"><path fill="currentColor" d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7ZM19.43 12.98a7.87 7.87 0 0 0 .05-.98 7.87 7.87 0 0 0-.05-.98l2.11-1.65a.5.5 0 0 0 .12-.64l-2-3.46a.5.5 0 0 0-.6-.22l-2.49 1a7.79 7.79 0 0 0-1.7-.98l-.38-2.65a.5.5 0 0 0-.5-.43h-4a.5.5 0 0 0-.5.43l-.38 2.65c-.6.23-1.17.54-1.7.98l-2.49-1a.5.5 0 0 0-.6.22l-2 3.46a.5.5 0 0 0 .12.64L4.57 11c-.03.32-.05.65-.05.98 0 .33.02.66.05.98l-2.11 1.65a.5.5 0 0 0-.12.64l2 3.46c.13.22.39.31.6.22l2.49-1c.52.43 1.1.77 1.7.98l.38 2.65a.5.5 0 0 0 .5.43h4a.5.5 0 0 0 .5-.43l.38-2.65c.6-.23 1.18-.55 1.7-.98l2.49 1c.23.09.48 0 .6-.22l2-3.46a.5.5 0 0 0-.12-.64L19.43 12.98Z"/></svg>Settings
+      </button>
+    </div>
+  </div>
+
+  <!-- ======= Main ======= -->
+  <main class="page">
+    <!-- ===== Dashboard ===== -->
+    <section class="section active" data-view="dashboard">
+      <div class="sec-head">Institution Dashboard</div>
+
+      <div class="sec-body">
+        <div class="kpis">
+          <div class="kpi">
+            <div>
+              <div class="k-title" id="kpi_title_total_out">TOTAL WATER OUTPUT (Usage + Leakage)</div>
+              <div class="k-val" id="kpiUsage">0</div>
+              <div class="note">Liters per day</div>
+            </div>
+            <span class="note" style="font-weight:900">Water</span>
+          </div>
+
+          <div class="kpi alert">
+            <div>
+              <div class="k-title" id="kpi_title_total_leak">TOTAL LEAKAGE</div>
+              <div class="k-val" id="kpiLeak">0</div>
+              <div class="note">Liters per day</div>
+            </div>
+            <span class="note" style="font-weight:900">Alert</span>
+          </div>
+
+          <div class="kpi">
+            <div>
+              <div class="k-title" id="kpi_title_potential">POTENTIAL SAVINGS</div>
+              <div class="k-val" id="kpiPotential">0</div>
+              <div class="note">Liters per day</div>
+            </div>
+            <span class="note" style="font-weight:900">Efficiency</span>
+          </div>
+        </div>
+
+        <div class="section" style="margin-top:18px">
+          <div class="sec-head" id="sec_daily_usage">Daily Average Water Usage</div>
+          <p class="sec-sub">Weekly curve from daily schedule</p>
+          <div class="sec-body"><canvas id="weeklyChart" height="170"></canvas></div>
+        </div>
+
+        <div class="section" style="margin-top:18px">
+          <div class="sec-head" id="sec_annual">Annual Water Management Analysis</div>
+          <p class="sec-sub">Based on Monthly Occupancy Schedule</p>
+          <div class="sec-body"><canvas id="annualChart" height="180"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Building ===== -->
+    <section class="section" data-view="building">
+      <div class="sec-head">Building Data</div>
+      <div class="sec-body">
+        <div class="section">
+          <div class="sec-head">Number of Occupants</div>
+          <div class="sec-body grid-2">
+            <div>
+              <label for="bd_occupants">Total Occupants</label>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <input id="bd_occupants" type="number" min="0" placeholder="0" inputmode="numeric"><span class="note">people</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section" style="margin-top:16px;">
+          <div class="sec-head">Fixture Usage Schedule</div>
+          <p class="sec-sub">Share of occupants using a fixture per day & typical frequency (uses/occupant)</p>
+          <div class="sec-body">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Fixture Type</th>
+                    <th style="width:260px">% of Occupants Using / Day</th>
+                    <th style="width:280px">Typical Use Frequency (uses/occupant)</th>
+                  </tr>
+                </thead>
+                <tbody id="bd_fixtureUsage"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="section" style="margin-top:16px;">
+          <div class="sec-head">Daily Occupancy Schedule</div>
+          <p class="sec-sub">Average occupancy by weekday (used only for charts)</p>
+          <div class="sec-body grid-2" id="bd_daily"></div>
+        </div>
+
+        <div class="section" style="margin-top:16px;">
+          <div class="sec-head">Monthly Occupancy Schedule</div>
+          <p class="sec-sub">Average occupancy by month (used only for monthly chart)</p>
+          <div class="sec-body grid-2" id="bd_monthly"></div>
+          <div class="footer-actions">
+            <button class="btn btn-ghost" onclick="print()">Save as PDF</button>
+            <button class="btn btn-primary" id="btnSaveBuilding">Save</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Consumption ===== -->
+    <section class="section" data-view="consumption">
+      <div class="sec-head">Water Consumption</div>
+
+      <!-- Reference tables -->
+      <div class="section" style="margin-top:24px; background:#F7FFFB; border:1.5px solid var(--mint-edge)">
+        <div class="sec-head">Reference: Typical Fixture Values</div>
+        <div class="sec-sub">Use these values only as a guide before you measure on-site. They do not change your entered data.</div>
+
+        <div class="sec-body grid-2">
+          <div class="section" style="background:#FFFFFF; border:1.5px solid #DDE7F6;">
+            <div class="sec-head">Flow Fixtures — Typical Flow & Duration</div>
+            <div class="sec-body">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Fixture</th>
+                      <th style="width:160px">Typical Flow (L/min)</th>
+                      <th style="width:220px">Typical Duration per Use</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Sink / Lavatory</td><td>6–8</td><td>10–20 s (≈ 0.17–0.33 min)</td></tr>
+                    <tr><td>Shower</td><td>10–12</td><td>5–10 min</td></tr>
+                    <tr><td>Drinking Fountain</td><td>0.6</td><td>10–20 s (≈ 0.17–0.33 min)</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="note" style="margin-top:10px">💡 If you don’t have a meter, use a container & stopwatch to estimate flow and duration.</p>
+            </div>
+          </div>
+
+          <div class="section" style="background:#FFFFFF; border:1.5px solid #DDE7F6;">
+            <div class="sec-head">Flush Fixtures — Typical Water per Flush</div>
+            <div class="sec-body">
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Fixture</th>
+                      <th style="width:220px">Typical per Flush (L)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Toilet (Half Flush)</td><td>4.5</td></tr>
+                    <tr><td>Toilet (Full Flush)</td><td>9.0</td></tr>
+                    <tr><td>Urinal</td><td>2.0</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="note" style="margin-top:10px">💡 For dual-flush toilets, full-flush count mirrors half-flush count in your inputs.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-body">
+        <div class="section">
+          <div class="sec-head">Consumption Summary</div>
+          <p class="sec-sub">Totals by room and overall</p>
+          <div class="sec-body">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Room Name</th>
+                    <th style="width:260px; text-align:right">Base Consumption (L/day)</th>
+                    <th style="width:260px; text-align:right">Adjusted Consumption (L/day)</th>
+                  </tr>
+                </thead>
+                <tbody id="cons_summary"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="cons_rooms"></div>
+
+        <div class="footer-actions" style="justify-content:center; gap:14px;">
+          <button class="btn btn-outline" id="btnAddRoom">+ Add Toilet/Wet Area</button>
+        </div>
+        <div class="footer-actions">
+          <button class="btn btn-ghost" onclick="print()">Save as PDF</button>
+          <button class="btn btn-primary" id="btnSaveConsumption">Save Consumption Data</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Leak Tracking ===== -->
+    <section class="section" data-view="leak">
+      <div class="sec-head">Water Leak Detection & Monitoring</div>
+      <div class="sec-sub">
+        <div class="info"><span class="dot"></span>
+          <div><strong>Enter leak rates</strong> (L/min) per unit. Add more units per fixture/room as needed. Summary totals feed <strong>Savings Plan</strong>. Only fixtures with rate &gt; 0 appear in savings.</div>
+        </div>
+      </div>
+
+      <div class="section" style="margin:22px;background:#F7FAFF;border:1.5px solid #DDE7F6;">
+        <div class="sec-head" style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:22px;">💧</span> How to Measure Leaks
+        </div>
+        <div class="sec-sub">Professional methods for accurate leak detection and measurement</div>
+        <div class="sec-body grid-2">
+          <div class="info" style="background:#fff;">
+            <strong>1️⃣ Visual Inspection</strong><br>
+            Look for visible drips, puddles, or water stains around fixtures. Check under sinks, around toilets, and near urinals.
+          </div>
+          <div class="info" style="background:#fff;">
+            <strong>4️⃣ Toilet Leak Detection</strong><br>
+            Add food coloring to the tank. Wait 15 minutes without flushing. If color appears in the bowl, there's a leak.
+          </div>
+
+          <div class="info" style="background:#fff;">
+            <strong>2️⃣ Container Method</strong><br>
+            Place a container under the drip for 1 minute. Measure the water and convert to L/min.
+          </div>
+          <div class="info" style="background:#fff;">
+            <strong>5️⃣ Flow Meter Reading</strong><br>
+            For larger leaks, use a flow meter or the building’s water meter (with fixtures off).
+          </div>
+
+          <div class="info" style="background:#fff;">
+            <strong>3️⃣ Drip Count Method</strong><br>
+            Count drips per minute (~20 drips = 1 mL). Convert to L/min (200 drips/min ≈ 0.01 L/min).
+          </div>
+          <div class="info" style="background:#fff; border-left:4px solid #0A7A4A;">
+            <strong>💡 Quick Reference</strong><br>
+            • Slow drip: 0.01–0.05 L/min<br>
+            • Steady drip: 0.05–0.2 L/min<br>
+            • Fast drip: 0.2–0.5 L/min<br>
+            • Small stream: 0.5–2 L/min<br>
+            • Running toilet: 1–6 L/min
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-body">
+        <div class="section" style="border:1.5px solid #FBDADA;background:#FFFBFB">
+          <div class="sec-head" style="background:#FAEEEE">Leak Summary</div>
+          <p class="sec-sub">Totals per room & overall</p>
+          <div class="sec-body">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Room Name</th><th>Leak Rate (L/min)</th><th>Water Lost / Day (L)</th><th>Water Lost / Year (L)</th></tr>
+                </thead>
+                <tbody id="leak_summary"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="leak_rooms"></div>
+
+        <div class="footer-actions" style="justify-content:center; gap:14px;">
+          <button class="btn btn-outline" id="btnAddLeakRoom">+ Add Toilet/Wet Area</button>
+        </div>
+        <div class="footer-actions">
+          <button class="btn btn-ghost" onclick="print()">Save as PDF</button>
+          <button class="btn btn-primary" id="btnSaveLeaks">Save Leak Assessment</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Savings ===== -->
+    <section class="section" data-view="savings">
+      <div class="sec-head">Water Savings Planner</div>
+
+      <div class="section" style="margin-top:0;">
+        <div class="sec-head">Water Savings Overview</div>
+        <p class="sec-sub">Edit “Saved by stopping leak” and add “Other Measure” if any</p>
+        <div class="sec-body">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Fixture</th>
+                  <th>Room</th>
+                  <th>Leakage (L/Daily)</th>
+                  <th>Saved by Stopping Leak (L/Daily)</th>
+                  <th>Other Measure</th>
+                  <th>Saved by Other Measure (L/Daily)</th>
+                </tr>
+              </thead>
+              <tbody id="sav_table"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="footer-actions">
+          <button class="btn btn-ghost" onclick="print()">Save as PDF</button>
+          <button class="btn btn-primary" id="btnSaveSavings">Save Savings Plan</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Settings ===== -->
+    <section class="section" data-view="settings">
+      <div class="sec-head" id="sec_settings">System Configuration</div>
+      <div class="sec-sub">
+        <div class="info"><span class="dot"></span>
+          <div><strong>Language & Region:</strong> Adjust interface preferences. Data is stored locally and can be posted to your backend via the included hook.</div>
+        </div>
+      </div>
+      <div class="sec-body">
+        <div class="section">
+          <div class="sec-head">Language & Region</div>
+          <p class="sec-sub">Select your preferred language</p>
+          <div class="sec-body">
+            <span class="note" aria-label="Country"></span> · <span class="note" aria-label="Language"></span>
+            <div class="footer-actions" style="justify-content:flex-start; gap:10px">
+              <button id="openProfile2" class="btn btn-primary" aria-haspopup="dialog" aria-controls="profileModal">Edit Profile</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<!-- ===== Auth/Profile Modal (FIXED) ===== -->
+<div class="modal" id="profileModal">
+  <div class="dialog">
+    <div class="dialog-head">
+      Profile & Preferences
+      <button class="close-x" id="closeProfile" aria-label="Close">×</button>
+    </div>
+    <div class="dialog-body">
+      <div class="grid-2">
+        <div><label for="name">Full Name</label><input id="name" type="text" value=""></div>
+        <div><label for="email">Email Address</label><input id="email" type="text" value=""></div>
+        <div><label for="pwd">Password</label><input id="pwd" type="password" placeholder="••••••••"></div>
+        <div><label for="bname">Building Name</label><input id="bname" type="text" placeholder="Building"></div>
+        <div><label for="bloc">Building Location</label><input id="bloc" type="text" placeholder="City / Area"></div>
+        <div>
+          <label for="lang">Preferred Language</label>
+          <select id="lang">
+            <option>English</option>
+            <option>Français</option>
+            <option>العربية</option>
+          </select>
+        </div>
+      </div>
+      <div class="footer-actions">
+        <button class="btn btn-primary" id="btnSaveProfile">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  <script>
+async function mirrorToGoogleSheet(snapshot){
+  try{
+    const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwjxGWaBMF7JpnR3QlxjJuWuJTLaqRzHxyQ-KGsd2L40he-0wQqIId0e_omTgF6KWQ3bQ/exec"; // <-- from step 1
+    await fetch(SHEET_WEBAPP_URL, {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify(snapshot)
+    });
+  }catch(e){ console.warn("Sheet mirror failed", e); }
+}
+</script>
+
+
+<script>
+  function logout(){
+    try{
+      localStorage.removeItem('gl_token');
+      localStorage.removeItem('gl_user');
+      // (optional) keep language; remove if you want full reset:
+      // localStorage.removeItem('gl_lang');
+    }catch(_){}
+    // send to the login page
+    window.location.href = 'WaterAudit - Login.html';
+  }
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const btn = document.getElementById('btnLogout');
+    if (btn) btn.addEventListener('click', logout);
+  });
+</script>
+
+
+
+  <!-- ===== Profile & Language wiring ===== -->
+  <script>
+    // Open modal: set current language
+    document.getElementById('openProfile').addEventListener('click', ()=>{
+      const langSel = document.getElementById('lang');
+      const curr = localStorage.getItem('gl_lang') || 'en';
+      langSel.value = (curr === 'ar' ? 'Arabic' : curr === 'fr' ? 'French' : 'English');
+      document.getElementById('profileModal').classList.add('open');
+    });
+    // Also wire the alternate open button
+    document.getElementById('openProfile2')?.addEventListener('click', ()=>{
+      const langSel = document.getElementById('lang');
+      const curr = localStorage.getItem('gl_lang') || 'en';
+      langSel.value = (curr === 'ar' ? 'Arabic' : curr === 'fr' ? 'French' : 'English');
+      document.getElementById('profileModal').classList.add('open');
+    });
+
+    // Close
+    document.getElementById('closeProfile').addEventListener('click', ()=>{
+      document.getElementById('profileModal').classList.remove('open');
+    });
+  </script>
+
+  <!-- ===== Full-page Translator (Azure) ===== -->
+  <script>
+    /**
+     * Whole-page translation via Azure; caches results in localStorage.
+     * We expose setLangAzure(lang) and ensure UI ids are updated via applyI18n as well.
+     */
+    const I18N_ENGINE = {
+      endpoint: "https://api.cognitive.microsofttranslator.com/",
+      region:   "uaenorth",
+      key:      "EwKyCoYoghv2HYvKuxXXhbB7iidCH3UFyqopJn0WbePzD3zENlBmJQQJ99BJACF24PCXJ3w3AAAbACOGCaRD",
+      version: "3.0"
+    };
+    const ALLOWED_LANGS = ["en","fr","ar"];
+    const DEFAULT_LANG = "en";
+
+    function getLang() {
+      const l = localStorage.getItem("gl_lang") || DEFAULT_LANG;
+      return ALLOWED_LANGS.includes(l) ? l : DEFAULT_LANG;
+    }
+
+    // Apply dir and html lang
+    function applyDir(lang){
+      const rtl = (lang === "ar");
+      document.documentElement.lang = lang;
+      document.documentElement.dir  = rtl ? "rtl" : "ltr";
+      document.body.style.direction = rtl ? "rtl" : "ltr";
+    }
+
+    function collectTextUnits(root=document.body){
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node){
+          const t = node.nodeValue.trim();
+          if (!t) return NodeFilter.FILTER_REJECT;
+          if (/^[\d\s.,:;()\-+*/]+$/.test(t)) return NodeFilter.FILTER_REJECT;
+          if (node.parentElement && (
+              ["SCRIPT","STYLE","CODE","PRE"].includes(node.parentElement.tagName)
+           || node.parentElement.closest("[data-no-i18n]"))) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const nodes = [];
+      let n; while((n = walker.nextNode())) nodes.push(n);
+      return nodes;
+    }
+
+    function collectAttrUnits(){
+      const attrTargets = [];
+      const selector = ["input[placeholder]","textarea[placeholder]","[title]","img[alt]","button[value]"].join(",");
+      document.querySelectorAll(selector).forEach(el=>{
+        if (el.hasAttribute("placeholder")) attrTargets.push({el, attr:"placeholder"});
+        if (el.hasAttribute("title"))       attrTargets.push({el, attr:"title"});
+        if (el.tagName==="IMG" && el.hasAttribute("alt")) attrTargets.push({el, attr:"alt"});
+        if (el.tagName==="BUTTON" && el.hasAttribute("value")) attrTargets.push({el, attr:"value"});
+      });
+      return attrTargets;
+    }
+
+    function uniqueStringsFromPage(){
+      const texts = [];
+      collectTextUnits().forEach(n => texts.push(n.nodeValue.trim()));
+      collectAttrUnits().forEach(({el,attr}) => texts.push(el.getAttribute(attr).trim()));
+      document.querySelectorAll("select option").forEach(o=>{
+        const v = (o.textContent||"").trim(); if (v) texts.push(v);
+      });
+      return Array.from(new Set(texts)).sort();
+    }
+
+    function cacheKey(lang){ return `gl_i18n_cache_${location.pathname}_${lang}`; }
+    function loadCache(lang){
+      try { return JSON.parse(localStorage.getItem(cacheKey(lang))||"{}"); } catch { return {}; }
+    }
+    function saveCache(lang, map){
+      try { localStorage.setItem(cacheKey(lang), JSON.stringify(map)); } catch {}
+    }
+
+    async function translateBatchAzure(strings, toLang){
+      if (strings.length===0 || toLang===DEFAULT_LANG) return {};
+      const outMap = {};
+      const url = `${I18N_ENGINE.endpoint}/translate?api-version=${I18N_ENGINE.version}&from=${DEFAULT_LANG}&to=${toLang}`;
+      const headers = {
+        "Ocp-Apim-Subscription-Key": I18N_ENGINE.key,
+        "Ocp-Apim-Subscription-Region": I18N_ENGINE.region,
+        "Content-Type": "application/json"
+      };
+      for (let i=0;i<strings.length;i+=90){
+        const slice = strings.slice(i, i+90);
+        const body = JSON.stringify(slice.map(Text => ({Text})));
+        const res  = await fetch(url, {method:"POST", headers, body});
+        if (!res.ok) { console.error("Translator error", await res.text()); continue; }
+        const data = await res.json();
+        slice.forEach((src, idx)=>{
+          const tr = data[idx]?.translations?.[0]?.text;
+          if (tr) outMap[src] = tr;
+        });
+      }
+      return outMap;
+    }
+
+    function applyMap(map){
+      collectTextUnits().forEach(n=>{
+        const src = n.nodeValue.trim();
+        if (map[src]) n.nodeValue = n.nodeValue.replace(src, map[src]);
+      });
+      collectAttrUnits().forEach(({el,attr})=>{
+        const src = (el.getAttribute(attr)||"").trim();
+        if (map[src]) el.setAttribute(attr, map[src]);
+      });
+      document.querySelectorAll("select option").forEach(o=>{
+        const src = (o.textContent||"").trim();
+        if (map[src]) o.textContent = map[src];
+      });
+    }
+
+    async function translatePage(targetLang){
+      if (targetLang === DEFAULT_LANG){ applyDir(DEFAULT_LANG); return; }
+      applyDir(targetLang);
+
+      const uniq = uniqueStringsFromPage();
+      const cached = loadCache(targetLang);
+      const missing = uniq.filter(s => !cached[s]);
+
+      if (missing.length){
+        const fresh = await translateBatchAzure(missing, targetLang);
+        Object.assign(cached, fresh);
+        saveCache(targetLang, cached);
+      }
+      applyMap(cached);
+    }
+
+    // Public: setLangAzure replaces previous calls
+    async function setLangAzure(lang){
+      localStorage.setItem("gl_lang", lang);
+      // Update UI labels by id for guaranteed correctness
+      applyI18n(lang);
+      // Then translate remaining free text
+      await translatePage(lang);
+    }
+
+    document.addEventListener("DOMContentLoaded", ()=>{
+      // Initial full-page translation according to stored lang
+      setLangAzure(getLang());
+    });
+
+    // Expose for other scripts if needed
+    window.__setLang = setLangAzure;
+  </script>
+
+  <!-- ===== App Logic ===== -->
+  <script>
+    // ======= Auth gating =======
+    (function ensureSignedIn(){
+      if (!localStorage.getItem('gl_token')) {
+        // window.location.href = 'WaterAudit - Login.html';
+        // Disabled during dev
+      }
+    })();
+
+    // ======= API helpers =======
+    const TOKEN_KEY='gl_token', USER_KEY='gl_user';
+    function token(){ return localStorage.getItem(TOKEN_KEY); }
+    async function api(path, opts={}){
+      const t = token();
+      const headers = {'Content-Type':'application/json', ...(t?{Authorization:`Bearer ${t}`}:{})};
+      const res = await fetch(API_BASE + path, { ...opts, headers:{...headers, ...(opts.headers||{})} });
+      if(!res.ok) throw new Error(await res.text());
+      return res;
+    }
+    async function postToServer(kind, payload){
+      try{ await api('/api/audits/'+kind, { method:'POST', body:JSON.stringify(payload) }); }catch(e){ console.warn('POST failed:', e.message); }
+    }
+    async function loadFromServer(kind){ try{ const r=await api('/api/audits/'+kind); return await r.json(); }catch(e){ return {}; } }
+
+    // ======= Constants & State =======
+    const LS_KEY = 'gl_water_audit_v3';
+    const FIXTURES = [
+      { key: 'half_wc', label: 'Half Flush WC', type: 'flush' },
+      { key: 'full_wc', label: 'Full Flush WC', type: 'flush' },
+      { key: 'urinal', label: 'Urinals', type: 'flush' },
+      { key: 'sink', label: 'Sinks', type: 'flow' },
+      { key: 'fountain', label: 'Drinking Water Fountain', type: 'flow' },
+      { key: 'shower', label: 'Showers', type: 'flow' },
+    ];
+    const DAYS   = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    let state = {
+      profile: { name:'', email:'', building:'', location:'', lang:'English' },
+      building: {
+        occupants: 0,
+        usage: {
+          half_wc:{pctUsing:0,freq:0},
+          full_wc:{pctUsing:0,freq:0},
+          urinal:{pctUsing:0,freq:0},
+          sink:{pctUsing:0,freq:0},
+          fountain:{pctUsing:0,freq:0},
+          shower:{pctUsing:0,freq:0}
+        },
+        daily:   { Monday:0, Tuesday:0, Wednesday:0, Thursday:0, Friday:0, Saturday:0, Sunday:0 },
+        monthly: { January:0, February:0, March:0, April:0, May:0, June:0, July:0, August:0, September:0, October:0, November:0, December:0 },
+      },
+      rooms: [ makeEmptyRoom('Toilet/Wet Area 1') ],
+      leakRooms: [ makeEmptyLeakRoom('Toilet/Wet Area 1') ],
+      savingsOther: [] // {id, room, fixtureKey, otherNote, savedDaily}
+    };
+
+    function makeEmptyRoom(name){
+      return { name,
+        flush:{ half_wc:{ waterPerFlush:0, count:0 }, full_wc:{ waterPerFlush:0, count:0 }, urinal:{ waterPerFlush:0, count:0 }},
+        flow:{ sink:{ flow:0, duration:0, count:0 }, fountain:{ flow:0, duration:0, count:0 }, shower:{ flow:0, duration:0, count:0 } }
+      };
+    }
+    function makeEmptyLeakRoom(name){
+      return { name, wc:[{rateLpm:0}], urinal:[{rateLpm:0}], sink:[{rateLpm:0}], fountain:[{rateLpm:0}], shower:[{rateLpm:0}] };
+    }
+
+    function saveState(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+    function loadState(){
+      try{
+        const raw=localStorage.getItem(LS_KEY);
+        if(raw){
+          const loaded = JSON.parse(raw);
+          state = Object.assign(state, loaded);
+        }
+      }catch(e){}
+    }
+
+    // ======= Math helpers =======
+    function getUsageFor(key){ const u = state.building.usage[key] || {pctUsing:0,freq:0}; return { p:(Number(u.pctUsing)||0)/100, f:Number(u.freq)||0 }; }
+
+    function roomDailyConsumption(room){
+      let total=0; const sharedCount = Number(room.flush.half_wc.count)||0; // half & full share count
+      { const {p,f}=getUsageFor('half_wc'); const w=Number(room.flush.half_wc.waterPerFlush)||0; total += w * sharedCount * f * p; }
+      { const {p,f}=getUsageFor('full_wc'); const w=Number(room.flush.full_wc.waterPerFlush)||0; total += w * sharedCount * f * p; }
+      { const {p,f}=getUsageFor('urinal');  const w=Number(room.flush.urinal.waterPerFlush)||0; const c=Number(room.flush.urinal.count)||0; total += w * c * f * p; }
+      for(const key of ['sink','fountain','shower']){
+        const {p,f}=getUsageFor(key); const cfg=room.flow[key];
+        const base = (Number(cfg.flow)||0) * (Number(cfg.duration)||0);
+        const c=Number(cfg.count)||0; total += base * c * f * p;
+      }
+      return total;
+    }
+    function totalConsumptionAllRooms(){ return state.rooms.reduce((a,r)=>a+roomDailyConsumption(r),0); }
+
+    function leakRoomTotals(lr){
+      const sum = arr => (arr||[]).reduce((a,b)=>a+(Number(b.rateLpm)||0),0);
+      const rateLpm = sum(lr.wc)+sum(lr.urinal)+sum(lr.sink)+sum(lr.fountain)+sum(lr.shower);
+      const day = rateLpm*60*24, year=day*365; return { rateLpm, day, year };
+    }
+    function buildingLeakDaily(){ return state.leakRooms.reduce((a,lr)=>a + leakRoomTotals(lr).day, 0); }
+
+    // Adjusted consumption (simple occupancy × frequency scaler on base)
+    function adjustedTotalConsumption(){
+  // Match the table: Adjusted = (base L/day across all rooms) × occupants
+  const occupants = Number(state.building.occupants) || 0;
+  return totalConsumptionAllRooms() * occupants;
+}
+
+    // ======= DOM helpers =======
+    const $=(s,r=document)=> r.querySelector(s);
+    const el=(tag, props={}, ...children)=>{
+      const e=document.createElement(tag);
+      Object.assign(e, props);
+      children.flat().forEach(c=> e.appendChild(typeof c==='string'?document.createTextNode(c):c));
+      return e;
+    };
+
+    // ======= Building render =======
+    function renderBuilding(){
+      $('#bd_occupants').value = state.building.occupants;
+      $('#bd_occupants').oninput = e => { state.building.occupants=Number(e.target.value)||0; recalcAll(); };
+
+      const tbody=$('#bd_fixtureUsage'); tbody.innerHTML='';
+      FIXTURES.forEach(f=>{
+        const cfg=state.building.usage[f.key]||{pctUsing:0,freq:0};
+        const tr=el('tr',{},
+          el('td',{}, f.label),
+          el('td',{}, el('input',{type:'number', min:0, max:100, value:cfg.pctUsing, oninput:(ev)=>{ cfg.pctUsing=Number(ev.target.value)||0; state.building.usage[f.key]=cfg; recalcAll(); }})),
+          el('td',{}, el('input',{type:'number', min:0, value:cfg.freq, oninput:(ev)=>{ cfg.freq=Number(ev.target.value)||0; state.building.usage[f.key]=cfg; recalcAll(); }})),
+        );
+        tbody.appendChild(tr);
+      });
+
+      const dwrap=$('#bd_daily'); dwrap.innerHTML='';
+      DAYS.forEach(day=>{
+        dwrap.appendChild(
+          el('div',{},
+            el('label',{}, day),
+            el('input',{type:'number',min:0,max:100,value:state.building.daily[day]||0, oninput:(ev)=>{ state.building.daily[day]=Number(ev.target.value)||0; recalcAll(); }})
+          )
+        );
+      });
+
+      const mwrap=$('#bd_monthly'); mwrap.innerHTML='';
+      MONTHS.forEach(mon=>{
+        mwrap.appendChild(
+          el('div',{},
+            el('label',{}, mon),
+            el('input',{type:'number',min:0,max:100,value:state.building.monthly[mon]||0, oninput:(ev)=>{ state.building.monthly[mon]=Number(ev.target.value)||0; recalcAll(); }})
+          )
+        );
+      });
+
+      $('#btnSaveBuilding').onclick=()=>{ saveState(); postToServer('building', state.building); mirrorToGoogleSheet(state);
+ alert('Building data saved.'); };
+    }
+
+    // ======= Consumption render =======
+    function renderConsumption(){
+      renderConsumptionSummary();
+      renderConsumptionRooms();
+
+      $('#btnAddRoom').onclick=()=>{
+        const n=state.rooms.length+1;
+        state.rooms.push(makeEmptyRoom(`Toilet/Wet Area ${n}`));
+        renderConsumptionRooms();
+        recalcAll();
+        setTimeout(()=>document.getElementById(`room_${n-1}`)?.scrollIntoView({behavior:'smooth'}),0);
+      };
+
+      $('#btnSaveConsumption').onclick=()=>{ saveState(); postToServer('consumption', state.rooms);mirrorToGoogleSheet(state); alert('Consumption data saved.'); };
+    }
+
+  function renderConsumptionSummary(){
+  const tbody=$('#cons_summary');
+  tbody.innerHTML = '';
+  let totalBase = 0, totalAdjusted = 0;
+
+  state.rooms.forEach(room => {
+    const base = roomDailyConsumption(room);
+    totalBase += base;
+
+    // NEW: Adjusted = base * number of occupants
+    const occupants = Number(state.building.occupants) || 0;
+    const adjusted = base * occupants;
+    totalAdjusted += adjusted;
+
+    tbody.appendChild(el('tr', {},
+      el('td', {}, room.name),
+      el('td', {style:'text-align:right'}, base.toFixed(2)),
+      el('td', {style:'text-align:right'}, adjusted.toFixed(2))
+    ));
+  });
+
+  tbody.appendChild(el('tr', {},
+    el('td', {style:'font-weight:900'}, 'Total Consumption All Rooms'),
+    el('td', {style:'text-align:right;font-weight:900'}, totalBase.toFixed(2)),
+    el('td', {style:'text-align:right;font-weight:900'}, totalAdjusted.toFixed(2))
+  ));
+}
+
+
+    function renderConsumptionRooms(){
+      const wrap=$('#cons_rooms'); wrap.innerHTML='';
+      state.rooms.forEach((room, idx)=> wrap.appendChild(roomCard(room, idx)));
+    }
+
+    function roomCard(room, idx){
+      const card=el('div',{className:'section', id:`room_${idx}`},
+        el('div',{className:'sec-head'},
+          el('input',{type:'text', value:room.name, style:'max-width:360px;font-weight:800', oninput:e=>{ room.name=e.target.value; renderConsumptionSummary(); }})
+        ),
+        el('div',{className:'sec-body'},
+          el('div',{className:'section',style:'margin-bottom:16px;'},
+            el('div',{className:'sec-head',style:'display:flex;justify-content:space-between;align-items:center;'},
+              el('span',{},'Flush Fixtures'),
+              el('span',{className:'note',style:'margin-left:10px'},'Full flush count mirrors half flush')
+            ),
+            el('div',{className:'sec-body'}, tableFlush(room, idx))
+          ),
+          el('div',{className:'section'},
+            el('div',{className:'sec-head'},'Flow Fixtures'),
+            el('div',{className:'sec-body'}, tableFlow(room, idx))
+          )
+        )
+      );
+      return card;
+    }
+
+    function tableFlush(room, idx){
+      return el('div',{className:'table-wrap'},
+        el('table',{},
+          el('thead',{}, el('tr',{}, el('th',{},'Fixture Type'), el('th',{style:'width:220px'},'Water per Flush (L)'), el('th',{style:'width:220px'},'Number of Fixtures'), el('th',{style:'width:200px;text-align:right'},'Total (L/day)'))),
+          el('tbody',{},
+            rowFlush(idx,room,'half_wc','Half Flush WC',true),
+            rowFlush(idx,room,'full_wc','Full Flush WC (mirrors count)',false),
+            rowFlush(idx,room,'urinal','Urinals',true)
+          )
+        )
+      );
+    }
+
+    function rowFlush(idx, room, key, label, allowCount){
+      const cfg=room.flush[key];
+      const sharedCount=Number(room.flush.half_wc.count)||0;
+      const tdTotal = el('td',{style:'text-align:right', id:`cell_${idx}_${key}_flush`}, '0.00');
+      const tr = el('tr',{},
+        el('td',{},label),
+        el('td',{}, el('input',{type:'number', value:cfg.waterPerFlush, oninput:(e)=>{ cfg.waterPerFlush=Number(e.target.value)||0; recalcRoom(idx); }})),
+        el('td',{}, allowCount
+          ? el('input',{type:'number', value:cfg.count, oninput:(e)=>{ cfg.count=Number(e.target.value)||0; recalcRoom(idx); }})
+          : el('input',{type:'number', value:sharedCount, disabled:true})
+        ),
+        tdTotal
+      );
+      setTimeout(()=>updateFlushCell(idx, key),0);
+      return tr;
+    }
+
+    function updateFlushCell(idx, key){
+      const room=state.rooms[idx];
+      const {p,f}=getUsageFor(key);
+      const cfg=room.flush[key];
+      const w=Number(cfg.waterPerFlush)||0;
+      const count = (key==='full_wc') ? Number(room.flush.half_wc.count)||0 : Number(cfg.count)||0;
+      const partial = w * count * f * p;
+      const td=document.querySelector(`#cell_${idx}_${key}_flush`); if(td) td.textContent=partial.toFixed(2);
+    }
+
+    function tableFlow(room, idx){
+      return el('div',{className:'table-wrap'},
+        el('table',{},
+          el('thead',{}, el('tr',{}, el('th',{},'Fixture Type'), el('th',{style:'width:220px'},'Flow (L/min)'), el('th',{style:'width:260px'},'Duration per Activity (min)'), el('th',{style:'width:220px'},'Number of Fixtures'), el('th',{style:'width:200px;text-align:right'},'Total (L/day)'))),
+          el('tbody',{},
+            rowFlow(idx,'sink','Sinks'),
+            rowFlow(idx,'fountain','Drinking Water Fountain'),
+            rowFlow(idx,'shower','Showers')
+          )
+        )
+      );
+    }
+
+    function rowFlow(idx, key, label){
+      const cfg=state.rooms[idx].flow[key];
+      const tdTotal = el('td',{style:'text-align:right', id:`cell_${idx}_${key}_flow`}, '0.00');
+      const tr=el('tr',{},
+        el('td',{},label),
+        el('td',{}, el('input',{type:'number', value:cfg.flow, oninput:(e)=>{ cfg.flow=Number(e.target.value)||0; recalcRoom(idx); }})),
+        el('td',{}, el('input',{type:'number', value:cfg.duration, oninput:(e)=>{ cfg.duration=Number(e.target.value)||0; recalcRoom(idx); }})),
+        el('td',{}, el('input',{type:'number', value:cfg.count, oninput:(e)=>{ cfg.count=Number(e.target.value)||0; recalcRoom(idx); }})),
+        tdTotal
+      );
+      setTimeout(()=>updateFlowCell(idx, key),0);
+      return tr;
+    }
+
+    function updateFlowCell(idx, key){
+      const room=state.rooms[idx];
+      const {p,f}=getUsageFor(key);
+      const cfg=room.flow[key];
+      const base = (Number(cfg.flow)||0)*(Number(cfg.duration)||0);
+      const count=Number(cfg.count)||0;
+      const partial = base * count * f * p;
+      const td=document.querySelector(`#cell_${idx}_${key}_flow`); if(td) td.textContent=partial.toFixed(2);
+    }
+
+    function recalcRoom(idx){
+      updateFlushCell(idx,'half_wc');
+      updateFlushCell(idx,'full_wc');
+      updateFlushCell(idx,'urinal');
+      updateFlowCell(idx,'sink');
+      updateFlowCell(idx,'fountain');
+      updateFlowCell(idx,'shower');
+      renderConsumptionSummary();
+      recalcAll();
+    }
+
+    // ======= Leak render =======
+    function renderLeak(){
+      renderLeakSummary();
+      renderLeakRooms();
+
+      $('#btnAddLeakRoom').onclick=()=>{
+        const n=state.leakRooms.length+1;
+        state.leakRooms.push(makeEmptyLeakRoom(`Toilet/Wet Area ${n}`));
+        renderLeakRooms();
+        recalcAll();
+        setTimeout(()=>document.getElementById(`leakroom_${n-1}`)?.scrollIntoView({behavior:'smooth'}),0);
+      };
+      $('#btnSaveLeaks').onclick=()=>{ saveState(); postToServer('leaks', state.leakRooms);mirrorToGoogleSheet(state); alert('Leak assessment saved.'); };
+    }
+
+    function renderLeakSummary(){
+      const tbody=$('#leak_summary'); tbody.innerHTML='';
+      let totRate=0, totDay=0, totYear=0;
+      state.leakRooms.forEach(lr=>{
+        const t=leakRoomTotals(lr); totRate+=t.rateLpm; totDay+=t.day; totYear+=t.year;
+        tbody.appendChild(el('tr',{}, el('td',{},lr.name), el('td',{},t.rateLpm.toFixed(2)), el('td',{},t.day.toFixed(2)), el('td',{},t.year.toFixed(2))));
+      });
+      tbody.appendChild(el('tr',{}, el('td',{style:'font-weight:900'},'Total Building Leaks'), el('td',{},totRate.toFixed(2)), el('td',{},totDay.toFixed(2)), el('td',{},totYear.toFixed(2))));
+    }
+
+    function renderLeakRooms(){
+      const wrap=$('#leak_rooms'); wrap.innerHTML='';
+      state.leakRooms.forEach((lr, idx)=> wrap.appendChild(leakRoomCard(lr, idx)));
+    }
+
+    function leakRoomCard(lr, idx){
+      const card=el('div',{className:'section', id:`leakroom_${idx}`},
+        el('div',{className:'sec-head'},
+          el('input',{type:'text', value:lr.name, style:'max-width:360px;font-weight:800', oninput:(e)=>{ lr.name=e.target.value; renderLeakSummary(); renderSavings(); }}),
+          el('div',{className:'note',style:'margin-top:6px', id:`leakTxt_${idx}`}, leakRoomText(lr))
+        ),
+        el('div',{className:'sec-body'},
+          leakFixtureBlock(lr,idx,'wc','WC'),
+          leakFixtureBlock(lr,idx,'urinal','Urinals'),
+          leakFixtureBlock(lr,idx,'sink','Sinks'),
+          leakFixtureBlock(lr,idx,'fountain','Drinking Water Fountain'),
+          leakFixtureBlock(lr,idx,'shower','Showers')
+        )
+      );
+      return card;
+    }
+
+    function leakRoomText(lr){
+      const t=leakRoomTotals(lr);
+      return `Leak Rate: ${t.rateLpm.toFixed(2)} L/min • Daily Loss: ${t.day.toFixed(2)} L • Yearly Loss: ${t.year.toFixed(2)} L`;
+    }
+
+    function leakFixtureBlock(lr, idx, key, label){
+      const tableBody = el('tbody',{}, ...lr[key].map((u,i)=> leakUnitRow(lr,idx,key,i)));
+      const block=el('div',{className:'section',style:'margin-bottom:12px;'},
+        el('div',{className:'sec-head'}, label,
+          el('button',{className:'btn btn-outline',style:'float:right', onclick:()=>{ lr[key].push({rateLpm:0}); renderLeakRooms(); recalcAll(); }},'+ Add Unit')
+        ),
+        el('div',{className:'sec-body'},
+          el('div',{className:'table-wrap'},
+            el('table',{}, el('thead',{}, el('tr',{}, el('th',{},'Unit'), el('th',{},'Rate'), el('th',{},'Unit'), el('th',{},''))), tableBody )
+          ),
+          el('div',{className:'note',style:'margin-top:8px;'}, `${label} total: ${leakCatTotalText(lr[key])}`)
+        )
+      );
+      return block;
+    }
+
+    function leakUnitRow(lr, idx, key, i){
+      const unit=lr[key][i];
+      return el('tr',{},
+        el('td',{}, `Unit ${i+1}:`),
+        el('td',{}, el('input',{type:'number', value:unit.rateLpm, style:'max-width:140px', oninput:(e)=>{ unit.rateLpm=Number(e.target.value)||0; updateLeakRow(idx); }})),
+        el('td',{}, 'L/min'),
+        el('td',{}, el('button',{className:'btn btn-ghost', onclick:()=>{ lr[key].splice(i,1); if(lr[key].length===0) lr[key].push({rateLpm:0}); renderLeakRooms(); recalcAll(); }}, 'Remove'))
+      );
+    }
+
+    function updateLeakRow(idx){
+      const lr=state.leakRooms[idx];
+      const head=document.querySelector(`#leakTxt_${idx}`);
+      if(head) head.textContent = leakRoomText(lr);
+      renderLeakSummary(); renderSavings(); renderDashboard(); saveState();
+    }
+
+    function leakCatTotalText(arr){
+      const rate=(arr||[]).reduce((a,b)=>a+(Number(b.rateLpm)||0),0);
+      const day=rate*60*24, year=day*365;
+      return `${rate.toFixed(2)} L/min • ${day.toFixed(2)} L/day • ${year.toFixed(2)} L/year`;
+    }
+
+    // ======= Savings render =======
+    function savingsRows(){
+      // Build rows from current leak units (only rate > 0) and merge with previously saved "other measures"
+      const rows=[];
+      // Leak-based savings candidates
+      state.leakRooms.forEach(lr=>{
+        const pushFrom = (arr, label, fixtureKey) => {
+          (arr||[]).forEach((u, i)=>{
+            const rate = Number(u.rateLpm)||0;
+            if (rate <= 0) return;
+            const daily = rate*60*24;
+            rows.push({
+              id: `leak:${lr.name}:${fixtureKey}:${i}`,
+              fixture: label,
+              room: lr.name,
+              leakageDaily: daily,
+              savedStop: 0,            // default 0 as requested
+              otherNote: "",
+              savedOther: 0
+            });
+          });
+        };
+        pushFrom(lr.wc,      'WC',        'wc');
+        pushFrom(lr.urinal,  'Urinal',    'urinal');
+        pushFrom(lr.sink,    'Sink',      'sink');
+        pushFrom(lr.fountain,'Fountain',  'fountain');
+        pushFrom(lr.shower,  'Shower',    'shower');
+      });
+
+      // Merge persisted "other measures" if any (they are independent rows)
+      (state.savingsOther||[]).forEach(r=>{
+        rows.push({
+          id: r.id,
+          fixture: r.fixtureKey || 'Other',
+          room: r.room || '—',
+          leakageDaily: 0,
+          savedStop: 0,
+          otherNote: r.otherNote || '',
+          savedOther: Number(r.savedDaily)||0
+        });
+      });
+
+      return rows;
+    }
+
+    function renderSavings(){
+      const tbody = $('#sav_table');
+      tbody.innerHTML = '';
+
+      const rows = savingsRows();
+
+      rows.forEach(r=>{
+        const tr = el('tr',{},
+          el('td',{}, r.fixture),
+          el('td',{}, r.room),
+          el('td',{}, r.leakageDaily.toFixed(2)),
+          el('td',{}, el('input', {
+            type:'number', value:r.savedStop, min:0, style:'max-width:140px',
+            oninput: (e)=>{ r.savedStop = Number(e.target.value)||0; saveSavingsEdits(rows); recalcAll(); }
+          })),
+          el('td',{}, el('input', {
+            type:'text', value:r.otherNote, placeholder:'e.g., Aerator, Flow restrictor',
+            oninput: (e)=>{ r.otherNote = e.target.value||''; saveSavingsEdits(rows); }
+          })),
+          el('td',{}, el('input', {
+            type:'number', value:r.savedOther, min:0, style:'max-width:140px',
+            oninput: (e)=>{ r.savedOther = Number(e.target.value)||0; saveSavingsEdits(rows); recalcAll(); }
+          }))
+        );
+        tbody.appendChild(tr);
+      });
+
+      $('#btnSaveSavings').onclick = ()=>{
+        saveSavingsEdits(rows);
+        postToServer('savings', { rows });
+        alert('Savings plan saved.');
+      };
+    }
+
+    function saveSavingsEdits(rows){
+      // Persist only "other measures" rows (id not starting with leak:)
+      state.savingsOther = rows
+        .filter(r => !String(r.id).startsWith('leak:') && (r.savedOther>0 || (r.otherNote||'').trim().length>0))
+        .map(r => ({ id:r.id || `other:${crypto.randomUUID()}`, room:r.room, fixtureKey:r.fixture, otherNote:r.otherNote, savedDaily:r.savedOther }));
+      saveState();
+    }
+
+    // ======= Dashboard (KPIs + Charts) =======
+    let weeklyChart, annualChart;
+
+function renderDashboard(){
+  const adj  = adjustedTotalConsumption(); // adjusted total L/day (per your new definition)
+  const leak = buildingLeakDaily();        // L/day
+
+  // KPIs
+  const savedFromSavings = computeSavedDailyFromSavings();
+  const totalDaily = adj + leak; // TOTAL WATER OUTPUT (L/day)
+
+  $('#kpiUsage').textContent     = totalDaily.toFixed(2);                 // adjusted + leak
+  $('#kpiLeak').textContent      = leak.toFixed(2);
+  $('#kpiPotential').textContent = Math.min(savedFromSavings, totalDaily).toFixed(2);
+
+  // Charts
+  // Weekly: total L/day * weekday % (no ×7)  ← as you requested
+  drawWeeklyChart(adj);
+
+  // Annual: keep as adjusted-only; change to `totalDaily` if you want leaks included
+  drawAnnualChart(adj);
+}
+
+
+    function computeSavedDailyFromSavings(){
+      let saved = 0;
+      const rows = savingsRows();
+      rows.forEach(r=>{
+        saved += (Number(r.savedStop)||0) + (Number(r.savedOther)||0);
+      });
+      return saved;
+    }
+    
+
+    function normWeights(objList){
+      // objList is array of numbers (percent-like). Return normalized factors summing to 1 (fallback = equal if sum=0)
+      const vals = objList.map(v => Math.max(0, Number(v)||0));
+      const sum = vals.reduce((a,b)=>a+b,0);
+      if (sum <= 0) return vals.map(_=>1/vals.length);
+      return vals.map(v => v/sum);
+    }
+
+function drawWeeklyChart(adj){
+  const ctx = document.getElementById('weeklyChart').getContext('2d');
+
+  // raw % (0..100) for each weekday from Building → Daily Occupancy Schedule
+  const dayPerc = DAYS.map(d => (Number(state.building.daily[d]) || 0) / 100);
+
+  // curve: totalDaily × weekday%
+  const totalSeries = dayPerc.map(p => (Number(adj) || 0) * p);
+
+  // 2 horizontal lines (per-day constants)
+  const leakDaily    = Number(buildingLeakDaily()) || 0;
+  const savingsDaily = Number(computeSavedDailyFromSavings()) || 0;
+  const leakLine     = new Array(DAYS.length).fill(leakDaily);
+  const savingsLine  = new Array(DAYS.length).fill(savingsDaily);
+
+  if (weeklyChart) weeklyChart.destroy();
+  weeklyChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: DAYS,
+      datasets: [
+        { label: 'Total Water Consumption from fixtures (L/day)',   data: totalSeries, tension: 0.3 },
+        { label: 'Leak (L/day)',    data: leakLine,    tension: 0.0, borderDash: [6,6] },
+        { label: 'Savings (L/day)', data: savingsLine, tension: 0.0, borderDash: [2,4] }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+}
+
+function drawAnnualChart(){
+  const ctx = document.getElementById('annualChart').getContext('2d');
+
+  // Daily values
+  const leakDaily    = Number(buildingLeakDaily()) || 0;            // L/day
+  const savingsDaily = Number(computeSavedDailyFromSavings()) || 0; // L/day
+
+  // 1) Get avg from the *weekly curve* (dataset[0]) = sum/len
+  let avgWeeklyCurveDaily = 0;
+  if (weeklyChart && weeklyChart.data && weeklyChart.data.datasets &&
+      weeklyChart.data.datasets[0] && Array.isArray(weeklyChart.data.datasets[0].data)) {
+    const arr = weeklyChart.data.datasets[0].data.map(v => Number(v) || 0);
+    if (arr.length) {
+      avgWeeklyCurveDaily = arr.reduce((a,b)=>a+b,0) / arr.length;
+    }
+  }
+
+  // Fallback if weekly hasn't been drawn yet: recompute from base × weekday%
+  if (!avgWeeklyCurveDaily) {
+    const baseDaily = Number(totalConsumptionAllRooms()) || 0; // fixtures only (no leaks)
+    const dayNames = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+    const dayPerc  = dayNames.map(d => (Number(state.building.daily[d]) || 0) / 100);
+    const dailyVals = dayPerc.map(p => baseDaily * p);
+    if (dailyVals.length) {
+      avgWeeklyCurveDaily = dailyVals.reduce((a,b)=>a+b,0) / dailyVals.length;
+    }
+  }
+
+  // Monthly % (0..100) -> factors (0..1)
+  const fullMonthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const monthPerc = fullMonthNames.map(m => (Number(state.building.monthly[m]) || 0) / 100);
+
+  // Days in each month (non-leap)
+  const daysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31]; 
+
+  // Bars: TOTAL with leaks per month
+  // = (leakDaily * days) + (avgWeeklyCurveDaily * days * month%)
+  const barsTotalMonthly = daysInMonth.map((d, i) =>
+    (leakDaily * d) + (avgWeeklyCurveDaily * d * (monthPerc[i] || 0))
+  );
+
+  // Single line: savings per month = savingsDaily * days
+  const savingsPerMonth = daysInMonth.map(d => savingsDaily * d);
+
+  if (annualChart) annualChart.destroy();
+  annualChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: MONTHS, // e.g., ['Jan','Feb',...,'Dec']
+      datasets: [
+        { label: 'Total Water Output From Fixtures and Leakage (L/Month)',   data: barsTotalMonthly },
+        { label: 'Water Savings (L/Month)', data: savingsPerMonth, type: 'line', tension: 0, borderDash: [2,4] }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // ======= Tabs nav =======
+    (function wireTabs(){
+      const tablist = document.getElementById('tabs');
+      const views = document.querySelectorAll('[data-view]');
+      tablist.addEventListener('click', (e)=>{
+        const btn = e.target.closest('.tab'); if(!btn) return;
+        const target = btn.getAttribute('data-target');
+        tablist.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b===btn));
+        views.forEach(v=>v.classList.toggle('active', v.getAttribute('data-view')===target));
+        // refresh when switching
+        if (target==='dashboard') renderDashboard();
+        if (target==='building')  renderBuilding();
+        if (target==='consumption') renderConsumption();
+        if (target==='leak') renderLeak();
+        if (target==='savings') renderSavings();
+        if (target==='settings') {/* nothing extra */}
+      });
+    })();
+
+    // ======= Profile save (language) =======
+    document.getElementById('btnSaveProfile').addEventListener('click', async ()=>{
+      const v = document.getElementById('lang').value;
+      const lang = (v === 'Arabic' ? 'ar' : v === 'French' ? 'fr' : 'en');
+      await setLangAzure(lang);
+      // also store in profile for display
+      try { state.profile.lang = (lang === 'ar' ? 'Arabic' : lang === 'fr' ? 'French' : 'English'); saveState(); } catch {}
+      document.getElementById('profileModal').classList.remove('open');
+    });
+
+    // ======= Initial boot =======
+    function recalcAll(){
+      saveState();
+      renderDashboard();
+    }
+
+    function boot(){
+      loadState();
+      // first render the default active view + dashboards
+      renderBuilding();
+      renderConsumption();
+      renderLeak();
+      renderSavings();
+      renderDashboard();
+    }
+    document.addEventListener('DOMContentLoaded', boot);
+  </script>
+</body>
+</html>
