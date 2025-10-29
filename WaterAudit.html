@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="with=device-width, initial scale=1.0">
+    <title>Green Leaders Website </title>
+    <link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">  
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+
+  </head>
+
+    
+
+    <section class="header scroll-animation">
+        <nav>
+            <div class="logo">
+                <img src="images/GLLOGO.png" alt="Green Leaders">
+            </div>
+            <div class="nav-links" id="navLinks">
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li class="dropdown">
+                        <a href="WhoWeAre.html">WHO WE ARE</a>
+                    <li class="dropdown">
+                        <a href="OurImpact.html">OUR IMPACT</a>
+
+                    <li><a href="GetInvolved.html">GET INVOLVED</a></li>
+                
+                    
+                    <!-- New line for awareness and research -->
+                    <div class="centered-links">
+                        <li><a href="NewsLetter.html">Newsletter</a></li>
+                        <li><a href="Awarness&Education.html">Awarness</a></li>
+                        <li><a href="Research&Studies.html">Studies</a></li>
+                        <li><a href="ContactUs.html">Contact Us</a></li>
+                        <li><a href="WaterAudit.html">Water Audit Tool</a></li>
+                        
+                    </div>
+                    </div>
+                </ul>
+            </div>
+        </nav>
+    </section>
+
+    <!-- ===== Water Audit • HERO ===== -->
+<section class="wa-hero">
+  <img class="wa-logo" src="images/GLLOGO.png" alt="Green Leaders logo">
+  <h1 class="wa-title">Water Audit Tool</h1>
+  <p class="wa-subtitle">
+    Empowering educational institutions with comprehensive water management tools to
+    achieve measurable conservation outcomes and environmental sustainability goals.
+  </p>
+  <a class="wa-cta" href="WaterAudit - Login.html">
+    Begin Water Assessment <i class="fa-solid fa-arrow-right" aria-hidden="true" style="margin-left:8px"></i>
+  </a>
+</section>
+
+<!-- Optional: where the button scrolls -->
+<section id="start" class="wa-section">
+  <!-- You can put the first step of your assessment here later -->
+</section>
+    
+
+    <!-- Footer -->
+    <footer style="background-color: #00883f; color: white; text-align: center; position: relative; ">
+        <div style="display: flex; justify-content: center; flex-wrap: wrap;">
+            <!-- Column 1: Contact Us -->
+            <div style="min-width: 150px; margin: 10px;">
+                <p style="font-size: 16px; font-weight: bold;">
+                </p>
+            </div>
+    
+            <!-- Column 2: Social Media Links -->
+            <div style="min-width: 200px; margin: 10px; text-align: center;">
+                <h4 style="font-size: 20px;font-weight: 300; color: white;transform:translateX(-30%);">Follow us on</h4>
+                <div class="social-icons" style="margin-top: 10px; text-align: center;transform:translateX(-30%);">
+                    <a href="https://www.linkedin.com/company/grleaders/" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
+                        <i class="fa-brands fa-linkedin"></i>
+                    </a>
+                    <a href="https://www.instagram.com/green_leaders.ngo" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://x.com/gr_leaders" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
+                        <i class="fa-solid fa-xmark"></i>
+                    </a>
+                    <a href="https://www.facebook.com/grleaders" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
+                        <i class="fa-brands fa-facebook"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Column 3: Copyright (aligned to the bottom left corner) -->
+        <p style="font-size: 12px; position: absolute; bottom: 10px; left: 10px;">&copy; 2025 Green Leaders. All Rights Reserved.</p>
+    </footer>
+    
+    
+    
+    
+    
+    <script>
+        function openSlide(slideIndex) {
+            document.querySelector('.slides').style.transform = `translateX(-${slideIndex * 100}%)`;
+            updateDots(slideIndex);
+        }
+    
+        function updateDots(slideIndex) {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[slideIndex].classList.add('active');
+        }
+    </script>
+    
+    
+    <script>
+        function openSlide(slideIndex) {
+            document.querySelector('.slides').style.transform = `translateX(-${slideIndex * 100}%)`;
+            updateDots(slideIndex);
+        }
+    
+        function updateDots(slideIndex) {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[slideIndex].classList.add('active');
+        }
+    </script>
+    
+
+    <!-- JavaScript for Scroll Effect -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const elements = document.querySelectorAll(".scroll-animation");
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("show");
+            }
+        });
+    }, { threshold: 0.2 });
+
+    elements.forEach(element => observer.observe(element));
+});
+
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+
+function moveSlide(step) {
+    currentSlide = (currentSlide + step + slides.length) % slides.length;
+    document.querySelector('.slides').style.transform = `translateX(-${currentSlide * 100}%)`;
+    updateDots();
+}
+
+function goToSlide(slideIndex) {
+    currentSlide = slideIndex;
+    document.querySelector('.slides').style.transform = `translateX(-${currentSlide * 100}%)`;
+    updateDots();
+}
+
+function updateDots() {
+    dots.forEach((dot, index) => {
+        dot.classList.remove('active');
+        if (index === currentSlide) {
+            dot.classList.add('active');
+        }
+    });
+}
+
+// Auto-slide every 5 seconds
+setInterval(() => {
+    moveSlide(1); // Moves forward to the next slide
+}, 8000); // 5 seconds for auto-slide
+
+
+
+    </script>
+
+ 
+
+</body>
+</html>
+
