@@ -21,14 +21,15 @@ const app = express();
 import cors from 'cors';
 
 // --- CORS: allow any origin (incl. null from file://) and all common headers ---
+// CORS that works with pages opened via file:// and any site
 app.use(cors({
-  origin: (origin, cb) => cb(null, true),   // always allow (including Origin: null)
+  origin: (origin, cb) => cb(null, true),   // allow all origins, including null
   credentials: true,
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
   allowedHeaders: ['Content-Type','Authorization','bypass-tunnel-reminder']
 }));
 
-// Robust preflight handler
+// Robust preflight
 app.options('*', (req, res) => {
   res.set({
     'Access-Control-Allow-Origin': req.headers.origin || '*',
@@ -38,6 +39,7 @@ app.options('*', (req, res) => {
   });
   res.sendStatus(204);
 });
+
 
 
 // ---------- Helpers ----------
