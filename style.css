@@ -7,8 +7,8 @@
 .centered-links {
     text-align: center; /* Centers the links horizontally */
     width: 100%;
-    padding-left: 25%; /* Ensures it takes up the full width of the nav */
-    padding-right: 0%;
+    padding-left:40%;
+    padding-right:0%;       
     z-index: 1;
     color:#00883f;
 }
@@ -1176,6 +1176,64 @@ form select::-ms-expand {
 .social-icons a:hover {
     color: #ccc;
 }
+
+/* ==== Water Audit hero (matches your screenshot) ==== */
+:root{
+  --gl-green:#00a651;
+  --gl-muted:#4b5563;
+}
+
+.wa-hero{
+  background: linear-gradient(180deg, #e9f9ee 0%, #eaf2f9 100%);
+  padding: clamp(48px, 8vw, 120px) 16px;
+  text-align: center;
+}
+
+.wa-logo{
+  width: clamp(150px, 50vw, 400px);
+  height: auto;
+  margin: 0 auto clamp(16px, 3vw, 24px);
+  display: block;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.05));
+}
+
+.wa-title{
+  font-family: "Poppins", system-ui, Arial, sans-serif;
+  font-size: clamp(32px, 6vw, 64px);
+  font-weight: 600;
+  line-height: 1.1;
+  color: #0b1320;
+  margin: 0 0 12px;
+}
+
+.wa-subtitle{
+  font-family: "Poppins", system-ui, Arial, sans-serif;
+  font-size: clamp(16px, 2.2vw, 22px);
+  color: var(--gl-muted);
+  max-width: 980px;
+  margin: 0 auto clamp(22px, 4vw, 36px);
+}
+
+.wa-cta{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--gl-green);
+  color: #fff;
+  font-weight: 700;
+  font-size: clamp(14px, 1.8vw, 18px);
+  padding: 14px 22px;
+  border-radius: 12px;
+  border: 0;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 166, 81, 0.25);
+  text-decoration: none;
+  transition: transform .1s ease, box-shadow .2s ease, background .2s ease;
+}
+.wa-cta:hover{ transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,166,81,.32); }
+.wa-cta:active{ transform: translateY(0); }
+
+.wa-section{ max-width: 1100px; margin: 24px auto; padding: 0 16px; }
 
 
 

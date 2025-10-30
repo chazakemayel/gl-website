@@ -12,91 +12,7 @@
 
   </head>
 
-    <style>
-        /* Scroll Animation CSS */
-        .scroll-animation {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .scroll-animation.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Slide Section */
-        .slider {
-            width: 100%;
-            height: 500px;
-            z-index: -1 !important;
-            overflow: hidden !important;
-            position: relative;
-            pointer-events: auto;
-
-        }
-
-        .slide a {
-            position: absolute;
-            z-index: 10000 !important;
-            pointer-events: all;
-
-}
-
-        .slides {
-            display: flex;
-            transition: transform 1s ease-in-out;
-        }
-
-        .slide {
-            width: 100%;
-            height: 100%;
-            flex-shrink: 0;
-        }
-
-        .slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 1;
-        }
-
-        /* White Arrows (without black background) */
-        /* Style for slider buttons container */
-
-
-/* Mobile-specific adjustments */
-
-        /* Adjust the right arrow position */
-      
-        /* Dots Section */
-        .dots {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            z-index: 2;
-        }
-
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: rgba(101, 99, 99, 0.5);
-            transition: background-color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .dot.active {
-            background-color: rgb(37, 35, 35);
-        }
-    </style>
-
-</head>
-
-<body>
+    
 
     <section class="header scroll-animation">
         <nav>
@@ -128,145 +44,25 @@
             </div>
         </nav>
     </section>
+
+    <!-- ===== Water Audit • HERO ===== -->
+<section class="wa-hero">
+  <img class="wa-logo" src="images/GLLOGO.png" alt="Green Leaders logo">
+  <h1 class="wa-title">Water Audit Tool</h1>
+  <p class="wa-subtitle">
+    Empowering educational institutions with comprehensive water management tools to
+    achieve measurable conservation outcomes and environmental sustainability goals.
+  </p>
+  <a class="wa-cta" href="WaterAudit - Login.html">
+    Begin Water Assessment <i class="fa-solid fa-arrow-right" aria-hidden="true" style="margin-left:8px"></i>
+  </a>
+</section>
+
+<!-- Optional: where the button scrolls -->
+<section id="start" class="wa-section">
+  <!-- You can put the first step of your assessment here later -->
+</section>
     
-    
-    <!-- Slide Section -->
-    <section class="slider">
-        <div class="slides">
-            <div class="slide">
-               <a href="https://lobbyview.senseware.co/dashboards/12110235f1b594666ebefdc23192c5b3316430/" style="z-index:10000;"> 
-                 <img src="landing4.png" alt="Slide 1"></a>
-            </div>
-            <div class="slide">
-                <img src="images/akh2.png" alt="Slide 2">
-            </div>
-            <div class="slide">
-                <img src="images/akh3.png" alt="Slide 3">
-            </div>
-        </div>
-        <div class="dots">
-            <div class="dot" onclick="goToSlide(0)"></div>
-            <div class="dot" onclick="goToSlide(1)"></div>
-            <div class="dot" onclick="goToSlide(2)"></div>
-        </div>
-        
-    </section>
-
-         
-</section>  
-   
-
-
-    <!-- About Section -->
-    <section id="whoweare" class="about2 scroll-animation">
-        <div class="row3">
-            <div class="course-col2">
-                <h3>Welcome To Green Leaders</h3>
-                <p>Founded in Lebanon in 2023, Green Leaders is a non-governmental organization committed to advancing sustainable development and environmental stewardship...</p>
-                <a href="WhoWeAre.html" class="hero-btn1">Explore More</a>
-            </div>
-            <div class="course-co2">
-                <h3>Become a Member</h3>
-                <p>Green Leaders currently offers three membership levels: Corporate, Professional, and Student...</p>
-                <a href="GetInvolved.html" class="hero-btn">Explore More</a>    
-            </div>
-        </div>
-    </section>
-
-
-
-
-
-
-    
-    <div class="slide">
-            <img src="images/im.png">
-        </div>
-
-
-<section id="whoweare" class="about2 scroll-animation">
-        <div class="row3">
-            <div class="course-col2">
-                <h3>Live Air Quality in Beirut-Verdun</h3>
-            </div>
-        </div>
-            </section>
-            </section>
-        </div>
-        
-
-<!-- Side-by-side layout: iframe + WHO table, same height, no gap, darker bg, and bottom spacing -->
-<div style="display: flex; width: 100vw; height: 760px; margin: 0 0 40px 0; padding: 0;">
-
-  <!-- Left Panel: LobbyView iframe (80%) -->
-  <div style="flex: 4;">
-    <iframe 
-      src="https://lobbyview.senseware.co/dashboards/12110235f1b594666ebefdc23192c5b3316430/"
-      width="100%" 
-      height="100%" 
-      style="border: none; display: block;">
-    </iframe>
-  </div>
-
-  <!-- Right Panel: WHO Table (20%) -->
-  <div style="
-    flex: 1;
-    height: 100%;
-    background-color: #d8f3d1; /* slightly darker green-tinted background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-left: 2px solid #ccc;
-    box-sizing: border-box;
-  ">
-    <table style="
-      width: 90%;
-      border-collapse: collapse;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      background-color: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      border-radius: 12px;
-      overflow: hidden;
-    ">
-      <thead>
-        <tr style="background-color: #4CAF50; color: white;">
-          <th style="padding: 12px; text-align: left;">Pollutant</th>
-          <th style="padding: 12px; text-align: center;">WHO Limit</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="background-color: #e8f5e9;">
-          <td style="padding: 10px;">PM<sub>2.5</sub> (µg/m³)</td>
-          <td style="padding: 10px; text-align: center;">15</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px;">PM<sub>10</sub> (µg/m³)</td>
-          <td style="padding: 10px; text-align: center;">45</td>
-        </tr>
-        <tr style="background-color: #e8f5e9;">
-          <td style="padding: 10px;">NO<sub>2</sub> (ppb)</td>
-          <td style="padding: 10px; text-align: center;">13.3</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px;">SO<sub>2</sub> (ppb)</td>
-          <td style="padding: 10px; text-align: center;">15.3</td>
-        </tr>
-        <tr style="background-color: #e8f5e9;">
-          <td style="padding: 10px;">CO (ppm)</td>
-          <td style="padding: 10px; text-align: center;">3.5</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-
-
-
-
-
-
 
     <!-- Footer -->
     <footer style="background-color: #00883f; color: white; text-align: center; position: relative; ">
