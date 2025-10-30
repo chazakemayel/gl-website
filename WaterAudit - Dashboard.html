@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 
 <html lang="en">
 <head>
@@ -62,17 +62,16 @@ async function saveAudit(kind, payload){
 async function loadAudit(kind){
   return fetchJSON(`/api/audits/${kind}`, { method:'GET' });
 }
+
 </script>
- 
 
+<script>
+    
 
-  <script>
-    <script>
-  const API_BASE = "https://gl-website-6.onrender.com";
 
 
   <!-- ======= Lightweight UI i18n labels (ids only) ======= -->
-  <script>
+  
     // --- Simple i18n dictionary (for key UI labels by ID) ---
     const I18N = {
       en: {
@@ -176,6 +175,8 @@ async function loadAudit(kind){
       applyI18n(lang);
     })();
   </script>
+  
+
 
   <style>
     :root{
@@ -418,7 +419,7 @@ async function loadAudit(kind){
 
         <div class="section" style="margin-top:18px">
           <div class="sec-head" id="sec_daily_usage">Daily Average Water Usage</div>
-          <p class="sec-sub">Weekly curve from daily schedule</p>
+          <p class="sec-sub">Based on Daily Occupancy Schedule</p>
           <div class="sec-body"><canvas id="weeklyChart" height="170"></canvas></div>
         </div>
 
@@ -466,14 +467,12 @@ async function loadAudit(kind){
         </div>
 
         <div class="section" style="margin-top:16px;">
-          <div class="sec-head">Daily Occupancy Schedule</div>
-          <p class="sec-sub">Average occupancy by weekday (used only for charts)</p>
+          <div class="sec-head">Daily Occupancy Schedule (%) </div>
           <div class="sec-body grid-2" id="bd_daily"></div>
         </div>
 
         <div class="section" style="margin-top:16px;">
-          <div class="sec-head">Monthly Occupancy Schedule</div>
-          <p class="sec-sub">Average occupancy by month (used only for monthly chart)</p>
+          <div class="sec-head">Monthly Occupancy Schedule (%) </div>
           <div class="sec-body grid-2" id="bd_monthly"></div>
           <div class="footer-actions">
             <button class="btn btn-ghost" onclick="print()">Save as PDF</button>
@@ -1680,6 +1679,7 @@ document.querySelectorAll('#buildingForm input, #buildingForm select, #buildingF
 
 </body>
 </html>
+
 
 
 
