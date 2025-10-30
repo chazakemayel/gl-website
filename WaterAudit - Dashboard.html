@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -1625,8 +1626,63 @@ function drawAnnualChart(){
     }
     document.addEventListener('DOMContentLoaded', boot);
   </script>
+  <script>
+// Example: hydrate all four kinds your API supports
+document.addEventListener('DOMContentLoaded', async () => {
+  // Redirect to login if no token
+  if(!getToken()){ window.location.href = 'WaterAudit - Login.html'; return; }
+
+  try {
+    const [building, consumption, leaks, savings] = await Promise.all([
+      loadAudit('building'),
+      loadAudit('consumption'),
+      loadAudit('leaks'),
+      loadAudit('savings')
+    ]);
+
+    // TODO: write those objects back into your form fields / state & charts
+    // e.g. fillInputsFrom(building); drawCharts(consumption, leaks, savings);
+
+  } catch(err){
+    console.error('Hydrate failed:', err);
+    // if 401 happened, fetchJSON already forced logout()
+  }
+});
+</script>
+
+
+  <!-- === Step C: save logic (same script block, after hydrate) === -->
+<script>
+// Click-to-save button (adjust the button ID to yours)
+document.getElementById('saveBuildingBtn')?.addEventListener('click', async () => {
+  try {
+    await saveAudit('building', collectBuildingFormValues());
+    // show a small toast/snackbar if you have one
+    console.log('Building saved');
+  } catch (e) {
+    console.error('Save failed:', e);
+  }
+});
+
+// Optional: autosave when any building field changes (adjust the form id & selectors)
+function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; }
+document.querySelectorAll('#buildingForm input, #buildingForm select, #buildingForm textarea')
+  .forEach(el=>{
+    el.addEventListener('change', debounce(async ()=>{
+      try{ await saveAudit('building', collectBuildingFormValues()); console.log('Autosaved'); }
+      catch(e){ console.error('Autosave failed:', e); }
+    }, 400));
+  });
+
+// Repeat similar wiring for consumption/leaks/savings:
+// document.getElementById('saveConsumptionBtn')?.addEventListener(...);
+// document.querySelectorAll('#consumptionForm ...').forEach(...);
+</script>
+
+
 </body>
 </html>
+
 
 
 
