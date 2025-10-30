@@ -1627,12 +1627,11 @@ function drawAnnualChart(){
     document.addEventListener('DOMContentLoaded', boot);
   </script>
   <script>
-// Example: hydrate all four kinds your API supports
 document.addEventListener('DOMContentLoaded', async () => {
-  // Redirect to login if no token
-  if(!getToken()){ window.location.href = 'WaterAudit - Login.html'; return; }
+  if (!getToken()) { window.location.href = 'WaterAudit - Login.html'; return; }
 
   try {
+    // These GETs must appear in Network tab on page open
     const [building, consumption, leaks, savings] = await Promise.all([
       loadAudit('building'),
       loadAudit('consumption'),
@@ -1640,15 +1639,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       loadAudit('savings')
     ]);
 
-    // TODO: write those objects back into your form fields / state & charts
-    // e.g. fillInputsFrom(building); drawCharts(consumption, leaks, savings);
-
-  } catch(err){
-    console.error('Hydrate failed:', err);
-    // if 401 happened, fetchJSON already forced logout()
+    fillBuildingForm(building);
+    // fillConsumption(consumption); fillLeaks(leaks); fillSavings(savings);
+  } catch (e) {
+    console.error('Hydrate failed:', e);
   }
 });
 </script>
+
 
 
   <!-- === Step C: save logic (same script block, after hydrate) === -->
@@ -1682,6 +1680,7 @@ document.querySelectorAll('#buildingForm input, #buildingForm select, #buildingF
 
 </body>
 </html>
+
 
 
 
