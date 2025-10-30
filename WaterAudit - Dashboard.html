@@ -14,6 +14,57 @@ function ltBypass(url){
 </script>
 
 
+
+
+ <script>
+const API_BASE = "https://gl-website-6.onrender.com";
+
+// Read/write token
+function getToken(){ try { return localStorage.getItem('gl_token') || ''; } catch { return ''; } }
+function setAuth(data){
+  localStorage.setItem('gl_token', data.token);
+  localStorage.setItem('gl_user', JSON.stringify(data.user||{}));
+}
+function logout(){
+  localStorage.removeItem('gl_token');
+  localStorage.removeItem('gl_user');
+  // do NOT clear server data; just redirect to login
+  window.location.href = 'WaterAudit - Login.html';
+}
+
+// Generic fetch that injects the Bearer token
+async function fetchJSON(path, opts={}){
+  const t = getToken();
+  const headers = {
+    'Content-Type':'application/json',
+    ...(opts.headers || {}),
+    ...(t ? { Authorization: `Bearer ${t}` } : {})
+  };
+  const res = await fetch(API_BASE + path, { ...opts, headers });
+  if(res.status === 401){ logout(); return Promise.reject(new Error('Unauthorized')); }
+  if(!res.ok){
+    const txt = await res.text().catch(()=>res.statusText);
+    throw new Error(txt || ('HTTP '+res.status));
+  }
+  // Some endpoints may return no content
+  const ct = res.headers.get('content-type') || '';
+  return ct.includes('application/json') ? res.json() : null;
+}
+
+// Save/load helpers for your 4 sections
+async function saveAudit(kind, payload){
+  return fetchJSON(`/api/audits/${kind}`, {
+    method:'POST',
+    body: JSON.stringify(payload)
+  });
+}
+async function loadAudit(kind){
+  return fetchJSON(`/api/audits/${kind}`, { method:'GET' });
+}
+</script>
+ 
+
+
   <script>
     <script>
   const API_BASE = "https://gl-website-6.onrender.com";
@@ -1576,6 +1627,7 @@ function drawAnnualChart(){
   </script>
 </body>
 </html>
+
 
 
 
