@@ -18,17 +18,27 @@ const pool = new Pool({
 // ---------- App ----------
 const app = express();
 
-// JSON body parsing (increase if you need larger payloads)
-app.use(express.json({ limit: '2mb' }));
+import cors from 'cors';
 
-// CORS — include LocalTunnel bypass header
+// --- CORS: allow any origin (incl. null from file://) and all common headers ---
 app.use(cors({
-  origin: true,                   // reflect request origin
+  origin: (origin, cb) => cb(null, true),   // always allow (including Origin: null)
   credentials: true,
   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type','Authorization','bypass-tunnel-reminder'],
+  allowedHeaders: ['Content-Type','Authorization','bypass-tunnel-reminder']
 }));
-app.options('*', cors());
+
+// Robust preflight handler
+app.options('*', (req, res) => {
+  res.set({
+    'Access-Control-Allow-Origin': req.headers.origin || '*',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, bypass-tunnel-reminder'
+  });
+  res.sendStatus(204);
+});
+
 
 // ---------- Helpers ----------
 function signToken(user) {
