@@ -1,5 +1,4 @@
-<!DOCTYPE html> 
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -9,70 +8,57 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
 
   <script>
-function ltBypass(url){
-  return url.includes('.loca.lt') ? {'bypass-tunnel-reminder':'yes'} : {};
-}
-</script>
+    function ltBypass(url){
+      return url.includes('.loca.lt') ? {'bypass-tunnel-reminder':'yes'} : {};
+    }
+  </script>
 
+  <script>
+    const API_BASE = "https://gl-website-6.onrender.com";
 
+    function getToken(){ try { return localStorage.getItem('gl_token') || ''; } catch { return ''; } }
+    function setAuth(data){
+      localStorage.setItem('gl_token', data.token);
+      localStorage.setItem('gl_user', JSON.stringify(data.user||{}));
+    }
+    function logout(){
+      try{
+        localStorage.removeItem('gl_token');
+        localStorage.removeItem('gl_user');
+      }catch(_){}
+      window.location.href = 'WaterAudit - Login.html';
+    }
 
+    async function fetchJSON(path, opts={}){
+      const t = getToken();
+      const headers = {
+        'Content-Type':'application/json',
+        ...(opts.headers || {}),
+        ...(t ? { Authorization: `Bearer ${t}` } : {})
+      };
+      const res = await fetch(API_BASE + path, { ...opts, headers });
+      if(res.status === 401){ logout(); throw new Error('Unauthorized'); }
+      if(!res.ok){
+        const txt = await res.text().catch(()=>res.statusText);
+        throw new Error(txt || ('HTTP '+res.status));
+      }
+      const ct = res.headers.get('content-type') || '';
+      return ct.includes('application/json') ? res.json() : null;
+    }
 
- <script>
-const API_BASE = "https://gl-website-6.onrender.com";
+    async function saveAudit(kind, payload){
+      return fetchJSON(`/api/audits/${kind}`, {
+        method:'POST',
+        body: JSON.stringify(payload)
+      });
+    }
+    async function loadAudit(kind){
+      return fetchJSON(`/api/audits/${kind}`, { method:'GET' });
+    }
+  </script>
 
-// Read/write token
-function getToken(){ try { return localStorage.getItem('gl_token') || ''; } catch { return ''; } }
-function setAuth(data){
-  localStorage.setItem('gl_token', data.token);
-  localStorage.setItem('gl_user', JSON.stringify(data.user||{}));
-}
-function logout(){
-  localStorage.removeItem('gl_token');
-  localStorage.removeItem('gl_user');
-  // do NOT clear server data; just redirect to login
-  window.location.href = 'WaterAudit - Login.html';
-}
-
-// Generic fetch that injects the Bearer token
-async function fetchJSON(path, opts={}){
-  const t = getToken();
-  const headers = {
-    'Content-Type':'application/json',
-    ...(opts.headers || {}),
-    ...(t ? { Authorization: `Bearer ${t}` } : {})
-  };
-  const res = await fetch(API_BASE + path, { ...opts, headers });
-  if(res.status === 401){ logout(); return Promise.reject(new Error('Unauthorized')); }
-  if(!res.ok){
-    const txt = await res.text().catch(()=>res.statusText);
-    throw new Error(txt || ('HTTP '+res.status));
-  }
-  // Some endpoints may return no content
-  const ct = res.headers.get('content-type') || '';
-  return ct.includes('application/json') ? res.json() : null;
-}
-
-// Save/load helpers for your 4 sections
-async function saveAudit(kind, payload){
-  return fetchJSON(`/api/audits/${kind}`, {
-    method:'POST',
-    body: JSON.stringify(payload)
-  });
-}
-async function loadAudit(kind){
-  return fetchJSON(`/api/audits/${kind}`, { method:'GET' });
-}
-
-</script>
-
-<script>
-    
-
-
-
-  <!-- ======= Lightweight UI i18n labels (ids only) ======= -->
-  
-    // --- Simple i18n dictionary (for key UI labels by ID) ---
+  <script>
+    /* ======= Lightweight UI i18n labels (ids only) ======= */
     const I18N = {
       en: {
         app_title: "Water Audit System",
@@ -139,7 +125,6 @@ async function loadAudit(kind){
       document.documentElement.dir  = rtl ? 'rtl' : 'ltr';
       document.body.style.direction = rtl ? 'rtl' : 'ltr';
     }
-
     function applyI18n(lang){
       const t = (k)=> (I18N[lang] && I18N[lang][k]) || I18N.en[k] || k;
       const map = {
@@ -165,50 +150,56 @@ async function loadAudit(kind){
         const el = document.getElementById(id);
         if (el) el.textContent = t(key);
       });
-
       setDirFor(lang);
     }
-
-    // On load, default to stored language for UI labels
     (function initBasicI18n(){
       const lang = localStorage.getItem('gl_lang') || 'en';
       applyI18n(lang);
     })();
   </script>
-  
-
 
   <style>
     :root{
       --brand:#0A7A4A; --brand-600:#08633C; --brand-700:#064E2F;
+      --aqua:#28C39C; --aqua-2:#54D2BE;
       --accent:#18496D;
       --bg:#F5F7FB; --surface:#FFFFFF; --soft:#F1F5F9; --line:#E5E7EB;
-      --mint:#E9F6EF; --mint-edge:#CFE9DB; --ring:0 14px 44px rgba(12,18,28,.08);
+      --mint:#E9F6EF; --mint-edge:#CFE9DB; --ring:0 18px 62px rgba(12,18,28,.12);
       --text:#0E1525; --muted:#566074; --muted-2:#6B7280;
       --radius:16px;
       --fs-12:12.5px; --fs-14:14.5px; --fs-16:16px; --fs-18:18px; --fs-20:20px; --fs-28:28px; --fs-36:36px; --fs-44:44px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0; background:linear-gradient(180deg,#F7FBF9 0%,#F6F7FB 30%,#F6F7FB 100%); color:var(--text); font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; font-size:var(--fs-16);}
+    body{
+      margin:0;
+      background:
+        radial-gradient(50% 60% at 100% 0%, rgba(39,197,154,.09) 0%, transparent 60%),
+        radial-gradient(40% 50% at 0% 100%, rgba(10,122,74,.09) 0%, transparent 65%),
+        linear-gradient(180deg,#F7FBF9 0%,#F6F7FB 30%,#F6F7FB 100%);
+      color:var(--text);
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      font-size:var(--fs-16);
+    }
     :focus-visible{outline:3px solid rgba(10,122,74,.28); outline-offset:3px; border-radius:8px}
 
-    /* ======= Header / Hero ======= */
-    .hero{position:sticky; top:0; z-index:40; background:rgba(255,255,255,.85); backdrop-filter:saturate(160%) blur(10px); border-bottom:1px solid var(--line)}
+    /* Header */
+    .hero{position:sticky; top:0; z-index:40; background:rgba(255,255,255,.88); backdrop-filter:saturate(160%) blur(12px); border-bottom:1px solid var(--line)}
     .hero-inner{max-width:1280px; margin:0 auto; padding:14px 22px; display:flex; align-items:center; gap:16px}
     .logo{display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit}
     .logo .mark{width:34px; height:34px; border-radius:10px; background:conic-gradient(from 220deg at 50% 50%, #0A7A4A 0 30%, #9BE1C0 30% 55%, #2A6D43 55% 75%, #0A7A4A 75% 100%); box-shadow:inset 0 1px 10px rgba(255,255,255,.35)}
     .title{font-weight:800; letter-spacing:.2px}
     .subtitle{font-size:var(--fs-12); color:var(--muted); margin-top:2px}
     .spacer{flex:1}
-    .user-chip{display:flex; align-items:center; gap:10px; border:1.5px solid #D9F3E5; background:#F2FBF6; color:var(--brand-700); padding:10px 14px; border-radius:999px; font-weight:800; cursor:pointer}
+    .user-chip{display:flex; align-items:center; gap:10px; border:1.5px solid #D9F3E5; background:#F2FBF6; color:var(--brand-700); padding:10px 14px; border-radius:999px; font-weight:800; cursor:pointer; transition:transform .15s ease}
+    .user-chip:hover{transform:translateY(-1px)}
 
-    .nav{background:linear-gradient(90deg, #0A7A4A, #0C8B57); color:#fff}
-    .nav-inner{max-width:1280px; margin:0 auto; padding:24px 22px; display:flex; align-items:center; gap:18px}
+    .nav{background:linear-gradient(90deg, #0A7A4A, #0C8B57); color:#fff; box-shadow:inset 0 -1px 0 rgba(255,255,255,.25)}
+    .nav-inner{max-width:1280px; margin:0 auto; padding:22px; display:flex; align-items:center; gap:18px}
     .nav h1{margin:0; font-size:var(--fs-28); font-weight:900; letter-spacing:.3px}
     .crumbs{opacity:.9; font-weight:700}
 
-    /* ======= Tabs (pro look) ======= */
+    /* Tabs */
     .tabs{background:#fff; border-bottom:1px solid var(--line)}
     .tabs-inner{
       max-width:1280px; margin:0 auto; padding:10px 22px;
@@ -216,53 +207,30 @@ async function loadAudit(kind){
       -ms-overflow-style:none; scrollbar-width:none;
     }
     .tabs-inner::-webkit-scrollbar{display:none}
-
     .tab{
       display:inline-flex; align-items:center; gap:10px; white-space:nowrap;
       padding:12px 16px; border-radius:999px;
       border:1.5px solid #DFE5EC; background:#ffffff; color:#0F172A;
       font-weight:800; letter-spacing:.2px; cursor:pointer;
       box-shadow:0 1px 0 rgba(15,23,42,.02), 0 1px 2px rgba(15,23,42,.04);
-      transition:transform .15s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease, color .2s ease;
+      transition:transform .15s, box-shadow .2s, border-color .2s, background .2s, color .2s;
       scroll-snap-align:start;
     }
     .tab .ico{width:18px; height:18px; opacity:.9}
-    .tab:hover{
-      transform:translateY(-1px);
-      border-color:#CBD8E6;
-      box-shadow:0 8px 22px rgba(15,23,42,.06);
-    }
-
-
-
-    .logout-btn{
-  appearance:none; border:1px solid var(--line); background:#fff;
-  padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer;left: 10;
-}
-.logout-btn:hover{ filter:brightness(0.98); }
-
-    .tab:active{transform:translateY(0)}
-    .tab:focus-visible{outline:3px solid rgba(10,122,74,.28); outline-offset:3px}
-
+    .tab:hover{ transform:translateY(-1px); border-color:#CBD8E6; box-shadow:0 8px 22px rgba(15,23,42,.06) }
     .tab.active{
       background:linear-gradient(180deg, var(--brand) 0%, #0C8B57 100%);
       color:#fff; border-color:transparent;
       box-shadow:0 10px 24px rgba(10,122,74,.24);
       position:relative;
     }
-    .tab.active .ico{opacity:1}
     .tab.active::after{
       content:""; position:absolute; left:16px; right:16px; bottom:-10px; height:3px;
       background:linear-gradient(90deg, #0A7A4A, #62D4A0);
       border-radius:999px; opacity:.9;
     }
 
-    @media (max-width:760px){
-      .tab{padding:10px 14px}
-      .tab .ico{width:16px; height:16px}
-    }
-
-    /* ======= Layout ======= */
+    /* Layout */
     .page{max-width:1280px; margin:28px auto; padding:0 22px}
     .section{background:var(--surface); border-radius:var(--radius); box-shadow:var(--ring); overflow:hidden; margin-bottom:26px}
     .sec-head{padding:18px 22px; background:linear-gradient(180deg,#F9FBFD 0,#F4F7FA 100%); border-bottom:1px solid var(--line); font-weight:900; font-size:var(--fs-20);}
@@ -272,48 +240,56 @@ async function loadAudit(kind){
     .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:18px}
     @media (max-width:980px){.grid-2{grid-template-columns:1fr}}
 
-    /* ======= Cards / KPIs ======= */
+    /* KPIs */
     .kpis{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
     @media (max-width:1020px){.kpis{grid-template-columns:1fr 1fr}} @media(max-width:760px){.kpis{grid-template-columns:1fr}}
-    .kpi{border-radius:14px; padding:20px; background:#F3FBF7; border:1.5px solid #D9F3E5; display:flex; justify-content:space-between; align-items:center}
+    .kpi{border-radius:14px; padding:20px; background:linear-gradient(180deg, #F3FBF7 0%, #FFFFFF 100%); border:1.5px solid #D9F3E5; display:flex; justify-content:space-between; align-items:center}
     .kpi .k-title{font-size:var(--fs-12); color:var(--muted-2); font-weight:900; letter-spacing:.3px}
     .kpi .k-val{font-size:var(--fs-36); font-weight:900}
-    .kpi.alert{background:#FEF2F2; border-color:#FBDADA; color:#7A1C1C}
+    .kpi.alert{background:linear-gradient(180deg, #FFF6F6 0%, #FFFFFF 100%); border-color:#FBDADA; color:#7A1C1C}
 
-    /* ======= Banners / Notes ======= */
+    /* Info */
     .info{border:1px solid #DDE7F6; background:#F4F8FF; color:#0F2350; padding:14px 16px; border-radius:12px; display:flex; gap:12px; align-items:flex-start;}
     .info .dot{width:10px;height:10px;border-radius:999px;background:var(--accent);margin-top:7px}
 
-    /* ======= Inputs / Table ======= */
+    /* Inputs / Table */
     label{display:block; font-weight:800; margin-bottom:8px}
-    input[type="number"], input[type="text"], select{ width:100%; max-width:340px; padding:12px 14px; border-radius:12px; border:1.5px solid #DFE5EC; background:#fff; font-size:var(--fs-16)}
+    input[type="number"], input[type="text"], select{
+      width:100%; max-width:340px; padding:12px 14px; border-radius:12px; border:1.5px solid #DFE5EC; background:#fff; font-size:var(--fs-16);
+      transition:border-color .15s, box-shadow .2s;
+    }
     input:focus, select:focus{border-color:#CCD7E3; box-shadow:0 0 0 4px rgba(10,122,74,.10)}
     input[type="number"]{appearance:textfield}
     input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button{appearance:none; margin:0}
 
     .table-wrap{overflow:auto; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,.04)}
     table{width:100%; border-collapse:separate; border-spacing:0; font-size:var(--fs-16)}
-    thead th{background:#EAF4EE; text-align:left; font-weight:900; letter-spacing:.2px; padding:14px; border-bottom:1.5px solid var(--line)}
+    thead th{background:#EAF4EE; text-align:left; font-weight:900; letter-spacing:.2px; padding:14px; border-bottom:1.5px solid var(--line); position:sticky; top:0}
     tbody td{padding:12px; border-bottom:1px solid var(--line)}
     tbody tr:nth-child(even){background:#F8FBFD}
     .note{font-size:var(--fs-12); color:var(--muted)}
 
-    .btn{appearance:none; border:0; border-radius:12px; padding:12px 16px; font-weight:800; cursor:pointer}
-    .btn-primary{background:var(--brand); color:#fff; box-shadow:0 10px 24px rgba(10,122,74,.22)}
+    .btn{appearance:none; border:0; border-radius:12px; padding:12px 16px; font-weight:800; cursor:pointer; transition:transform .1s, filter .2s}
+    .btn-primary{background:linear-gradient(180deg, var(--brand) 0%, #0C8B57 100%); color:#fff; box-shadow:0 10px 24px rgba(10,122,74,.22)}
+    .btn-primary:hover{filter:brightness(1.02)}
     .btn-ghost{background:#EFF2F6; color:#0F172A}
     .btn-outline{border:1.5px dashed var(--brand); background:#fff; color:var(--brand)}
     .btn:active{transform:translateY(1px)}
 
+    .logout-btn{appearance:none; border:1px solid var(--line); background:#fff; padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer;}
+    .logout-btn:hover{ filter:brightness(0.98); }
+
     [data-view]{display:none}
     [data-view].active{display:block}
 
-    /* ======= Modal ======= */
+    /* Modal */
     .modal{position:fixed; inset:0; display:none; place-items:center; background:rgba(17,24,39,.44); z-index:100}
     .modal.open{display:grid}
-    .dialog{background:#fff; width:min(880px,94vw); border-radius:16px; box-shadow:0 28px 80px rgba(0,0,0,.25); overflow:hidden}
+    .dialog{background:#fff; width:min(880px,94vw); border-radius:16px; box-shadow:0 28px 80px rgba(0,0,0,.25); overflow:hidden; animation:pop .12s ease}
     .dialog-head{display:flex; justify-content:space-between; align-items:center; padding:16px 22px; border-bottom:1px solid var(--line); font-weight:900; font-size:var(--fs-18)}
     .dialog-body{padding:22px}
     .close-x{background:transparent; border:0; font-size:22px; cursor:pointer}
+    @keyframes pop{from{transform:scale(.985); opacity:0} to{transform:scale(1); opacity:1}}
 
     @media print{
       .hero,.nav,.tabs,.footer-actions,.user-chip {display:none !important}
@@ -324,11 +300,10 @@ async function loadAudit(kind){
 </head>
 
 <body>
-  <!-- ======= Header ======= -->
+  <!-- Header -->
   <header class="hero">
     <div class="hero-inner">
-      <!-- inside .hero-inner, at the beginning -->
-<button id="btnLogout" class="logout-btn" title="Sign out">⟵ Logout</button>
+      <button id="btnLogout" class="logout-btn" title="Sign out">⟵ Logout</button>
 
       <a class="logo" href="#" title="Green Leaders">
         <div class="mark" aria-hidden="true"></div>
@@ -338,14 +313,13 @@ async function loadAudit(kind){
         </div>
       </a>
 
-      <!-- Back Home + Logo -->
       <div style="display:flex;align-items:center;gap:10px;">
         <img src="images/GLLOGO2.png" alt="Green Leaders Logo" style="height:44px;width:auto;">
-        <button onclick="window.location.href='WaterAudit.html'" class="btn btn-outline" style="padding:8px 14px;font-size:14px; right:5px" id="btn_back_home">← Back </button>
+        <button onclick="window.location.href='WaterAudit.html'" class="btn btn-outline" style="padding:8px 14px;font-size:14px;" id="btn_back_home">← Back </button>
       </div>
 
       <div class="spacer"></div>
-      <button id="openProfile" class="user-chip" aria-haspopup="dialog" aria-controls="profileModal"></button>
+      <button id="openProfile" class="user-chip" aria-haspopup="dialog" aria-controls="profileModal">Profile</button>
     </div>
   </header>
 
@@ -357,7 +331,7 @@ async function loadAudit(kind){
     </div>
   </div>
 
-  <!-- ======= Tabs ======= -->
+  <!-- Tabs -->
   <div class="tabs">
     <div class="tabs-inner" id="tabs" role="tablist" aria-label="Sections">
       <button class="tab active" data-target="dashboard" role="tab" aria-selected="true" id="tab_dashboard">
@@ -381,12 +355,11 @@ async function loadAudit(kind){
     </div>
   </div>
 
-  <!-- ======= Main ======= -->
+  <!-- Main -->
   <main class="page">
-    <!-- ===== Dashboard ===== -->
+    <!-- Dashboard -->
     <section class="section active" data-view="dashboard">
       <div class="sec-head">Institution Dashboard</div>
-
       <div class="sec-body">
         <div class="kpis">
           <div class="kpi">
@@ -431,7 +404,7 @@ async function loadAudit(kind){
       </div>
     </section>
 
-    <!-- ===== Building ===== -->
+    <!-- Building -->
     <section class="section" data-view="building">
       <div class="sec-head">Building Data</div>
       <div class="sec-body">
@@ -466,6 +439,25 @@ async function loadAudit(kind){
           </div>
         </div>
 
+        <!-- NEW: Occupant Schedule explanation -->
+        <div class="section" style="margin-top:16px;">
+          <div class="sec-head">Occupant Schedule — How it works</div>
+          <div class="sec-sub">
+            <div class="info">
+              <span class="dot"></span>
+              <div>
+                <strong>Daily Occupancy Schedule (%)</strong> = what share of occupants are present on each weekday.<br/>
+                <em>Example:</em> If 80% attend on Monday and 60% on Friday, set Monday = 80 and Friday = 60. These values scale the daily usage curve.
+                <br/><br/>
+                <strong>Monthly Occupancy Schedule (%)</strong> = seasonal/term variation across months.<br/>
+                <em>Example:</em> If July–August operate at 40% capacity (summer), set July = 40 and August = 40. These values scale the monthly totals.
+                <br/><br/>
+                Tip: Start with realistic estimates, then refine after a couple of actual readings.
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="section" style="margin-top:16px;">
           <div class="sec-head">Daily Occupancy Schedule (%) </div>
           <div class="sec-body grid-2" id="bd_daily"></div>
@@ -482,7 +474,7 @@ async function loadAudit(kind){
       </div>
     </section>
 
-    <!-- ===== Consumption ===== -->
+    <!-- Consumption -->
     <section class="section" data-view="consumption">
       <div class="sec-head">Water Consumption</div>
 
@@ -571,7 +563,7 @@ async function loadAudit(kind){
       </div>
     </section>
 
-    <!-- ===== Leak Tracking ===== -->
+    <!-- Leak -->
     <section class="section" data-view="leak">
       <div class="sec-head">Water Leak Detection & Monitoring</div>
       <div class="sec-sub">
@@ -586,36 +578,12 @@ async function loadAudit(kind){
         </div>
         <div class="sec-sub">Professional methods for accurate leak detection and measurement</div>
         <div class="sec-body grid-2">
-          <div class="info" style="background:#fff;">
-            <strong>1️⃣ Visual Inspection</strong><br>
-            Look for visible drips, puddles, or water stains around fixtures. Check under sinks, around toilets, and near urinals.
-          </div>
-          <div class="info" style="background:#fff;">
-            <strong>4️⃣ Toilet Leak Detection</strong><br>
-            Add food coloring to the tank. Wait 15 minutes without flushing. If color appears in the bowl, there's a leak.
-          </div>
-
-          <div class="info" style="background:#fff;">
-            <strong>2️⃣ Container Method</strong><br>
-            Place a container under the drip for 1 minute. Measure the water and convert to L/min.
-          </div>
-          <div class="info" style="background:#fff;">
-            <strong>5️⃣ Flow Meter Reading</strong><br>
-            For larger leaks, use a flow meter or the building’s water meter (with fixtures off).
-          </div>
-
-          <div class="info" style="background:#fff;">
-            <strong>3️⃣ Drip Count Method</strong><br>
-            Count drips per minute (~20 drips = 1 mL). Convert to L/min (200 drips/min ≈ 0.01 L/min).
-          </div>
-          <div class="info" style="background:#fff; border-left:4px solid #0A7A4A;">
-            <strong>💡 Quick Reference</strong><br>
-            • Slow drip: 0.01–0.05 L/min<br>
-            • Steady drip: 0.05–0.2 L/min<br>
-            • Fast drip: 0.2–0.5 L/min<br>
-            • Small stream: 0.5–2 L/min<br>
-            • Running toilet: 1–6 L/min
-          </div>
+          <div class="info" style="background:#fff;"><strong>1️⃣ Visual Inspection</strong><br>Look for visible drips, puddles, or water stains around fixtures. Check under sinks, around toilets, and near urinals.</div>
+          <div class="info" style="background:#fff;"><strong>4️⃣ Toilet Leak Detection</strong><br>Add food coloring to the tank. Wait 15 minutes without flushing. If color appears in the bowl, there's a leak.</div>
+          <div class="info" style="background:#fff;"><strong>2️⃣ Container Method</strong><br>Place a container under the drip for 1 minute. Measure the water and convert to L/min.</div>
+          <div class="info" style="background:#fff;"><strong>5️⃣ Flow Meter Reading</strong><br>For larger leaks, use a flow meter or the building’s water meter (with fixtures off).</div>
+          <div class="info" style="background:#fff;"><strong>3️⃣ Drip Count Method</strong><br>Count drips per minute (~20 drips = 1 mL). Convert to L/min (200 drips/min ≈ 0.01 L/min).</div>
+          <div class="info" style="background:#fff; border-left:4px solid #0A7A4A;"><strong>💡 Quick Reference</strong><br>• Slow drip: 0.01–0.05 L/min<br>• Steady drip: 0.05–0.2 L/min<br>• Fast drip: 0.2–0.5 L/min<br>• Small stream: 0.5–2 L/min<br>• Running toilet: 1–6 L/min</div>
         </div>
       </div>
 
@@ -647,7 +615,7 @@ async function loadAudit(kind){
       </div>
     </section>
 
-    <!-- ===== Savings ===== -->
+    <!-- Savings -->
     <section class="section" data-view="savings">
       <div class="sec-head">Water Savings Planner</div>
 
@@ -671,14 +639,17 @@ async function loadAudit(kind){
             </table>
           </div>
         </div>
-        <div class="footer-actions">
-          <button class="btn btn-ghost" onclick="print()">Save as PDF</button>
-          <button class="btn btn-primary" id="btnSaveSavings">Save Savings Plan</button>
+        <div class="footer-actions" style="justify-content:space-between">
+          <button class="btn btn-outline" id="btnAddOther">+ Add Other Measure</button>
+          <div>
+            <button class="btn btn-ghost" onclick="print()">Save as PDF</button>
+            <button class="btn btn-primary" id="btnSaveSavings">Save Savings Plan</button>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== Settings ===== -->
+    <!-- Settings -->
     <section class="section" data-view="settings">
       <div class="sec-head" id="sec_settings">System Configuration</div>
       <div class="sec-sub">
@@ -701,102 +672,57 @@ async function loadAudit(kind){
     </section>
   </main>
 
-<!-- ===== Auth/Profile Modal (FIXED) ===== -->
-<div class="modal" id="profileModal">
-  <div class="dialog">
-    <div class="dialog-head">
-      Profile & Preferences
-      <button class="close-x" id="closeProfile" aria-label="Close">×</button>
-    </div>
-    <div class="dialog-body">
-      <div class="grid-2">
-        <div><label for="name">Full Name</label><input id="name" type="text" value=""></div>
-        <div><label for="email">Email Address</label><input id="email" type="text" value=""></div>
-        <div><label for="pwd">Password</label><input id="pwd" type="password" placeholder="••••••••"></div>
-        <div><label for="bname">Building Name</label><input id="bname" type="text" placeholder="Building"></div>
-        <div><label for="bloc">Building Location</label><input id="bloc" type="text" placeholder="City / Area"></div>
-        <div>
-          <label for="lang">Preferred Language</label>
-          <select id="lang">
-            <option>English</option>
-            <option>Français</option>
-            <option>العربية</option>
-          </select>
-        </div>
+  <!-- Profile & Preferences Modal -->
+  <div class="modal" id="profileModal">
+    <div class="dialog">
+      <div class="dialog-head">
+        Profile & Preferences
+        <button class="close-x" id="closeProfile" aria-label="Close">×</button>
       </div>
-      <div class="footer-actions">
-        <button class="btn btn-primary" id="btnSaveProfile">Save Changes</button>
+      <div class="dialog-body">
+        <div class="grid-2">
+          <div><label for="name">Full Name</label><input id="name" type="text" value=""></div>
+          <div><label for="email">Email Address</label><input id="email" type="text" value=""></div>
+          <div><label for="pwd">Password</label><input id="pwd" type="password" placeholder="••••••••"></div>
+          <div><label for="bname">Building Name</label><input id="bname" type="text" placeholder="Building"></div>
+          <div><label for="bloc">Building Location</label><input id="bloc" type="text" placeholder="City / Area"></div>
+          <div>
+            <label for="lang">Preferred Language</label>
+            <select id="lang">
+              <option value="en">English</option>
+              <option value="fr">Français</option>
+              <option value="ar">العربية</option>
+            </select>
+          </div>
+        </div>
+        <div class="footer-actions">
+          <button class="btn btn-primary" id="btnSaveProfile">Save Changes</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
-
-
-
 
   <script>
-async function mirrorToGoogleSheet(snapshot){
-  try{
-    const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwjxGWaBMF7JpnR3QlxjJuWuJTLaqRzHxyQ-KGsd2L40he-0wQqIId0e_omTgF6KWQ3bQ/exec"; // <-- from step 1
-    await fetch(SHEET_WEBAPP_URL, {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body: JSON.stringify(snapshot)
-    });
-  }catch(e){ console.warn("Sheet mirror failed", e); }
-}
-</script>
+    async function mirrorToGoogleSheet(snapshot){
+      try{
+        const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwjxGWaBMF7JpnR3QlxjJuWuJTLaqRzHxyQ-KGsd2L40he-0wQqIId0e_omTgF6KWQ3bQ/exec";
+        await fetch(SHEET_WEBAPP_URL, {
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body: JSON.stringify(snapshot)
+        });
+      }catch(e){ console.warn("Sheet mirror failed", e); }
+    }
+  </script>
 
-
-<script>
-  function logout(){
-    try{
-      localStorage.removeItem('gl_token');
-      localStorage.removeItem('gl_user');
-      // (optional) keep language; remove if you want full reset:
-      // localStorage.removeItem('gl_lang');
-    }catch(_){}
-    // send to the login page
-    window.location.href = 'WaterAudit - Login.html';
-  }
-  document.addEventListener('DOMContentLoaded', ()=>{
-    const btn = document.getElementById('btnLogout');
-    if (btn) btn.addEventListener('click', logout);
-  });
-</script>
-
-
-
-  <!-- ===== Profile & Language wiring ===== -->
   <script>
-    // Open modal: set current language
-    document.getElementById('openProfile').addEventListener('click', ()=>{
-      const langSel = document.getElementById('lang');
-      const curr = localStorage.getItem('gl_lang') || 'en';
-      langSel.value = (curr === 'ar' ? 'Arabic' : curr === 'fr' ? 'French' : 'English');
-      document.getElementById('profileModal').classList.add('open');
-    });
-    // Also wire the alternate open button
-    document.getElementById('openProfile2')?.addEventListener('click', ()=>{
-      const langSel = document.getElementById('lang');
-      const curr = localStorage.getItem('gl_lang') || 'en';
-      langSel.value = (curr === 'ar' ? 'Arabic' : curr === 'fr' ? 'French' : 'English');
-      document.getElementById('profileModal').classList.add('open');
-    });
-
-    // Close
-    document.getElementById('closeProfile').addEventListener('click', ()=>{
-      document.getElementById('profileModal').classList.remove('open');
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.getElementById('btnLogout')?.addEventListener('click', logout);
     });
   </script>
 
-  <!-- ===== Full-page Translator (Azure) ===== -->
+  <!-- Azure translator (kept) -->
   <script>
-    /**
-     * Whole-page translation via Azure; caches results in localStorage.
-     * We expose setLangAzure(lang) and ensure UI ids are updated via applyI18n as well.
-     */
     const I18N_ENGINE = {
       endpoint: "https://api.cognitive.microsofttranslator.com/",
       region:   "uaenorth",
@@ -805,20 +731,16 @@ async function mirrorToGoogleSheet(snapshot){
     };
     const ALLOWED_LANGS = ["en","fr","ar"];
     const DEFAULT_LANG = "en";
-
     function getLang() {
       const l = localStorage.getItem("gl_lang") || DEFAULT_LANG;
       return ALLOWED_LANGS.includes(l) ? l : DEFAULT_LANG;
     }
-
-    // Apply dir and html lang
     function applyDir(lang){
       const rtl = (lang === "ar");
       document.documentElement.lang = lang;
       document.documentElement.dir  = rtl ? "rtl" : "ltr";
       document.body.style.direction = rtl ? "rtl" : "ltr";
     }
-
     function collectTextUnits(root=document.body){
       const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
         acceptNode(node){
@@ -837,7 +759,6 @@ async function mirrorToGoogleSheet(snapshot){
       let n; while((n = walker.nextNode())) nodes.push(n);
       return nodes;
     }
-
     function collectAttrUnits(){
       const attrTargets = [];
       const selector = ["input[placeholder]","textarea[placeholder]","[title]","img[alt]","button[value]"].join(",");
@@ -849,7 +770,6 @@ async function mirrorToGoogleSheet(snapshot){
       });
       return attrTargets;
     }
-
     function uniqueStringsFromPage(){
       const texts = [];
       collectTextUnits().forEach(n => texts.push(n.nodeValue.trim()));
@@ -859,7 +779,6 @@ async function mirrorToGoogleSheet(snapshot){
       });
       return Array.from(new Set(texts)).sort();
     }
-
     function cacheKey(lang){ return `gl_i18n_cache_${location.pathname}_${lang}`; }
     function loadCache(lang){
       try { return JSON.parse(localStorage.getItem(cacheKey(lang))||"{}"); } catch { return {}; }
@@ -867,7 +786,6 @@ async function mirrorToGoogleSheet(snapshot){
     function saveCache(lang, map){
       try { localStorage.setItem(cacheKey(lang), JSON.stringify(map)); } catch {}
     }
-
     async function translateBatchAzure(strings, toLang){
       if (strings.length===0 || toLang===DEFAULT_LANG) return {};
       const outMap = {};
@@ -875,7 +793,7 @@ async function mirrorToGoogleSheet(snapshot){
       const headers = {
         "Ocp-Apim-Subscription-Key": I18N_ENGINE.key,
         "Ocp-Apim-Subscription-Region": I18N_ENGINE.region,
-        "Content-Type": "application/json"
+      "Content-Type": "application/json"
       };
       for (let i=0;i<strings.length;i+=90){
         const slice = strings.slice(i, i+90);
@@ -890,7 +808,6 @@ async function mirrorToGoogleSheet(snapshot){
       }
       return outMap;
     }
-
     function applyMap(map){
       collectTextUnits().forEach(n=>{
         const src = n.nodeValue.trim();
@@ -905,15 +822,12 @@ async function mirrorToGoogleSheet(snapshot){
         if (map[src]) o.textContent = map[src];
       });
     }
-
     async function translatePage(targetLang){
       if (targetLang === DEFAULT_LANG){ applyDir(DEFAULT_LANG); return; }
       applyDir(targetLang);
-
       const uniq = uniqueStringsFromPage();
       const cached = loadCache(targetLang);
       const missing = uniq.filter(s => !cached[s]);
-
       if (missing.length){
         const fresh = await translateBatchAzure(missing, targetLang);
         Object.assign(cached, fresh);
@@ -921,36 +835,25 @@ async function mirrorToGoogleSheet(snapshot){
       }
       applyMap(cached);
     }
-
-    // Public: setLangAzure replaces previous calls
     async function setLangAzure(lang){
       localStorage.setItem("gl_lang", lang);
-      // Update UI labels by id for guaranteed correctness
       applyI18n(lang);
-      // Then translate remaining free text
       await translatePage(lang);
     }
-
     document.addEventListener("DOMContentLoaded", ()=>{
-      // Initial full-page translation according to stored lang
       setLangAzure(getLang());
     });
-
-    // Expose for other scripts if needed
     window.__setLang = setLangAzure;
   </script>
 
-  <!-- ===== App Logic ===== -->
+  <!-- ==== App Logic ==== -->
   <script>
-    // ======= Auth gating =======
     (function ensureSignedIn(){
       if (!localStorage.getItem('gl_token')) {
         // window.location.href = 'WaterAudit - Login.html';
-        // Disabled during dev
       }
     })();
 
-    // ======= API helpers =======
     const TOKEN_KEY='gl_token', USER_KEY='gl_user';
     function token(){ return localStorage.getItem(TOKEN_KEY); }
     async function api(path, opts={}){
@@ -963,23 +866,25 @@ async function mirrorToGoogleSheet(snapshot){
     async function postToServer(kind, payload){
       try{ await api('/api/audits/'+kind, { method:'POST', body:JSON.stringify(payload) }); }catch(e){ console.warn('POST failed:', e.message); }
     }
-    async function loadFromServer(kind){ try{ const r=await api('/api/audits/'+kind); return await r.json(); }catch(e){ return {}; } }
+    async function loadFromServer(kind){
+      try{ const r=await api('/api/audits/'+kind); return await r.json(); }catch(e){ return null; }
+    }
 
-    // ======= Constants & State =======
     const LS_KEY = 'gl_water_audit_v3';
+
     const FIXTURES = [
       { key: 'half_wc', label: 'Half Flush WC', type: 'flush' },
       { key: 'full_wc', label: 'Full Flush WC', type: 'flush' },
-      { key: 'urinal', label: 'Urinals', type: 'flush' },
-      { key: 'sink', label: 'Sinks', type: 'flow' },
-      { key: 'fountain', label: 'Drinking Water Fountain', type: 'flow' },
-      { key: 'shower', label: 'Showers', type: 'flow' },
+      { key: 'urinal',  label: 'Urinals',       type: 'flush' },
+      { key: 'sink',    label: 'Sinks',         type: 'flow'  },
+      { key: 'fountain',label: 'Drinking Water Fountain', type: 'flow' },
+      { key: 'shower',  label: 'Showers',       type: 'flow'  },
     ];
     const DAYS   = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
     const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
     let state = {
-      profile: { name:'', email:'', building:'', location:'', lang:'English' },
+      profile: { name:'', email:'', building:'', location:'', lang:'en' },
       building: {
         occupants: 0,
         usage: {
@@ -995,6 +900,9 @@ async function mirrorToGoogleSheet(snapshot){
       },
       rooms: [ makeEmptyRoom('Toilet/Wet Area 1') ],
       leakRooms: [ makeEmptyLeakRoom('Toilet/Wet Area 1') ],
+      // persisted savings edits
+      savingsEdits: {}, // { [id]: { savedStop:number, otherNote:string, savedOther:number } }
+      // user-defined “other” measures
       savingsOther: [] // {id, room, fixtureKey, otherNote, savedDaily}
     };
 
@@ -1014,16 +922,15 @@ async function mirrorToGoogleSheet(snapshot){
         const raw=localStorage.getItem(LS_KEY);
         if(raw){
           const loaded = JSON.parse(raw);
-          state = Object.assign(state, loaded);
+          state = { ...state, ...loaded };
         }
       }catch(e){}
     }
 
-    // ======= Math helpers =======
     function getUsageFor(key){ const u = state.building.usage[key] || {pctUsing:0,freq:0}; return { p:(Number(u.pctUsing)||0)/100, f:Number(u.freq)||0 }; }
 
     function roomDailyConsumption(room){
-      let total=0; const sharedCount = Number(room.flush.half_wc.count)||0; // half & full share count
+      let total=0; const sharedCount = Number(room.flush.half_wc.count)||0;
       { const {p,f}=getUsageFor('half_wc'); const w=Number(room.flush.half_wc.waterPerFlush)||0; total += w * sharedCount * f * p; }
       { const {p,f}=getUsageFor('full_wc'); const w=Number(room.flush.full_wc.waterPerFlush)||0; total += w * sharedCount * f * p; }
       { const {p,f}=getUsageFor('urinal');  const w=Number(room.flush.urinal.waterPerFlush)||0; const c=Number(room.flush.urinal.count)||0; total += w * c * f * p; }
@@ -1043,14 +950,11 @@ async function mirrorToGoogleSheet(snapshot){
     }
     function buildingLeakDaily(){ return state.leakRooms.reduce((a,lr)=>a + leakRoomTotals(lr).day, 0); }
 
-    // Adjusted consumption (simple occupancy × frequency scaler on base)
     function adjustedTotalConsumption(){
-  // Match the table: Adjusted = (base L/day across all rooms) × occupants
-  const occupants = Number(state.building.occupants) || 0;
-  return totalConsumptionAllRooms() * occupants;
-}
+      const occupants = Number(state.building.occupants) || 0;
+      return totalConsumptionAllRooms() * occupants;
+    }
 
-    // ======= DOM helpers =======
     const $=(s,r=document)=> r.querySelector(s);
     const el=(tag, props={}, ...children)=>{
       const e=document.createElement(tag);
@@ -1059,7 +963,6 @@ async function mirrorToGoogleSheet(snapshot){
       return e;
     };
 
-    // ======= Building render =======
     function renderBuilding(){
       $('#bd_occupants').value = state.building.occupants;
       $('#bd_occupants').oninput = e => { state.building.occupants=Number(e.target.value)||0; recalcAll(); };
@@ -1096,10 +999,9 @@ async function mirrorToGoogleSheet(snapshot){
       });
 
       $('#btnSaveBuilding').onclick=()=>{ saveState(); postToServer('building', state.building); mirrorToGoogleSheet(state);
- alert('Building data saved.'); };
+        alert('Building data saved.'); };
     }
 
-    // ======= Consumption render =======
     function renderConsumption(){
       renderConsumptionSummary();
       renderConsumptionRooms();
@@ -1112,37 +1014,34 @@ async function mirrorToGoogleSheet(snapshot){
         setTimeout(()=>document.getElementById(`room_${n-1}`)?.scrollIntoView({behavior:'smooth'}),0);
       };
 
-      $('#btnSaveConsumption').onclick=()=>{ saveState(); postToServer('consumption', state.rooms);mirrorToGoogleSheet(state); alert('Consumption data saved.'); };
+      $('#btnSaveConsumption').onclick=()=>{ saveState(); postToServer('consumption', state.rooms); mirrorToGoogleSheet(state); alert('Consumption data saved.'); };
     }
 
-  function renderConsumptionSummary(){
-  const tbody=$('#cons_summary');
-  tbody.innerHTML = '';
-  let totalBase = 0, totalAdjusted = 0;
+    function renderConsumptionSummary(){
+      const tbody=$('#cons_summary');
+      tbody.innerHTML = '';
+      let totalBase = 0, totalAdjusted = 0;
 
-  state.rooms.forEach(room => {
-    const base = roomDailyConsumption(room);
-    totalBase += base;
+      state.rooms.forEach(room => {
+        const base = roomDailyConsumption(room);
+        totalBase += base;
+        const occupants = Number(state.building.occupants) || 0;
+        const adjusted = base * occupants;
+        totalAdjusted += adjusted;
 
-    // NEW: Adjusted = base * number of occupants
-    const occupants = Number(state.building.occupants) || 0;
-    const adjusted = base * occupants;
-    totalAdjusted += adjusted;
+        tbody.appendChild(el('tr', {},
+          el('td', {}, room.name),
+          el('td', {style:'text-align:right'}, base.toFixed(2)),
+          el('td', {style:'text-align:right'}, adjusted.toFixed(2))
+        ));
+      });
 
-    tbody.appendChild(el('tr', {},
-      el('td', {}, room.name),
-      el('td', {style:'text-align:right'}, base.toFixed(2)),
-      el('td', {style:'text-align:right'}, adjusted.toFixed(2))
-    ));
-  });
-
-  tbody.appendChild(el('tr', {},
-    el('td', {style:'font-weight:900'}, 'Total Consumption All Rooms'),
-    el('td', {style:'text-align:right;font-weight:900'}, totalBase.toFixed(2)),
-    el('td', {style:'text-align:right;font-weight:900'}, totalAdjusted.toFixed(2))
-  ));
-}
-
+      tbody.appendChild(el('tr', {},
+        el('td', {style:'font-weight:900'}, 'Total Consumption All Rooms'),
+        el('td', {style:'text-align:right;font-weight:900'}, totalBase.toFixed(2)),
+        el('td', {style:'text-align:right;font-weight:900'}, totalAdjusted.toFixed(2))
+      ));
+    }
 
     function renderConsumptionRooms(){
       const wrap=$('#cons_rooms'); wrap.innerHTML='';
@@ -1152,7 +1051,7 @@ async function mirrorToGoogleSheet(snapshot){
     function roomCard(room, idx){
       const card=el('div',{className:'section', id:`room_${idx}`},
         el('div',{className:'sec-head'},
-          el('input',{type:'text', value:room.name, style:'max-width:360px;font-weight:800', oninput:e=>{ room.name=e.target.value; renderConsumptionSummary(); }})
+          el('input',{type:'text', value:room.name, style:'max-width:360px;font-weight:800', oninput:e=>{ room.name=e.target.value; renderConsumptionSummary(); renderLeak(); renderSavings(); recalcAll(); }})
         ),
         el('div',{className:'sec-body'},
           el('div',{className:'section',style:'margin-bottom:16px;'},
@@ -1256,10 +1155,11 @@ async function mirrorToGoogleSheet(snapshot){
       updateFlowCell(idx,'fountain');
       updateFlowCell(idx,'shower');
       renderConsumptionSummary();
+      renderLeakSummary();
+      renderSavings();
       recalcAll();
     }
 
-    // ======= Leak render =======
     function renderLeak(){
       renderLeakSummary();
       renderLeakRooms();
@@ -1271,7 +1171,7 @@ async function mirrorToGoogleSheet(snapshot){
         recalcAll();
         setTimeout(()=>document.getElementById(`leakroom_${n-1}`)?.scrollIntoView({behavior:'smooth'}),0);
       };
-      $('#btnSaveLeaks').onclick=()=>{ saveState(); postToServer('leaks', state.leakRooms);mirrorToGoogleSheet(state); alert('Leak assessment saved.'); };
+      $('#btnSaveLeaks').onclick=()=>{ saveState(); postToServer('leaks', state.leakRooms); mirrorToGoogleSheet(state); alert('Leak assessment saved.'); };
     }
 
     function renderLeakSummary(){
@@ -1339,8 +1239,7 @@ async function mirrorToGoogleSheet(snapshot){
 
     function updateLeakRow(idx){
       const lr=state.leakRooms[idx];
-      const head=document.querySelector(`#leakTxt_${idx}`);
-      if(head) head.textContent = leakRoomText(lr);
+      const head=document.querySelector(`#leakTxt_${idx}`); if(head) head.textContent = leakRoomText(lr);
       renderLeakSummary(); renderSavings(); renderDashboard(); saveState();
     }
 
@@ -1350,25 +1249,27 @@ async function mirrorToGoogleSheet(snapshot){
       return `${rate.toFixed(2)} L/min • ${day.toFixed(2)} L/day • ${year.toFixed(2)} L/year`;
     }
 
-    // ======= Savings render =======
+    /* ===================== SAVINGS (persistence) ===================== */
+
     function savingsRows(){
-      // Build rows from current leak units (only rate > 0) and merge with previously saved "other measures"
       const rows=[];
-      // Leak-based savings candidates
+      // From leaks
       state.leakRooms.forEach(lr=>{
         const pushFrom = (arr, label, fixtureKey) => {
           (arr||[]).forEach((u, i)=>{
             const rate = Number(u.rateLpm)||0;
             if (rate <= 0) return;
             const daily = rate*60*24;
+            const id = `leak:${lr.name}:${fixtureKey}:${i}`;
+            const persisted = state.savingsEdits[id] || { savedStop:0, otherNote:'', savedOther:0 };
             rows.push({
-              id: `leak:${lr.name}:${fixtureKey}:${i}`,
+              id,
               fixture: label,
               room: lr.name,
               leakageDaily: daily,
-              savedStop: 0,            // default 0 as requested
-              otherNote: "",
-              savedOther: 0
+              savedStop: Number(persisted.savedStop)||0,
+              otherNote: persisted.otherNote || '',
+              savedOther: Number(persisted.savedOther)||0
             });
           });
         };
@@ -1379,16 +1280,18 @@ async function mirrorToGoogleSheet(snapshot){
         pushFrom(lr.shower,  'Shower',    'shower');
       });
 
-      // Merge persisted "other measures" if any (they are independent rows)
+      // From user-defined "other" rows
       (state.savingsOther||[]).forEach(r=>{
+        const id = r.id;
+        const persisted = state.savingsEdits[id] || { savedStop:0, otherNote:r.otherNote||'', savedOther: Number(r.savedDaily)||0 };
         rows.push({
-          id: r.id,
+          id,
           fixture: r.fixtureKey || 'Other',
           room: r.room || '—',
           leakageDaily: 0,
-          savedStop: 0,
-          otherNote: r.otherNote || '',
-          savedOther: Number(r.savedDaily)||0
+          savedStop: Number(persisted.savedStop)||0,
+          otherNote: persisted.otherNote || '',
+          savedOther: Number(persisted.savedOther)||Number(r.savedDaily)||0
         });
       });
 
@@ -1408,58 +1311,52 @@ async function mirrorToGoogleSheet(snapshot){
           el('td',{}, r.leakageDaily.toFixed(2)),
           el('td',{}, el('input', {
             type:'number', value:r.savedStop, min:0, style:'max-width:140px',
-            oninput: (e)=>{ r.savedStop = Number(e.target.value)||0; saveSavingsEdits(rows); recalcAll(); }
+            oninput: (e)=>{ r.savedStop = Number(e.target.value)||0; persistSavingsRow(r); recalcAll(); }
           })),
           el('td',{}, el('input', {
             type:'text', value:r.otherNote, placeholder:'e.g., Aerator, Flow restrictor',
-            oninput: (e)=>{ r.otherNote = e.target.value||''; saveSavingsEdits(rows); }
+            oninput: (e)=>{ r.otherNote = e.target.value||''; persistSavingsRow(r); }
           })),
           el('td',{}, el('input', {
             type:'number', value:r.savedOther, min:0, style:'max-width:140px',
-            oninput: (e)=>{ r.savedOther = Number(e.target.value)||0; saveSavingsEdits(rows); recalcAll(); }
+            oninput: (e)=>{ r.savedOther = Number(e.target.value)||0; persistSavingsRow(r); recalcAll(); }
           }))
         );
         tbody.appendChild(tr);
       });
 
+      $('#btnAddOther').onclick = ()=>{
+        const id = `other:${crypto.randomUUID()}`;
+        state.savingsOther.push({ id, room:'—', fixtureKey:'Other', otherNote:'', savedDaily:0 });
+        state.savingsEdits[id] = { savedStop:0, otherNote:'', savedOther:0 };
+        saveState();
+        renderSavings();
+      };
+
       $('#btnSaveSavings').onclick = ()=>{
-        saveSavingsEdits(rows);
-        postToServer('savings', { rows });
+        postToServer('savings', { edits: state.savingsEdits, other: state.savingsOther });
+        saveState();
         alert('Savings plan saved.');
       };
     }
 
-    function saveSavingsEdits(rows){
-      // Persist only "other measures" rows (id not starting with leak:)
-      state.savingsOther = rows
-        .filter(r => !String(r.id).startsWith('leak:') && (r.savedOther>0 || (r.otherNote||'').trim().length>0))
-        .map(r => ({ id:r.id || `other:${crypto.randomUUID()}`, room:r.room, fixtureKey:r.fixture, otherNote:r.otherNote, savedDaily:r.savedOther }));
+    function persistSavingsRow(r){
+      state.savingsEdits[r.id] = {
+        savedStop: Number(r.savedStop)||0,
+        otherNote: r.otherNote || '',
+        savedOther: Number(r.savedOther)||0
+      };
+      if (!String(r.id).startsWith('leak:')){
+        const idx = state.savingsOther.findIndex(x => x.id === r.id);
+        if (idx >= 0){
+          state.savingsOther[idx].otherNote = r.otherNote || '';
+          state.savingsOther[idx].savedDaily = Number(r.savedOther)||0;
+          state.savingsOther[idx].fixtureKey = r.fixture || 'Other';
+          state.savingsOther[idx].room = r.room || '—';
+        }
+      }
       saveState();
     }
-
-    // ======= Dashboard (KPIs + Charts) =======
-    let weeklyChart, annualChart;
-
-function renderDashboard(){
-  const adj  = adjustedTotalConsumption(); // adjusted total L/day (per your new definition)
-  const leak = buildingLeakDaily();        // L/day
-
-  // KPIs
-  const savedFromSavings = computeSavedDailyFromSavings();
-  const totalDaily = adj + leak; // TOTAL WATER OUTPUT (L/day)
-
-  $('#kpiUsage').textContent     = totalDaily.toFixed(2);                 // adjusted + leak
-  $('#kpiLeak').textContent      = leak.toFixed(2);
-  $('#kpiPotential').textContent = Math.min(savedFromSavings, totalDaily).toFixed(2);
-
-  // Charts
-  // Weekly: total L/day * weekday % (no ×7)  ← as you requested
-  drawWeeklyChart(adj);
-
-  // Annual: keep as adjusted-only; change to `totalDaily` if you want leaks included
-  drawAnnualChart(adj);
-}
-
 
     function computeSavedDailyFromSavings(){
       let saved = 0;
@@ -1469,117 +1366,164 @@ function renderDashboard(){
       });
       return saved;
     }
-    
 
-    function normWeights(objList){
-      // objList is array of numbers (percent-like). Return normalized factors summing to 1 (fallback = equal if sum=0)
-      const vals = objList.map(v => Math.max(0, Number(v)||0));
-      const sum = vals.reduce((a,b)=>a+b,0);
-      if (sum <= 0) return vals.map(_=>1/vals.length);
-      return vals.map(v => v/sum);
+    /* ===================== Dashboard & Charts (pro styling) ===================== */
+    let weeklyChart, annualChart;
+
+    function makeGradient(ctx, c1, c2){
+      const g = ctx.createLinearGradient(0,0,0,220);
+      g.addColorStop(0, c1);
+      g.addColorStop(1, c2);
+      return g;
     }
 
-function drawWeeklyChart(adj){
-  const ctx = document.getElementById('weeklyChart').getContext('2d');
+    function renderDashboard(){
+      const adj  = adjustedTotalConsumption();
+      const leak = buildingLeakDaily();
+      const savedFromSavings = computeSavedDailyFromSavings();
+      const totalDaily = adj + leak;
 
-  // raw % (0..100) for each weekday from Building → Daily Occupancy Schedule
-  const dayPerc = DAYS.map(d => (Number(state.building.daily[d]) || 0) / 100);
+      $('#kpiUsage').textContent     = totalDaily.toFixed(2);
+      $('#kpiLeak').textContent      = leak.toFixed(2);
+      $('#kpiPotential').textContent = Math.min(savedFromSavings, totalDaily).toFixed(2);
 
-  // curve: totalDaily × weekday%
-  const totalSeries = dayPerc.map(p => (Number(adj) || 0) * p);
-
-  // 2 horizontal lines (per-day constants)
-  const leakDaily    = Number(buildingLeakDaily()) || 0;
-  const savingsDaily = Number(computeSavedDailyFromSavings()) || 0;
-  const leakLine     = new Array(DAYS.length).fill(leakDaily);
-  const savingsLine  = new Array(DAYS.length).fill(savingsDaily);
-
-  if (weeklyChart) weeklyChart.destroy();
-  weeklyChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: DAYS,
-      datasets: [
-        { label: 'Total Water Consumption from fixtures (L/day)',   data: totalSeries, tension: 0.3 },
-        { label: 'Leak (L/day)',    data: leakLine,    tension: 0.0, borderDash: [6,6] },
-        { label: 'Savings (L/day)', data: savingsLine, tension: 0.0, borderDash: [2,4] }
-      ]
-    },
-    options: { responsive: true, maintainAspectRatio: false }
-  });
-}
-
-function drawAnnualChart(){
-  const ctx = document.getElementById('annualChart').getContext('2d');
-
-  // Daily values
-  const leakDaily    = Number(buildingLeakDaily()) || 0;            // L/day
-  const savingsDaily = Number(computeSavedDailyFromSavings()) || 0; // L/day
-
-  // 1) Get avg from the *weekly curve* (dataset[0]) = sum/len
-  let avgWeeklyCurveDaily = 0;
-  if (weeklyChart && weeklyChart.data && weeklyChart.data.datasets &&
-      weeklyChart.data.datasets[0] && Array.isArray(weeklyChart.data.datasets[0].data)) {
-    const arr = weeklyChart.data.datasets[0].data.map(v => Number(v) || 0);
-    if (arr.length) {
-      avgWeeklyCurveDaily = arr.reduce((a,b)=>a+b,0) / arr.length;
+      drawWeeklyChart(adj);
+      drawAnnualChart();
     }
-  }
 
-  // Fallback if weekly hasn't been drawn yet: recompute from base × weekday%
-  if (!avgWeeklyCurveDaily) {
-    const baseDaily = Number(totalConsumptionAllRooms()) || 0; // fixtures only (no leaks)
-    const dayNames = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-    const dayPerc  = dayNames.map(d => (Number(state.building.daily[d]) || 0) / 100);
-    const dailyVals = dayPerc.map(p => baseDaily * p);
-    if (dailyVals.length) {
-      avgWeeklyCurveDaily = dailyVals.reduce((a,b)=>a+b,0) / dailyVals.length;
+    function drawWeeklyChart(adj){
+      const ctx = document.getElementById('weeklyChart').getContext('2d');
+      const dayPerc = DAYS.map(d => (Number(state.building.daily[d]) || 0) / 100);
+      const usageSeries   = dayPerc.map(p => (Number(adj) || 0) * p);
+      const leakDaily     = Number(buildingLeakDaily()) || 0;
+      const savingsDaily  = Number(computeSavedDailyFromSavings()) || 0;
+      const leakLine      = new Array(DAYS.length).fill(leakDaily);
+      const savingsLine   = new Array(DAYS.length).fill(savingsDaily);
+
+      // gradients
+      const usageGrad  = makeGradient(ctx, 'rgba(36,107,206,.28)', 'rgba(36,107,206,0)');
+      const leakGrad   = makeGradient(ctx, 'rgba(220,38,38,.24)',  'rgba(220,38,38,0)');
+      const saveGrad   = makeGradient(ctx, 'rgba(21,163,111,.26)','rgba(21,163,111,0)');
+
+      if (weeklyChart) weeklyChart.destroy();
+      weeklyChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: DAYS,
+          datasets: [
+            {
+              label: 'Total Water Consumption from fixtures (L/day)',
+              data: usageSeries,
+              tension: 0.35,
+              borderColor: '#246BCE',
+              backgroundColor: usageGrad,
+              borderWidth: 2,
+              pointRadius: 3.5,
+              pointHoverRadius: 5,
+              fill: true
+            },
+            {
+              label: 'Leak (L/day)',
+              data: leakLine,
+              tension: 0.3,
+              borderColor: '#DC2626',
+              backgroundColor: leakGrad,
+              borderWidth: 2,
+              pointRadius: 3,
+              pointHoverRadius: 5,
+              fill: true
+            },
+            {
+              label: 'Savings (L/day)',
+              data: savingsLine,
+              tension: 0.35,
+              borderColor: '#15A36F',
+              backgroundColor: saveGrad,
+              borderWidth: 2,
+              pointRadius: 3.5,
+              pointHoverRadius: 5,
+              fill: true
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'top' },
+            tooltip: { mode: 'index', intersect: false }
+          },
+          interaction: { mode: 'index', intersect: false },
+          scales: {
+            y: { beginAtZero: true, grid: { color: 'rgba(15,23,42,0.06)' } },
+            x: { grid: { display: false } }
+          }
+        }
+      });
     }
-  }
 
-  // Monthly % (0..100) -> factors (0..1)
-  const fullMonthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const monthPerc = fullMonthNames.map(m => (Number(state.building.monthly[m]) || 0) / 100);
+    function drawAnnualChart(){
+      const ctx = document.getElementById('annualChart').getContext('2d');
+      const leakDaily    = Number(buildingLeakDaily()) || 0;
+      const savingsDaily = Number(computeSavedDailyFromSavings()) || 0;
 
-  // Days in each month (non-leap)
-  const daysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31]; 
+      let avgWeeklyCurveDaily = 0;
+      if (weeklyChart?.data?.datasets?.[0]?.data) {
+        const arr = weeklyChart.data.datasets[0].data.map(v => Number(v) || 0);
+        if (arr.length) avgWeeklyCurveDaily = arr.reduce((a,b)=>a+b,0) / arr.length;
+      }
+      if (!avgWeeklyCurveDaily) {
+        const baseDaily = Number(totalConsumptionAllRooms()) || 0;
+        const dayPerc  = DAYS.map(d => (Number(state.building.daily[d]) || 0) / 100);
+        const dailyVals = dayPerc.map(p => baseDaily * p);
+        if (dailyVals.length) avgWeeklyCurveDaily = dailyVals.reduce((a,b)=>a+b,0) / dailyVals.length;
+      }
 
-  // Bars: TOTAL with leaks per month
-  // = (leakDaily * days) + (avgWeeklyCurveDaily * days * month%)
-  const barsTotalMonthly = daysInMonth.map((d, i) =>
-    (leakDaily * d) + (avgWeeklyCurveDaily * d * (monthPerc[i] || 0))
-  );
+      const monthPerc = MONTHS.map(m => (Number(state.building.monthly[m]) || 0) / 100);
+      const daysInMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
 
-  // Single line: savings per month = savingsDaily * days
-  const savingsPerMonth = daysInMonth.map(d => savingsDaily * d);
+      const barsTotalMonthly = daysInMonth.map((d, i) =>
+        (leakDaily * d) + (avgWeeklyCurveDaily * d * (monthPerc[i] || 0))
+      );
+      const savingsPerMonth = daysInMonth.map(d => savingsDaily * d);
 
-  if (annualChart) annualChart.destroy();
-  annualChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: MONTHS, // e.g., ['Jan','Feb',...,'Dec']
-      datasets: [
-        { label: 'Total Water Output From Fixtures and Leakage (L/Month)',   data: barsTotalMonthly },
-        { label: 'Water Savings (L/Month)', data: savingsPerMonth, type: 'line', tension: 0, borderDash: [2,4] }
-      ]
-    },
-    options: { responsive: true, maintainAspectRatio: false }
-  });
-}
+      if (annualChart) annualChart.destroy();
+      annualChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: MONTHS,
+          datasets: [
+            {
+              label: 'Total Water Output From Fixtures and Leakage (L/Month)',
+              data: barsTotalMonthly,
+              backgroundColor: 'rgba(21,163,111,.35)',
+              borderColor: '#15A36F',
+              borderWidth: 1.5,
+              borderRadius: 6
+            },
+            {
+              label: 'Water Savings (L/Month)',
+              data: savingsPerMonth,
+              type: 'line',
+              borderColor: '#246BCE',
+              borderWidth: 2,
+              tension: 0.2,
+              pointRadius: 3.5,
+              pointHoverRadius: 5,
+              fill: false
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins:{ legend:{ display:true } },
+          scales:{ y:{ beginAtZero:true, grid:{ color:'rgba(15,23,42,0.06)' } }, x:{ grid:{ display:false } } }
+        }
+      });
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-    // ======= Tabs nav =======
+    /* ===================== Tabs & Profile ===================== */
     (function wireTabs(){
       const tablist = document.getElementById('tabs');
       const views = document.querySelectorAll('[data-view]');
@@ -1588,101 +1532,76 @@ function drawAnnualChart(){
         const target = btn.getAttribute('data-target');
         tablist.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b===btn));
         views.forEach(v=>v.classList.toggle('active', v.getAttribute('data-view')===target));
-        // refresh when switching
-        if (target==='dashboard') renderDashboard();
-        if (target==='building')  renderBuilding();
+        if (target==='dashboard')   renderDashboard();
+        if (target==='building')    renderBuilding();
         if (target==='consumption') renderConsumption();
-        if (target==='leak') renderLeak();
-        if (target==='savings') renderSavings();
-        if (target==='settings') {/* nothing extra */}
+        if (target==='leak')        renderLeak();
+        if (target==='savings')     renderSavings();
       });
     })();
 
-    // ======= Profile save (language) =======
-    document.getElementById('btnSaveProfile').addEventListener('click', async ()=>{
-      const v = document.getElementById('lang').value;
-      const lang = (v === 'Arabic' ? 'ar' : v === 'French' ? 'fr' : 'en');
+    document.getElementById('openProfile')?.addEventListener('click', ()=>{
+      const langSel = document.getElementById('lang');
+      const curr = localStorage.getItem('gl_lang') || 'en';
+      langSel.value = curr;
+      document.getElementById('profileModal').classList.add('open');
+    });
+    document.getElementById('openProfile2')?.addEventListener('click', ()=>{
+      const langSel = document.getElementById('lang');
+      const curr = localStorage.getItem('gl_lang') || 'en';
+      langSel.value = curr;
+      document.getElementById('profileModal').classList.add('open');
+    });
+    document.getElementById('closeProfile')?.addEventListener('click', ()=>{
+      document.getElementById('profileModal').classList.remove('open');
+    });
+    document.getElementById('btnSaveProfile')?.addEventListener('click', async ()=>{
+      const lang = document.getElementById('lang').value || 'en';
       await setLangAzure(lang);
-      // also store in profile for display
-      try { state.profile.lang = (lang === 'ar' ? 'Arabic' : lang === 'fr' ? 'French' : 'English'); saveState(); } catch {}
+      state.profile.lang = lang;
+      saveState();
       document.getElementById('profileModal').classList.remove('open');
     });
 
-    // ======= Initial boot =======
+    /* ===================== Boot & Hydration ===================== */
+    async function hydrateFromServer(){
+      const [bld, cons, leaks, savings] = await Promise.all([
+        loadFromServer('building'),
+        loadFromServer('consumption'),
+        loadFromServer('leaks'),
+        loadFromServer('savings')
+      ]);
+      if (bld && typeof bld === 'object') {
+        state.building = { ...state.building, ...bld };
+      }
+      if (Array.isArray(cons) && cons.length){
+        state.rooms = cons;
+      }
+      if (Array.isArray(leaks) && leaks.length){
+        state.leakRooms = leaks;
+      }
+      if (savings && typeof savings === 'object'){
+        if (savings.edits && typeof savings.edits === 'object') state.savingsEdits = { ...state.savingsEdits, ...savings.edits };
+        if (Array.isArray(savings.other)) state.savingsOther = savings.other;
+      }
+    }
+
     function recalcAll(){
       saveState();
       renderDashboard();
     }
 
-    function boot(){
-      loadState();
-      // first render the default active view + dashboards
+    async function boot(){
+      loadState();               // local first
+      await hydrateFromServer(); // then server
       renderBuilding();
       renderConsumption();
       renderLeak();
       renderSavings();
       renderDashboard();
+      saveState();               // persist final merged state
     }
     document.addEventListener('DOMContentLoaded', boot);
   </script>
-  <script>
-document.addEventListener('DOMContentLoaded', async () => {
-  if (!getToken()) { window.location.href = 'WaterAudit - Login.html'; return; }
-
-  try {
-    // These GETs must appear in Network tab on page open
-    const [building, consumption, leaks, savings] = await Promise.all([
-      loadAudit('building'),
-      loadAudit('consumption'),
-      loadAudit('leaks'),
-      loadAudit('savings')
-    ]);
-
-    fillBuildingForm(building);
-    // fillConsumption(consumption); fillLeaks(leaks); fillSavings(savings);
-  } catch (e) {
-    console.error('Hydrate failed:', e);
-  }
-});
-</script>
-
-
-
-  <!-- === Step C: save logic (same script block, after hydrate) === -->
-<script>
-// Click-to-save button (adjust the button ID to yours)
-document.getElementById('saveBuildingBtn')?.addEventListener('click', async () => {
-  try {
-    await saveAudit('building', collectBuildingFormValues());
-    // show a small toast/snackbar if you have one
-    console.log('Building saved');
-  } catch (e) {
-    console.error('Save failed:', e);
-  }
-});
-
-// Optional: autosave when any building field changes (adjust the form id & selectors)
-function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t=setTimeout(()=>fn(...a), ms); }; }
-document.querySelectorAll('#buildingForm input, #buildingForm select, #buildingForm textarea')
-  .forEach(el=>{
-    el.addEventListener('change', debounce(async ()=>{
-      try{ await saveAudit('building', collectBuildingFormValues()); console.log('Autosaved'); }
-      catch(e){ console.error('Autosave failed:', e); }
-    }, 400));
-  });
-
-// Repeat similar wiring for consumption/leaks/savings:
-// document.getElementById('saveConsumptionBtn')?.addEventListener(...);
-// document.querySelectorAll('#consumptionForm ...').forEach(...);
-</script>
-
-
 </body>
 </html>
-
-
-
-
-
-
-
