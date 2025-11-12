@@ -33,7 +33,7 @@
     .footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:16px 24px;color:#475569}
   </style>
   <script>
-    const API_BASE = "https://gl-water-audit-api.onrender.com";
+    const API_BASE = "https://gl-water-audit-api.onrender.com"; </script>
     const $ = s => document.querySelector(s);
     function note(el,msg,type){
       if(!el) return;
@@ -140,11 +140,11 @@
           <div class="row">
             <div>
               <label>Building Name</label>
-              <input id="su_building_name" type="text" placeholder="e.g. USJ Campus – Block A" required />
+              <input id="su_building_name" type="text" placeholder="e.g. Campus 1 – Block A" required />
             </div>
             <div>
               <label>Building Location</label>
-              <input id="su_building_location" type="text" placeholder="e.g. Beirut, Verdun" required />
+              <input id="su_building_location" type="text" placeholder="e.g. Beirut, Lebanon" required />
             </div>
           </div>
 
@@ -185,7 +185,7 @@
     try{
       const r = await fetch(`${API_BASE}/api/auth/login`,{
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({email,password})
+        body: JSON.stringify({email,password}) 
       });
       if (r.status === 403) {
         const txt = await r.text();
@@ -288,4 +288,5 @@
 </script>
 </body>
 </html>
+
 
