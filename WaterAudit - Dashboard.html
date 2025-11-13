@@ -863,12 +863,41 @@
       if(!res.ok) throw new Error(await res.text());
       return res;
     }
-    async function postToServer(kind, payload){
-      try{ await api('/api/audits/'+kind, { method:'POST', body:JSON.stringify(payload) }); }catch(e){ console.warn('POST failed:', e.message); }
+
+
+
+  async function postToServer(kind, payload){
+  try {
+    if (window.saveAuditToFirestore) {
+      await window.saveAuditToFirestore(kind, payload);
     }
-    async function loadFromServer(kind){
-      try{ const r=await api('/api/audits/'+kind); return await r.json(); }catch(e){ return null; }
+  } catch (e) {
+    console.warn("Firestore save failed:", e.message);
+  }
+  // No more backend call
+}
+
+
+
+async function loadFromServer(kind){
+  if (window.loadAuditFromFirestore) {
+    const fromFs = await window.loadAuditFromFirestore(kind);
+    if (fromFs) return fromFs;
+  }
+  return null; // no backend fallback
+}
+
+
+async function saveFullState() {
+  try {
+    if (window.saveAuditToFirestore) {
+      await window.saveAuditToFirestore('fullState', state);
     }
+  } catch (e) {
+    console.error("Failed to save full state:", e);
+  }
+}
+
 
     const LS_KEY = 'gl_water_audit_v3';
 
@@ -998,8 +1027,14 @@
         );
       });
 
-      $('#btnSaveBuilding').onclick=()=>{ saveState(); postToServer('building', state.building); mirrorToGoogleSheet(state);
-        alert('Building data saved.'); };
+$('#btnSaveBuilding').onclick = () => {
+  saveState();
+  postToServer('building', state.building);
+  saveFullState();                          // 🆕 snapshot everything
+  mirrorToGoogleSheet(state);
+  alert('Building data saved.');
+};
+
     }
 
     function renderConsumption(){
@@ -1014,7 +1049,13 @@
         setTimeout(()=>document.getElementById(`room_${n-1}`)?.scrollIntoView({behavior:'smooth'}),0);
       };
 
-      $('#btnSaveConsumption').onclick=()=>{ saveState(); postToServer('consumption', state.rooms); mirrorToGoogleSheet(state); alert('Consumption data saved.'); };
+$('#btnSaveConsumption').onclick = () => {
+  saveState();
+  postToServer('consumption', state.rooms);
+  saveFullState();                          // 🆕
+  mirrorToGoogleSheet(state);
+  alert('Consumption data saved.');
+};
     }
 
     function renderConsumptionSummary(){
@@ -1171,7 +1212,13 @@
         recalcAll();
         setTimeout(()=>document.getElementById(`leakroom_${n-1}`)?.scrollIntoView({behavior:'smooth'}),0);
       };
-      $('#btnSaveLeaks').onclick=()=>{ saveState(); postToServer('leaks', state.leakRooms); mirrorToGoogleSheet(state); alert('Leak assessment saved.'); };
+$('#btnSaveLeaks').onclick = () => {
+  saveState();
+  postToServer('leaks', state.leakRooms);
+  saveFullState();                          // 🆕
+  mirrorToGoogleSheet(state);
+  alert('Leak assessment saved.');
+};
     }
 
     function renderLeakSummary(){
@@ -1333,11 +1380,13 @@
         renderSavings();
       };
 
-      $('#btnSaveSavings').onclick = ()=>{
-        postToServer('savings', { edits: state.savingsEdits, other: state.savingsOther });
-        saveState();
-        alert('Savings plan saved.');
-      };
+$('#btnSaveSavings').onclick = () => {
+  postToServer('savings', { edits: state.savingsEdits, other: state.savingsOther });
+  saveState();
+  saveFullState();                          // 🆕
+  alert('Savings plan saved.');
+};
+
     }
 
     function persistSavingsRow(r){
@@ -1555,36 +1604,53 @@
     document.getElementById('closeProfile')?.addEventListener('click', ()=>{
       document.getElementById('profileModal').classList.remove('open');
     });
-    document.getElementById('btnSaveProfile')?.addEventListener('click', async ()=>{
-      const lang = document.getElementById('lang').value || 'en';
-      await setLangAzure(lang);
-      state.profile.lang = lang;
-      saveState();
-      document.getElementById('profileModal').classList.remove('open');
-    });
+
 
     /* ===================== Boot & Hydration ===================== */
-    async function hydrateFromServer(){
-      const [bld, cons, leaks, savings] = await Promise.all([
-        loadFromServer('building'),
-        loadFromServer('consumption'),
-        loadFromServer('leaks'),
-        loadFromServer('savings')
-      ]);
-      if (bld && typeof bld === 'object') {
-        state.building = { ...state.building, ...bld };
-      }
-      if (Array.isArray(cons) && cons.length){
-        state.rooms = cons;
-      }
-      if (Array.isArray(leaks) && leaks.length){
-        state.leakRooms = leaks;
-      }
-      if (savings && typeof savings === 'object'){
-        if (savings.edits && typeof savings.edits === 'object') state.savingsEdits = { ...state.savingsEdits, ...savings.edits };
-        if (Array.isArray(savings.other)) state.savingsOther = savings.other;
-      }
-    }
+async function hydrateFromServer(){
+  const [bld, cons, leaks, savings, profile] = await Promise.all([
+    loadFromServer('building'),
+    loadFromServer('consumption'),
+    loadFromServer('leaks'),
+    loadFromServer('savings'),
+    loadFromServer('profile')  // 🆕
+  ]);
+
+  if (bld && typeof bld === 'object') {
+    state.building = { ...state.building, ...bld };
+  }
+  if (Array.isArray(cons) && cons.length){
+    state.rooms = cons;
+  }
+  if (Array.isArray(leaks) && leaks.length){
+    state.leakRooms = leaks;
+  }
+  if (savings && typeof savings === 'object'){
+    if (savings.edits && typeof savings.edits === 'object')
+      state.savingsEdits = { ...state.savingsEdits, ...savings.edits };
+    if (Array.isArray(savings.other))
+      state.savingsOther = savings.other;
+  }
+
+  // 🆕 hydrate profile
+  if (profile && typeof profile === 'object') {
+    state.profile = { ...state.profile, ...profile };
+
+    // also fill the modal fields so they show existing data
+    const nameEl  = document.getElementById('name');
+    const emailEl = document.getElementById('email');
+    const bnameEl = document.getElementById('bname');
+    const blocEl  = document.getElementById('bloc');
+    const langSel = document.getElementById('lang');
+
+    if (nameEl)  nameEl.value  = state.profile.name || '';
+    if (emailEl) emailEl.value = state.profile.email || '';
+    if (bnameEl) bnameEl.value = state.profile.building || '';
+    if (blocEl)  blocEl.value  = state.profile.location || '';
+    if (langSel) langSel.value = state.profile.lang || 'en';
+  }
+}
+
 
     function recalcAll(){
       saveState();
@@ -1603,6 +1669,129 @@
     }
     document.addEventListener('DOMContentLoaded', boot);
   </script>
+
+<script type="module">
+  import { initializeApp, getApps, getApp } 
+    from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import {
+    getAuth,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    getDoc
+  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+  // 🔹 SAME config as login/signup page
+  const firebaseConfig = {
+    apiKey: "AIzaSyAqGQJ7VR7L8qHcntwO2oO3ADh35kLGTds",
+    authDomain: "green-leaders-water-audit.firebaseapp.com",
+    projectId: "green-leaders-water-audit",
+    storageBucket: "green-leaders-water-audit.firebasestorage.app",
+    messagingSenderId: "594962525208",
+    appId: "1:594962525208:web:debc691066c3908156276d",
+    measurementId: "G-X604FHQC1M"
+  };
+
+  const app  = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
+  // We keep a reference to the current user for Firestore
+  let currentUser = null;
+
+  // 🔐 Protect the dashboard: if not logged in OR not verified → go to login
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user || null;
+
+    if (!user || !user.emailVerified) {
+      try {
+        localStorage.removeItem("gl_token");
+        localStorage.removeItem("gl_user");
+      } catch (e) {}
+      window.location.href = "WaterAudit - Login.html";
+      return;
+    }
+
+    try {
+      const token = await user.getIdToken();
+      localStorage.setItem("gl_token", token);
+      localStorage.setItem("gl_user", JSON.stringify({
+        uid: user.uid,
+        email: user.email
+      }));
+    } catch (e) {
+      console.error(e);
+    }
+  });
+
+  // 🔴 Logout uses Firebase signOut + clears local storage
+  window.logout = async function () {
+    try {
+      await signOut(auth);
+    } catch (e) {
+      console.error("Firebase signOut error:", e);
+    }
+    try {
+      localStorage.removeItem("gl_token");
+      localStorage.removeItem("gl_user");
+    } catch (e) {}
+    window.location.href = "WaterAudit - Login.html";
+  };
+
+  /* ========= GLOBAL HELPERS FOR FIRESTORE ========= */
+
+  // One document per user+kind:
+  // collection: waterAudits
+  // doc id: <uid>_<kind>  (kind = "building" | "consumption" | "leaks" | "savings")
+  function auditDocRef(kind) {
+    if (!currentUser) return null;
+    return doc(db, "waterAudits", `${currentUser.uid}_${kind}`);
+  }
+
+  // Called from the non-module script when user clicks "Save"
+  window.saveAuditToFirestore = async function (kind, payload) {
+    try {
+      const ref = auditDocRef(kind);
+      if (!ref) return; // not logged in yet
+
+      await setDoc(
+        ref,
+        {
+          kind,
+          data: payload,
+          uid: currentUser.uid,
+          email: currentUser.email || null,
+          updatedAt: new Date().toISOString()
+        },
+        { merge: true }
+      );
+      console.log("Saved to Firestore:", kind);
+    } catch (e) {
+      console.error("Firestore save error:", e);
+    }
+  };
+
+  // Used on boot() to hydrate from Firestore if data exists
+  window.loadAuditFromFirestore = async function (kind) {
+    try {
+      const ref = auditDocRef(kind);
+      if (!ref) return null;
+      const snap = await getDoc(ref);
+      if (!snap.exists()) return null;
+      const docData = snap.data();
+      return docData?.data || null;
+    } catch (e) {
+      console.error("Firestore load error:", e);
+      return null;
+    }
+  };
+</script>
+
+
 </body>
 </html>
 
