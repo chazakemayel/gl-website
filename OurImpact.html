@@ -1,156 +1,740 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="with=device-width, initial scale=1.0">
-    <title>Green Leaders Website </title>
-    <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">  
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Impact | Green Leaders</title>
 
-  </head>
-  
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
 
+  <style>
+    :root{
+      --primary-color:#007a5e;
+      --secondary-color:#fcd738;
+      --text-color:#1a1a1a;
+      --light-bg:#f5f5f5;
+      --dark-bg:#0d2916;
+      --font:'Poppins', sans-serif;
+    }
+
+    *{ margin:0; padding:0; box-sizing:border-box; }
+
+    html, body{
+      width:100%;
+      max-width:100%;
+      overflow-x:hidden;
+    }
+
+    body{ font-family:var(--font); color:var(--text-color); background:#fff; }
+
+    /* =========================
+       HEADER / NAV (MATCH HOME - RESPONSIVE)
+       ========================= */
+    .main-header{
+      background:#fff;
+      border-bottom:1px solid #eee;
+      position:sticky;
+      top:0;
+      z-index:999;
+      box-shadow:0 2px 4px rgba(0,0,0,0.04);
+    }
+
+    .nav-container{
+      width:100%;
+      max-width:1200px;
+      margin:0 auto;
+      padding:14px 18px;
+      display:grid;
+      grid-template-columns:1fr auto; /* mobile: logo + hamburger */
+      align-items:center;
+      gap:12px;
+    }
+
+    .brand{ display:inline-flex; align-items:center; }
+    .logo{ height:55px; display:block; }
+
+    /* hamburger */
+    .nav-toggle{
+      background:none;
+      border:0;
+      font-size:22px;
+      cursor:pointer;
+      padding:8px 10px;
+      border-radius:10px;
+    }
+    .nav-toggle:focus{
+      outline:2px solid rgba(0,122,94,0.25);
+      outline-offset:2px;
+    }
+
+    /* CTA */
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      justify-content:flex-end;
+    }
+
+    .cta-button{
+      background:#67b7a4;
+      color:#fff;
+      font-weight:600;
+      padding:10px 18px;
+      border-radius:999px;
+      text-decoration:none;
+      transition:all .25s ease;
+      white-space:nowrap;
+      display:inline-block;
+      text-align:center;
+    }
+    .cta-button:hover{ background:var(--primary-color); }
+
+    /* Desktop CTA only */
+    .desktop-only{ display:none; }
+
+    /* Mobile CTA item hidden by default */
+    .mobile-cta-item{ display:none; }
+
+    @media (min-width:901px){
+      .nav-container{
+        display:flex;
+        justify-content:space-between;
+        gap:16px;
+      }
+      .desktop-only{ display:flex; }
+      .nav-toggle{ display:none; }
+    }
+
+    .main-nav{
+      display:flex;
+      align-items:center;
+      gap:20px;
+    }
+
+    .main-nav > ul{
+  list-style:none;
+  display:flex;
+  align-items:center;
+  gap:26px;
+  margin:0;
+  padding:0;
+}
+
+    .main-nav li{ position:relative; }
+
+    .nav-link,
+    .dropdown-toggle{
+      text-decoration:none;
+      color:var(--text-color);
+      font-weight:500;
+      font-size:16px;
+      padding:10px 0;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+      background:none;
+      border:none;
+      font-family:inherit;
+    }
+
+    .nav-link:hover,
+    .dropdown-toggle:hover{ color:var(--primary-color); }
+
+    .nav-link.active{ color:var(--primary-color); }
+
+    /* Home/Impact link + arrow layout */
+    .dropdown-head{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .dropdown-head .dropdown-toggle{ padding:10px 0; }
+
+    /* DROPDOWN */
+  /* Dropdown menu */
+.dropdown-menu{
+  position:absolute;
+  top:100%;
+  left:0;
+  margin-top:10px;              /* spacing */
+  min-width:220px;
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.12);
+  padding:8px 0;
+  list-style:none;
+  z-index:999;
+
+  opacity:0;
+  transform:translateY(-6px);
+  pointer-events:none;
+  transition:opacity .18s ease, transform .18s ease;
+}
+
+.dropdown.open > .dropdown-menu{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+
+/* ✅ Invisible hover-bridge so it doesn't close when moving cursor down */
+.dropdown-menu::before{
+  content:"";
+  position:absolute;
+  top:-10px;        /* same as margin-top */
+  left:0;
+  right:0;
+  height:10px;
+}
+
+
+    .dropdown-menu li a{
+      display:block;
+      padding:12px 16px;
+      color:var(--text-color);
+      text-decoration:none;
+      font-size:14px;
+      white-space:nowrap;
+    }
+    .dropdown-menu li a:hover{
+      background:#f7f7f7;
+      color:var(--primary-color);
+    }
+
+    @media (hover:hover) and (pointer:fine){
+      .dropdown:hover > .dropdown-menu{
+        opacity:1;
+        transform:translateY(0);
+        pointer-events:auto;
+      }
+    }
+
+    /* MOBILE NAV */
+    @media (max-width:900px){
+      .header-actions{ display:none !important; }
+      .mobile-cta-item{ display:block; }
+
+      .main-nav{
+        position:fixed;
+        top:70px;
+        left:12px;
+        right:12px;
+        background:#fff;
+        border-radius:14px;
+        border:1px solid #eee;
+        box-shadow:0 10px 30px rgba(0,0,0,0.10);
+
+        transform:translateY(-140%);
+        transition:transform .25s ease;
+        padding:12px 14px;
+        z-index:999;
+      }
+      .main-nav.open{ transform:translateY(0); }
+
+      .main-nav ul{
+        flex-direction:column;
+        align-items:stretch;
+        gap:6px;
+      }
+
+      .nav-link, .dropdown-toggle{
+        width:100%;
+        padding:12px 10px;
+        justify-content:space-between;
+        border-radius:10px;
+      }
+
+      .dropdown-head{
+        width:100%;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+      }
+      .dropdown-head .nav-link{
+        width:auto;
+        padding:12px 10px;
+      }
+      .dropdown-head .dropdown-toggle{
+        width:auto;
+        padding:12px 10px;
+      }
+
+      /* inline dropdown on mobile */
+      .dropdown-menu{
+        position:static;
+        min-width:100%;
+        margin-top:0;
+        box-shadow:none;
+        border-radius:10px;
+        padding:6px 0;
+
+        opacity:1;
+        transform:none;
+        pointer-events:auto;
+        display:none;
+      }
+      .dropdown.open > .dropdown-menu{ display:block; }
+    }
+
+    /* ---------- HERO ---------- */
+    .hero{
+      background:linear-gradient(rgba(0,122,94,.78), rgba(0,122,94,.78)),
+        url('images/green-pattern.png') repeat;
+      color:#fff;
+      text-align:center;
+      padding:110px 20px 70px;
+    }
+    .hero h1{
+      font-size:52px;
+      font-weight:700;
+      letter-spacing:0.2px;
+    }
+    .hero p{
+      font-size:18px;
+      margin-top:12px;
+      max-width:760px;
+      margin-left:auto;
+      margin-right:auto;
+      opacity:0.95;
+      line-height:1.7;
+    }
+
+    /* ---------- SECTIONS ---------- */
+    .section{
+      padding:70px 20px;
+      background:var(--light-bg);
+    }
+    .section.white{ background:#fff; }
+    .container{
+      max-width:1200px;
+      margin:0 auto;
+    }
+    .section h2{
+      text-align:center;
+      font-size:34px;
+      margin-bottom:12px;
+    }
+    .section .subtitle{
+      text-align:center;
+      max-width:820px;
+      margin:0 auto 34px;
+      color:#555;
+      line-height:1.7;
+    }
+
+    /* ---------- CARDS ---------- */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
+      gap:18px;
+    }
+    .card{
+      background:#fff;
+      border-radius:14px;
+      padding:22px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
+      border:1px solid rgba(0,0,0,0.04);
+      transition:transform .25s ease, box-shadow .25s ease;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 14px 28px rgba(0,0,0,0.08);
+    }
+    .card i{
+      font-size:24px;
+      color:var(--primary-color);
+    }
+    .card h3{
+      font-size:18px;
+      margin-top:2px;
+      color:#0f3b2d;
+    }
+    .card p{
+      color:#555;
+      line-height:1.65;
+      font-size:14.5px;
+    }
+    .card .mini-link{
+      margin-top:auto;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-weight:700;
+      color:var(--primary-color);
+      text-decoration:none;
+      width:max-content;
+    }
+    .card .mini-link:hover{ text-decoration:underline; }
+
+    /* ---------- FEATURE LINKS (2 big tiles) ---------- */
+    .two-col{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:18px;
+      margin-top:10px;
+    }
+    .feature{
+      background:#fff;
+      border-radius:16px;
+      padding:26px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
+      border:1px solid rgba(0,0,0,0.04);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      position:relative;
+      overflow:hidden;
+    }
+    .feature::after{
+      content:"";
+      position:absolute;
+      inset:-40px -60px auto auto;
+      width:220px;
+      height:220px;
+      background:rgba(0,122,94,0.10);
+      border-radius:50%;
+      filter:blur(0px);
+    }
+    .feature h3{ font-size:20px; color:#0f3b2d; }
+    .feature p{ color:#555; line-height:1.7; }
+    .btn{
+      display:inline-block;
+      margin-top:8px;
+      background:var(--secondary-color);
+      color:#000;
+      padding:12px 18px;
+      border-radius:999px;
+      font-weight:800;
+      text-decoration:none;
+      width:max-content;
+    }
+
+    /* ---------- CTA STRIP ---------- */
+    .cta-strip{
+      background:linear-gradient(90deg, rgba(0,122,94,1), rgba(103,183,164,1));
+      color:#fff;
+      padding:60px 20px;
+      text-align:center;
+    }
+    .cta-strip h2{ font-size:34px; margin-bottom:10px; }
+    .cta-strip p{
+      max-width:760px;
+      margin:0 auto 18px;
+      opacity:0.95;
+      line-height:1.7;
+    }
+    .cta-strip a{
+      display:inline-block;
+      background:var(--secondary-color);
+      color:#000;
+      padding:12px 22px;
+      border-radius:999px;
+      font-weight:800;
+      text-decoration:none;
+    }
+
+    /* ---------- FOOTER (match Home) ---------- */
+    footer{
+      background:var(--primary-color);
+      color:#fff;
+      padding:40px 20px;
+    }
+    .footer-wrap{
+      max-width:1200px;
+      margin:auto;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      gap:30px;
+    }
+    .footer-wrap h4{ margin-bottom:10px; }
+    .footer-wrap ul{ list-style:none; padding:0; }
+    .footer-wrap a{ color:#fff; text-decoration:none; }
+    .footer-wrap a:hover{ text-decoration:underline; }
+    .footer-social a{ margin-right:12px; font-size:20px; }
+
+    .footer-bottom{
+      text-align:center;
+      margin-top:26px;
+      font-size:12px;
+      opacity:0.9;
+    }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 1100px){
+      .grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 900px){
+      .two-col{ grid-template-columns:1fr; }
+      .hero h1{ font-size:42px; }
+    }
+    @media (max-width: 720px){
+      .grid{ grid-template-columns:1fr; }
+      .section h2{ font-size:28px; }
+    }
+  </style>
 </head>
+
 <body>
 
-    <section class="subheader">
-        <nav>
-            <div class="logo">
-                <img src="images/GLLOGO.png" alt="Green Leaders">
-            </div>
-            <div class="nav-links" id="navLinks">
-                <ul>
-                    <li><a href="index.html">HOME</a></li>
-                    <li><a href="WhoWeAre.html">WHO WE ARE</a></li>
-                    <li><a href="OurImpact.html">OUR IMPACT</a></li>
-                    <li><a href="GetInvolved.html">GET INVOLVED</a></li>
-                    <div class="centered-links">
-                        <li><a href="NewsLetter.html">Newsletter</a></li>
-                        <li><a href="Awarness&Education.html">Awarness</a></li>
-                        <li><a href="Research&Studies.html">Studies</a></li>
-                        <li><a href="ContactUs.html">Contact Us</a></li>
-                        <li><a href="WaterAudit.html">Water Audit Tool</a></li>
-                        
-                </ul>
-            </div>
-        </nav>
-    </section>
+<header class="main-header">
+  <div class="nav-container">
+    <a href="index.html" class="brand">
+      <img src="images/GLLOGO.png" alt="Green Leaders Logo" class="logo" />
+    </a>
 
-    
+    <!-- Mobile hamburger -->
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
 
-    
-    
-
-
-<section class="asa">
-        <div class="slide">
-            <img src="images/akh6.png">
-        </div>
-    
-
-
-
-
-
-<section class="aboutt">
-    <div class="row22">
-        <!-- Column for text content -->
-    <div class="slide">
-        <img src="images/values2.png" alt="Green Leaders" class="valuesimg">
-    
-</section>
-
-
-</section>
-
-
-
-
-
-
-
-  
-
-<footer style="background-color: #00883f; color: white; text-align: center; position: relative; ">
-    <div style="display: flex; justify-content: center; flex-wrap: wrap;">
-        <!-- Column 1: Contact Us -->
-        <div style="min-width: 150px; margin: 10px;">
-            <p style="font-size: 16px; font-weight: bold;">
-            </p>
-        </div>
-
-        <!-- Column 2: Social Media Links -->
-        <div style="min-width: 200px; margin: 10px; text-align: center;">
-            <h4 style="font-size: 20px;font-weight: 300; color: white;transform:translateX(-30%);">Follow us on</h4>
-            <div class="social-icons" style="margin-top: 10px; text-align: center;transform:translateX(-30%);">
-                <a href="https://www.linkedin.com/company/grleaders/" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                    <i class="fa-brands fa-linkedin"></i>
-                </a>
-                <a href="https://www.instagram.com/green_leaders.ngo" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                    <i class="fa-brands fa-instagram"></i>
-                </a>
-                <a href="https://x.com/gr_leaders" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                    <i class="fa-solid fa-xmark"></i>
-                </a>
-                <a href="https://www.facebook.com/grleaders" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                    <i class="fa-brands fa-facebook"></i>
-                </a>
-            </div>
-        </div>
+    <!-- Desktop CTA (only on desktop) -->
+    <div class="header-actions desktop-only">
+      <a href="GetInvolved.html" class="cta-button">Become a Member</a>
     </div>
 
-    <!-- Column 3: Copyright (aligned to the bottom left corner) -->
-    <p style="font-size: 12px; position: absolute; bottom: 10px; left: 10px;">&copy; 2025 Green Leaders. All Rights Reserved.</p>
+    <nav class="main-nav" id="mainNav">
+      <ul>
+        <!-- Home: link opens index, arrow opens dropdown -->
+        <li class="dropdown">
+          <div class="dropdown-head">
+            <a class="nav-link" href="index.html">Home</a>
+            <button class="dropdown-toggle" type="button" aria-label="Open Home menu" aria-expanded="false">
+              <i class="fa fa-caret-down"></i>
+            </button>
+          </div>
+          <ul class="dropdown-menu">
+            <li><a href="ContactUs.html">Contact Us</a></li>
+          </ul>
+        </li>
+
+        <li><a class="nav-link" href="WhoWeAre.html">About Us</a></li>
+
+        <!-- Our Impact: link opens page, arrow opens dropdown -->
+        <li class="dropdown">
+          <div class="dropdown-head">
+            <a class="nav-link active" href="OurImpact.html">Our Impact</a>
+            <button class="dropdown-toggle" type="button" aria-label="Open Our Impact menu" aria-expanded="false">
+              <i class="fa fa-caret-down"></i>
+            </button>
+          </div>
+          <ul class="dropdown-menu">
+        
+            <li><a href="Research&Studies.html">Research and Studies</a></li>
+            <li><a href="Awarness&Education.html">Awareness and Education</a></li>
+          </ul>
+        </li>
+
+        <li><a class="nav-link" href="NewsLetter.html">Newsletter</a></li>
+
+        <!-- If you want it in every page, keep it; if not, delete this line -->
+        <li><a class="nav-link" href="WaterAudit.html">Water Audit Tool</a></li>
+
+        <!-- Mobile CTA (only inside menu) -->
+        <li class="mobile-cta-item">
+          <a href="GetInvolved.html" class="cta-button" style="width:100%; margin-top:10px;">
+            Become a Member
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Our Impact</h1>
+  <p>
+    We drive sustainability through research, education, and partnerships — delivering measurable progress in
+    environmental stewardship, resource efficiency, and ESG practices.
+  </p>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Our Impact Pillars</h2>
+    <p class="subtitle">
+      Our initiatives focus on key sustainability challenges — from energy and water to pollution reduction and ESG integration.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <i class="fa-solid fa-microscope"></i>
+        <h3>Research for Sustainable Solutions</h3>
+        <p>
+          We conduct research across energy, water, air, materials, oceans, and carbon emissions to generate data-driven insights
+          that support effective environmental solutions.
+        </p>
+        <a class="mini-link" href="Research&Studies.html">Explore research <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="card">
+        <i class="fa-solid fa-droplet"></i>
+        <h3>Energy Efficiency & Water Stewardship</h3>
+        <p>
+          We support the transition to clean energy and conservation strategies, while promoting water efficiency, quality improvements,
+          and sustainable operational practices.
+        </p>
+        <a class="mini-link" href="Awarness&Education.html">Explore programs <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="card">
+        <i class="fa-solid fa-recycle"></i>
+        <h3>Pollution Reduction & Circular Economy</h3>
+        <p>
+          We develop initiatives that reduce pollution in air, water, soil, and land — advancing waste reduction, recycling,
+          and circular economy solutions.
+        </p>
+      </div>
+
+      <div class="card">
+        <i class="fa-solid fa-clipboard-check"></i>
+        <h3>ESG Practices</h3>
+        <p>
+          We encourage the adoption of ESG principles by integrating sustainable policies and practices that contribute to measurable
+          environmental, social, and economic improvements.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section white">
+  <div class="container">
+    <h2>Explore Our Work</h2>
+    <p class="subtitle">
+      Discover our major impact areas — education programs that empower communities, and research studies that support better decisions.
+    </p>
+
+    <div class="two-col">
+      <div class="feature">
+        <h3>Awareness & Education</h3>
+        <p>
+          Programs and campaigns that build sustainability awareness through hands-on learning, school initiatives,
+          community engagement, and training.
+        </p>
+        <a class="btn" href="Awarness&Education.html">Go to Awareness</a>
+      </div>
+
+      <div class="feature">
+        <h3>Research & Studies</h3>
+        <p>
+          Reports and data-driven work addressing sustainability challenges — including Beirut air quality findings and publications.
+        </p>
+        <a class="btn" href="Research&Studies.html">Go to Studies</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-wrap">
+    <div>
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="WhoWeAre.html">Who We Are</a></li>
+        <li><a href="OurImpact.html">Our Impact</a></li>
+        <li><a href="Awarness&Education.html">Awareness & Education</a></li>
+        <li><a href="Research&Studies.html">Research & Studies</a></li>
+        <li><a href="GetInvolved.html">Membership</a></li>
+        <li><a href="NewsLetter.html">Newsletter</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Contact Us</h4>
+      <p><i class="fas fa-envelope" style="margin-right:8px;"></i> admin@grleaders.org</p>
+      <p><i class="fas fa-map-marker-alt" style="margin-right:8px;"></i> Lebanon</p>
+    </div>
+
+    <div class="footer-social">
+      <h4>Follow Us</h4>
+      <a href="https://www.linkedin.com/company/grleaders/" target="_blank"><i class="fab fa-linkedin"></i></a>
+      <a href="https://www.instagram.com/green_leaders.ngo" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://x.com/gr_leaders" target="_blank"><i class="fa-solid fa-xmark"></i></a>
+      <a href="https://www.facebook.com/grleaders" target="_blank"><i class="fab fa-facebook"></i></a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">&copy; 2025 Green Leaders. All Rights Reserved.</div>
 </footer>
 
-
-
-
-
-
-
-
-
-
-
-
-<!----Java Script for Toggle Menu----->
-
 <script>
-    var navLinks=document.getElementbyID("navLinks");
-    function showMenu(){
-        navLinks.style.right="0";
+  document.addEventListener('DOMContentLoaded', () => {
+    const navToggle = document.getElementById('navToggle');
+    const mainNav = document.getElementById('mainNav');
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    function closeAllDropdowns() {
+      dropdowns.forEach(d => {
+        d.classList.remove('open');
+        const t = d.querySelector('.dropdown-toggle');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      });
     }
-    function hideMenu(){
-        navLinks.style.right="-200px";
-    }    
-</script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const elements = document.querySelectorAll(".fade-in");
+    // Mobile menu toggle
+    if (navToggle && mainNav) {
+      navToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = mainNav.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        if (!isOpen) closeAllDropdowns();
+      });
+    }
 
-        function checkVisibility() {
-            elements.forEach(element => {
-                const rect = element.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.85) {
-                    element.classList.add("visible");
-                }
-            });
+    // Dropdown arrow toggles
+    dropdowns.forEach(dropdown => {
+      const toggle = dropdown.querySelector('.dropdown-toggle');
+      if (!toggle) return;
+
+      toggle.setAttribute('aria-expanded', 'false');
+
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains('open');
+
+        closeAllDropdowns();
+        if (!isOpen) {
+          dropdown.classList.add('open');
+          toggle.setAttribute('aria-expanded', 'true');
         }
-
-        window.addEventListener("scroll", checkVisibility);
-        checkVisibility(); // Run on load to catch elements already in view
+      });
     });
+
+    // Close on outside click
+    document.addEventListener('click', () => {
+      closeAllDropdowns();
+      if (mainNav) mainNav.classList.remove('open');
+      if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+    });
+
+    // Prevent clicks inside menu from closing it
+    if (mainNav) mainNav.addEventListener('click', (e) => e.stopPropagation());
+
+    // Escape to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAllDropdowns();
+        if (mainNav) mainNav.classList.remove('open');
+        if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Resize closes everything
+    window.addEventListener('resize', () => {
+      closeAllDropdowns();
+      if (mainNav) mainNav.classList.remove('open');
+      if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
 </script>
-
-
-
-
 
 </body>
 </html>
