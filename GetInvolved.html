@@ -1,144 +1,726 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="with=device-width, initial scale=1.0">
-    <title>Green Leaders Website </title>
-    <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">  
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Involved | Green Leaders</title>
 
-  </head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
 
-  
+  <style>
+    :root{
+      --primary:#007a5e;
+      --secondary:#fcd738;
+      --text:#1a1a1a;
+      --muted:#555;
+      --bg:#f5f5f5;
+      --card:#ffffff;
+      --font:'Poppins', sans-serif;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+
+    /* ✅ Full-width / no side gaps on mobile */
+    html, body{
+      width:100%;
+      max-width:100%;
+      overflow-x:hidden;
+    }
+
+    body{font-family:var(--font);color:var(--text);background:#fff;}
+
+    /* =========================
+       HEADER / NAV (MATCH HOME)
+       ========================= */
+    .main-header{
+      background:#fff;
+      border-bottom:1px solid #eee;
+      position:sticky;
+      top:0;
+      z-index:999;
+      box-shadow:0 2px 4px rgba(0,0,0,0.04);
+    }
+
+    .nav-container{
+      width:100%;
+      max-width:1200px;
+      margin:0 auto;
+      padding:14px 18px;
+      display:grid;
+      grid-template-columns:1fr auto; /* small screens */
+      align-items:center;
+      gap:12px;
+    }
+
+    .brand{ display:inline-flex; align-items:center; }
+    .logo{ height:52px; display:block; }
+
+    /* hamburger */
+    .nav-toggle{
+      background:none;
+      border:0;
+      font-size:22px;
+      cursor:pointer;
+      padding:8px 10px;
+      border-radius:10px;
+    }
+    .nav-toggle:focus{
+      outline:2px solid rgba(0,122,94,0.25);
+      outline-offset:2px;
+    }
+
+    /* CTA */
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      justify-content:flex-end;
+    }
+    .cta-button{
+      background:#67b7a4;
+      color:#fff;
+      font-weight:600;
+      padding:10px 18px;
+      border-radius:999px;
+      text-decoration:none;
+      transition:all .25s ease;
+      white-space:nowrap;
+      display:inline-block;
+      text-align:center;
+    }
+    .cta-button:hover{ background:var(--primary); }
+
+    /* Desktop CTA only */
+    .desktop-only{ display:none; }
+
+    /* Mobile CTA item hidden by default */
+    .mobile-cta-item{ display:none; }
+
+    @media (min-width:901px){
+      .nav-container{
+        display:flex;
+        justify-content:space-between;
+        gap:16px;
+      }
+      .desktop-only{ display:flex; }
+      .nav-toggle{ display:none; }
+    }
+
+    .main-nav{
+      display:flex;
+      align-items:center;
+      gap:20px;
+    }
+
+    .main-nav > ul{
+  list-style:none;
+  display:flex;
+  align-items:center;
+  gap:26px;
+  margin:0;
+  padding:0;
+}
+
+    .main-nav li{ position:relative; }
+
+    .nav-link,
+    .dropdown-toggle{
+      text-decoration:none;
+      color:var(--text);
+      font-weight:500;
+      font-size:16px;
+      padding:10px 0;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+      background:none;
+      border:none;
+      font-family:inherit;
+    }
+
+    .nav-link:hover,
+    .dropdown-toggle:hover{ color:var(--primary); }
+
+    /* Home/Impact link + arrow layout */
+    .dropdown-head{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+    .dropdown-head .dropdown-toggle{
+      padding:10px 0;
+    }
+
+    /* Dropdown (desktop) */
+  /* Dropdown menu */
+.dropdown-menu{
+  position:absolute;
+  top:100%;
+  left:0;
+  margin-top:10px;              /* spacing */
+  min-width:220px;
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.12);
+  padding:8px 0;
+  list-style:none;
+  z-index:999;
+
+  opacity:0;
+  transform:translateY(-6px);
+  pointer-events:none;
+  transition:opacity .18s ease, transform .18s ease;
+}
+
+.dropdown.open > .dropdown-menu{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+
+/* ✅ Invisible hover-bridge so it doesn't close when moving cursor down */
+.dropdown-menu::before{
+  content:"";
+  position:absolute;
+  top:-10px;        /* same as margin-top */
+  left:0;
+  right:0;
+  height:10px;
+}
+
+    .dropdown-menu li a{
+      display:block;
+      padding:12px 16px;
+      color:var(--text);
+      text-decoration:none;
+      font-size:14px;
+      white-space:nowrap;
+    }
+    .dropdown-menu li a:hover{
+      background:#f7f7f7;
+      color:var(--primary);
+    }
+
+    @media (hover:hover) and (pointer:fine){
+      .dropdown:hover > .dropdown-menu{
+        opacity:1;
+        transform:translateY(0);
+        pointer-events:auto;
+      }
+    }
+
+    /* MOBILE NAV */
+    @media (max-width:900px){
+      /* ✅ hide CTA in header on mobile */
+      .header-actions{ display:none !important; }
+      /* ✅ show CTA only inside menu */
+      .mobile-cta-item{ display:block; }
+
+      .main-nav{
+        position:fixed;
+        top:70px;
+        left:12px;
+        right:12px;
+        background:#fff;
+        border-radius:14px;
+        border:1px solid #eee;
+        box-shadow:0 10px 30px rgba(0,0,0,0.10);
+
+        transform:translateY(-140%);
+        transition:transform .25s ease;
+        padding:12px 14px;
+        z-index:999;
+      }
+      .main-nav.open{ transform:translateY(0); }
+
+      .main-nav ul{
+        flex-direction:column;
+        align-items:stretch;
+        gap:6px;
+      }
+
+      .nav-link, .dropdown-toggle{
+        width:100%;
+        padding:12px 10px;
+        justify-content:space-between;
+        border-radius:10px;
+      }
+
+      .dropdown-head{
+        width:100%;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+      }
+      .dropdown-head .nav-link{
+        width:auto;
+        padding:12px 10px;
+      }
+      .dropdown-head .dropdown-toggle{
+        width:auto;
+        padding:12px 10px;
+      }
+
+      /* inline dropdown on mobile */
+      .dropdown-menu{
+        position:static;
+        min-width:100%;
+        margin-top:0;
+        box-shadow:none;
+        border-radius:10px;
+        padding:6px 0;
+
+        opacity:1;
+        transform:none;
+        pointer-events:auto;
+        display:none;
+      }
+      .dropdown.open > .dropdown-menu{ display:block; }
+    }
+
+    /* =========================
+       PAGE STYLES (YOUR ORIGINAL)
+       ========================= */
+
+    /* Hero */
+    .hero{
+      background:linear-gradient(rgba(0,122,94,.78), rgba(0,122,94,.78)),
+        url('images/green-pattern.png') repeat;
+      color:#fff;
+      text-align:center;
+      padding:110px 20px 70px;
+    }
+    .hero h1{font-size:52px;font-weight:700;}
+    .hero p{
+      font-size:18px;
+      margin-top:12px;
+      max-width:820px;
+      margin-left:auto;
+      margin-right:auto;
+      opacity:.95;
+      line-height:1.7;
+    }
+
+    /* Sections */
+    .section{padding:70px 20px;background:var(--bg);}
+    .section.white{background:#fff;}
+    .container{max-width:1200px;margin:0 auto;}
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#f2fbf7;
+      border:1px solid rgba(0,122,94,0.18);
+      color:#0f3b2d;
+      font-size:13px;
+      font-weight:700;
+    }
+    .kicker i{color:var(--primary);}
+
+    h2{font-size:34px;color:#0f3b2d;margin:14px 0 10px;}
+    .subtitle{color:var(--muted);line-height:1.8;font-size:16px;max-width:980px;}
+
+    /* Cards */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:18px;
+      margin-top:26px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:16px;
+      padding:22px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
+      border:1px solid rgba(0,0,0,0.04);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      transition:transform .25s ease, box-shadow .25s ease;
+      height:100%;
+    }
+    .card:hover{transform:translateY(-6px);box-shadow:0 14px 28px rgba(0,0,0,0.08);}
+    .card i{font-size:24px;color:var(--primary);}
+    .card h3{font-size:18px;color:#0f3b2d;}
+    .card ul{margin-left:18px;color:var(--muted);line-height:1.7;font-size:14.5px;}
+
+    .jump{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-top:auto;
+      font-weight:800;
+      color:var(--primary);
+      text-decoration:none;
+      width:max-content;
+    }
+    .jump:hover{text-decoration:underline;}
+
+    /* Form layout */
+    .form-grid{
+      display:grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap:18px;
+      margin-top:26px;
+      align-items:start;
+    }
+    .info-card, .form-card{
+      background:#fff;
+      border-radius:16px;
+      padding:22px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
+      border:1px solid rgba(0,0,0,0.04);
+    }
+
+    .info-row{display:flex;gap:14px;align-items:flex-start;}
+    .info-row i{font-size:22px;color:var(--primary);margin-top:2px;}
+    .info-row h4{margin:0;color:#0f3b2d;}
+    .info-row p{margin-top:4px;color:var(--muted);line-height:1.6;}
+
+    form{display:flex;flex-direction:column;gap:12px;}
+    input, select, textarea{
+      width:100%;
+      padding:14px 14px;
+      border-radius:12px;
+      border:1px solid rgba(0,122,94,0.35);
+      outline:none;
+      font-family:var(--font);
+      font-size:14.5px;
+      background:#fff;
+    }
+    textarea{resize:vertical;min-height:160px;}
+    .submit{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:12px 18px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-weight:900;
+      background:var(--secondary);
+      color:#000;
+      width:max-content;
+      margin-top:6px;
+    }
+
+    /* Footer */
+    footer{
+      background:var(--primary);
+      color:#fff;
+      padding:40px 20px;
+    }
+    .footer-wrap{
+      max-width:1200px;
+      margin:auto;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      gap:30px;
+    }
+    .footer-wrap h4{margin-bottom:10px;}
+    .footer-wrap ul{list-style:none;padding:0;}
+    .footer-wrap a{color:#fff;text-decoration:none;}
+    .footer-wrap a:hover{text-decoration:underline;}
+    .footer-social a{margin-right:12px;font-size:20px;}
+    .footer-bottom{text-align:center;margin-top:26px;font-size:12px;opacity:0.9;}
+
+    /* Responsive */
+    @media (max-width:1100px){
+      .grid{grid-template-columns:repeat(2, minmax(0,1fr));}
+      .form-grid{grid-template-columns:1fr;}
+    }
+    @media (max-width:900px){
+      .hero h1{font-size:42px;}
+    }
+    @media (max-width:720px){
+      .grid{grid-template-columns:1fr;}
+      h2{font-size:28px;}
+    }
+  </style>
+</head>
+
 <body>
 
-    <section class="subheader">
-        <nav>
-            <div class="logo">
-                <img src="images/GLLOGO.png" alt="Green Leaders">
-            </div>
-            <div class="nav-links" id="navLinks">
-                <ul>
-                    <li><a href="index.html">HOME</a></li>
-                    <li><a href="WhoWeAre.html">WHO WE ARE</a></li>
-                    <li><a href="OurImpact.html">OUR IMPACT</a></li>
-                    <li><a href="GetInvolved.html">GET INVOLVED</a></li>
-                    <div class="centered-links">
-                        <li><a href="NewsLetter.html">Newsletter</a></li>
-                        <li><a href="Awarness&Education.html">Awarness</a></li>
-                        <li><a href="Research&Studies.html">Studies</a></li>
-                        <li><a href="ContactUs.html">Contact Us</a></li>
-                        
-                </ul>
-            </div>
-        </nav>
-    </section>
+<header class="main-header">
+  <div class="nav-container">
+    <a href="index.html" class="brand">
+      <img src="images/GLLOGO.png" alt="Green Leaders Logo" class="logo" />
+    </a>
 
-    
+    <!-- Mobile hamburger -->
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
 
-<section class="asa">
-        <div class="slide">
-            <img src="images/i3.png">
-        </div>
-
-
-<section class="aboutt">
-        <div class="row22">
-            <!-- Column for text content -->
-            <div class="aboutcol">
-    
-    <h1>Membership Levels</h1>
-    <p>Green Leaders NGO offers memberships for professionals, students, corporations, and partners committed to sustainability. Members gain networking, training, and must actively contribute to NGO activities. Students receive mentorship and research opportunities. Corporate members and partners collaborate on initiatives, supporting sustainability through engagement, sponsorships, and knowledge sharing.</p>
-
-
-    <img src="images/membership.png">
-    <h1>Membership Application</h1>
-    <p>To become part of Green Leaders and join our mission for a sustainable future, kindly fill out the form below:</p>
-</section>
-
-
-
-
-
-
-
-<section class="aboutt">
-    <div class="row2">
-        <div class="contact-col">
-            <div>
-                <i class="fas fa-envelope"></i>
-                <span>
-                    <h5>admin@grleaders.org</h5>
-                    <p>Email Us Your Inquiry</p>
-                </span>
-            </div>
-        </div>
-        <div class="contact-col">
-            <form action="https://formspree.io/f/xeoanzbw" method="POST">
-                <input type="text" name="Name" placeholder="Enter Your Full Name" required>
-                <input type="email" name="Email" placeholder="Enter Your Email Address" required>
-                <input type="text" name="Phone Number" placeholder="Enter Your Phone Number" required>
-                <select name="source" id="source" required>
-                    <option value="" disabled selected hidden>How did you hear about Green Leaders?</option>
-                    <option value="social-media">Social Media</option>
-                    <option value="word-of-mouth">Recommendations</option>
-                    <option value="website">Green Leaders Website</option>
-                    <option value="event">Event/Conference</option>
-                    <option value="advertisement">Online Advertisement</option>
-                    <option value="newsletter">Newsletter</option>
-                    <option value="university">University</option>
-                </select>
-                <select name="membership-type" id="membership-type" required>
-                    <option value="" disabled selected hidden>Select Membership Type</option>
-                    <option value="Professional">Professional</option>
-                    <option value="Student">Student</option>
-                    <option value="Corporate">Corporate</option>
-                    <option value="Volunteering">Volunteering</option>
-                </select>
-                <textarea rows="8" name="Message" placeholder="Leave a Message"></textarea>
-                <button type="submit" class="hero-btn">Send Message</button>
-            </form>
-        </div>
-    </div>
-</section>
-
-<footer style="background-color: #00883f; color: white; text-align: center; position: relative; ">
-    <div style="display: flex; justify-content: center; flex-wrap: wrap;">
-        <!-- Column 1: Contact Us -->
-        <div style="min-width: 150px; margin: 10px;">
-            <p style="font-size: 16px; font-weight: bold;">
-            </p>
-        </div>
-
-        <!-- Column 2: Social Media Links -->
-        <div style="min-width: 200px; margin: 10px; text-align: center;">
-            <h4 style="font-size: 20px;font-weight: 300; color: white;transform:translateX(-30%);">Follow us on</h4>
-            <div class="social-icons" style="margin-top: 10px; text-align: center;transform:translateX(-30%);">
-                <a href="https://www.linkedin.com/company/grleaders/" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                    <i class="fa-brands fa-linkedin"></i>
-                </a>
-                <a href="https://www.instagram.com/green_leaders.ngo" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                    <i class="fa-brands fa-instagram"></i>
-                </a>
-                <a href="https://x.com/gr_leaders" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                    <i class="fa-solid fa-xmark"></i>
-                </a>
-                <a href="https://www.facebook.com/grleaders" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                    <i class="fa-brands fa-facebook"></i>
-                </a>
-            </div>
-        </div>
+    <!-- ✅ Desktop CTA (shows only on laptop/desktop) -->
+    <div class="header-actions desktop-only">
+      <a href="GetInvolved.html" class="cta-button">Become a Member</a>
     </div>
 
-    <!-- Column 3: Copyright (aligned to the bottom left corner) -->
-    <p style="font-size: 12px; position: absolute; bottom: 10px; left: 10px;">&copy; 2025 Green Leaders. All Rights Reserved.</p>
+    <nav class="main-nav" id="mainNav">
+      <ul>
+        <li class="dropdown">
+  <div class="dropdown-head">
+    <a class="nav-link" href="index.html">Home</a>
+
+    <!-- dropdown toggle only for the arrow -->
+    <button class="dropdown-toggle" type="button" aria-label="Open Home menu">
+      <i class="fa fa-caret-down"></i>
+    </button>
+  </div>
+
+  <ul class="dropdown-menu">
+    <li><a href="ContactUs.html">Contact Us</a></li>
+  </ul>
+</li>
+
+
+        <li><a class="nav-link" href="WhoWeAre.html">About Us</a></li>
+
+       <li class="dropdown">
+  <div class="dropdown-head">
+    <a class="nav-link" href="OurImpact.html">Our Impact</a>
+
+    <!-- dropdown toggle only for the arrow -->
+    <button class="dropdown-toggle" type="button" aria-label="Open Home menu">
+      <i class="fa fa-caret-down"></i>
+    </button>
+  </div>
+
+  <ul class="dropdown-menu">
+    <li><a href="Research&Studies.html">Reaserch & Studies</a></li>
+    <li><a href="Awarness&Education.html">Awarness & Education</a></li>
+  </ul>
+</li>
+
+
+        <li><a class="nav-link" href="NewsLetter.html">Newsletter</a></li>
+        <li><a class="nav-link" href="WaterAudit.html">Water Audit Tool</a></li>
+
+        <!-- ✅ MOBILE CTA (shows only inside menu on phones) -->
+        <li class="mobile-cta-item">
+          <a href="GetInvolved.html" class="cta-button" style="width:100%; margin-top: 10px;">
+            Become a Member
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Get Involved</h1>
+  <p>
+    Join Green Leaders as a professional, student, corporate partner, or volunteer — and contribute to sustainability initiatives
+    through collaboration, research, and community action.
+  </p>
+</section>
+
+<section class="section white">
+  <div class="container">
+    <span class="kicker"><i class="fa-solid fa-users"></i> Membership Levels</span>
+    <h2>Choose How You Want to Contribute</h2>
+    <p class="subtitle">
+      Green Leaders NGO offers memberships for professionals, students, corporations, and partners committed to sustainability.
+      Members gain networking and training, and contribute to NGO activities. Students receive mentorship and research opportunities.
+      Corporate members and partners collaborate on initiatives through engagement, sponsorships, and knowledge sharing.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <i class="fa-solid fa-briefcase"></i>
+        <h3>Professional Membership</h3>
+        <ul>
+          <li>Networking and collaboration opportunities</li>
+          <li>Training and events</li>
+          <li>Contribute expertise to projects</li>
+        </ul>
+        <a class="jump" href="#membership-form">Apply below <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="card">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <h3>Student Membership</h3>
+        <ul>
+          <li>Mentorship and guidance</li>
+          <li>Research and volunteer opportunities</li>
+          <li>Hands-on sustainability experience</li>
+        </ul>
+        <a class="jump" href="#membership-form">Apply below <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="card">
+        <i class="fa-solid fa-handshake"></i>
+        <h3>Corporate Membership</h3>
+        <ul>
+          <li>Partner on sustainability initiatives</li>
+          <li>Support programs through sponsorship</li>
+          <li>Join ESG-aligned collaborations</li>
+        </ul>
+        <a class="jump" href="#membership-form">Apply below <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+
+      <div class="card">
+        <i class="fa-solid fa-heart"></i>
+        <h3>Volunteering</h3>
+        <ul>
+          <li>Support events and campaigns</li>
+          <li>Join community initiatives</li>
+          <li>Build skills and impact locally</li>
+        </ul>
+        <a class="jump" href="#membership-form">Apply below <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="membership-form">
+  <div class="container">
+    <span class="kicker"><i class="fa-solid fa-pen-to-square"></i> Membership Application</span>
+    <h2>Apply to Join Green Leaders</h2>
+    <p class="subtitle">Fill out the form and we’ll get back to you by email.</p>
+
+    <div class="form-grid">
+      <div class="info-card">
+        <div class="info-row">
+          <i class="fa-solid fa-envelope"></i>
+          <div>
+            <h4>admin@grleaders.org</h4>
+            <p>Email us your inquiry anytime.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <!-- ✅ BACKEND PRESERVED -->
+        <form action="form-handler2.php" method="post">
+          <input type="text" name="Name" placeholder="Enter Your Name" required />
+          <input type="email" name="Email" placeholder="Enter Your Email Address" required />
+          <input type="text" name="Phone Number" placeholder="Enter Your Phone Number" required />
+
+          <select name="source" id="source" required>
+            <option value="" disabled selected hidden>How did you hear about Green Leaders?</option>
+            <option value="social-media">Social Media</option>
+            <option value="word-of-mouth">Recommendations</option>
+            <option value="website">Green Leaders Website</option>
+            <option value="event">Event/Conference</option>
+            <option value="advertisement">Online Advertisement</option>
+            <option value="newsletter">Newsletter</option>
+            <option value="university">University</option>
+          </select>
+
+          <select name="membership-type" id="membership-type" required>
+            <option value="" disabled selected hidden>Select Membership Type</option>
+            <option value="Professional">Professional</option>
+            <option value="Student">Student</option>
+            <option value="Corporate">Corporate</option>
+            <option value="Volunteering">Volunteering</option>
+          </select>
+
+          <textarea rows="8" name="Message" placeholder="Leave a Message"></textarea>
+
+          <button type="submit" class="submit">
+            <i class="fa-regular fa-paper-plane"></i> Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-wrap">
+    <div>
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="WhoWeAre.html">Who We Are</a></li>
+        <li><a href="OurImpact.html">Our Impact</a></li>
+        <li><a href="Awarness&Education.html">Awareness & Education</a></li>
+        <li><a href="Research&Studies.html">Research & Studies</a></li>
+        <li><a href="GetInvolved.html">Membership</a></li>
+        <li><a href="NewsLetter.html">Newsletter</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Contact Us</h4>
+      <p><i class="fas fa-envelope" style="margin-right:8px;"></i> admin@grleaders.org</p>
+      <p><i class="fas fa-map-marker-alt" style="margin-right:8px;"></i> Lebanon</p>
+    </div>
+
+    <div class="footer-social">
+      <h4>Follow Us</h4>
+      <a href="https://www.linkedin.com/company/grleaders/" target="_blank"><i class="fab fa-linkedin"></i></a>
+      <a href="https://www.instagram.com/green_leaders.ngo" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://x.com/gr_leaders" target="_blank"><i class="fa-solid fa-xmark"></i></a>
+      <a href="https://www.facebook.com/grleaders" target="_blank"><i class="fab fa-facebook"></i></a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">&copy; 2025 Green Leaders. All Rights Reserved.</div>
 </footer>
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const navToggle = document.getElementById('navToggle');
+    const mainNav = document.getElementById('mainNav');
+    const dropdowns = document.querySelectorAll('.dropdown');
 
+    function closeAllDropdowns() {
+      dropdowns.forEach(d => d.classList.remove('open'));
+    }
 
+    navToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = mainNav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (!isOpen) closeAllDropdowns();
+    });
+
+    dropdowns.forEach(dropdown => {
+      const toggle = dropdown.querySelector('.dropdown-toggle');
+      if (!toggle) return;
+
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains('open');
+        closeAllDropdowns();
+        if (!isOpen) dropdown.classList.add('open');
+      });
+    });
+
+    document.addEventListener('click', () => {
+      closeAllDropdowns();
+      mainNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+
+    mainNav.addEventListener('click', (e) => e.stopPropagation());
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAllDropdowns();
+        mainNav.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      closeAllDropdowns();
+      mainNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
 
 </body>
 </html>
