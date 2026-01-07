@@ -1,390 +1,782 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="with=device-width, initial scale=1.0">
-    <title>Green Leaders Website </title>
-    <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">  
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <!-- ✅ Correct viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  </head>
+  <title>Green Leaders | Home</title>
 
-    <style>
-        /* Scroll Animation CSS */
-        .scroll-animation {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .scroll-animation.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-        /* Slide Section */
-        .slider {
-            width: 100%;
-            height: 500px;
-            z-index: -1 !important;
-            overflow: hidden !important;
-            position: relative;
-            pointer-events: auto;
+  <link rel="stylesheet" href="style.css" />
 
-        }
+  <style>
+    :root {
+      --primary-color: #007a5e;
+      --secondary-color: #fcd738;
+      --text-color: #1a1a1a;
+      --light-bg: #f5f5f5;
+      --dark-bg: #0d2916;
+      --font: 'Poppins', sans-serif;
+    }
 
-        .slide a {
-            position: absolute;
-            z-index: 10000 !important;
-            pointer-events: all;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    /* ✅ Full-width / no side gaps on mobile */
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: var(--font);
+      color: var(--text-color);
+      background: #fff;
+    }
+
+    /* =========================
+       HEADER / NAV
+       ========================= */
+    .main-header {
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    }
+
+    .nav-container{
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: grid;
+      grid-template-columns: 1fr auto; /* ✅ CHANGED: remove 3rd column on small screens */
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand { display: inline-flex; align-items: center; }
+    .logo { height: 52px; display:block; }
+
+    /* hamburger */
+    .nav-toggle{
+      background: none;
+      border: 0;
+      font-size: 22px;
+      cursor: pointer;
+      padding: 8px 10px;
+      border-radius: 10px;
+    }
+    .nav-toggle:focus { outline: 2px solid rgba(0,122,94,0.25); outline-offset: 2px; }
+
+    /* CTA */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      justify-content: flex-end;
+    }
+
+    .cta-button {
+      background: #67b7a4;
+      color: #fff;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 25px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+      display: inline-block;
+      text-align: center;
+    }
+    .cta-button:hover { background: var(--primary-color); }
+
+    /* ✅ Desktop CTA only (hidden by default, shown on desktop) */
+    .desktop-only { display: none; }
+
+    /* ✅ MOBILE CTA item hidden by default (shown only on phones) */
+    .mobile-cta-item { display: none; }  /* ✅ ADDED */
+
+    @media (min-width: 901px){
+      .nav-container{
+        display:flex;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .desktop-only { display: flex; }
+      .nav-toggle { display: none; }
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .main-nav ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .main-nav li { position: relative; }
+
+    .nav-link,
+    .dropdown-toggle {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      font-size: 16px;
+      padding: 10px 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+    }
+
+    .nav-link:hover,
+    .dropdown-toggle:hover { color: var(--primary-color); }
+
+    /* =========================
+       DROPDOWN
+       ========================= */
+   /* Dropdown menu */
+    /* DROPDOWN */
+  /* Dropdown menu */
+.dropdown-menu{
+  position:absolute;
+  top:100%;
+  left:0;
+  margin-top:10px;              /* spacing */
+  min-width:220px;
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.12);
+  padding:8px 0;
+  list-style:none;
+  z-index:999;
+
+  opacity:0;
+  transform:translateY(-6px);
+  pointer-events:none;
+  transition:opacity .18s ease, transform .18s ease;
 }
 
-        .slides {
-            display: flex;
-            transition: transform 1s ease-in-out;
-        }
+.dropdown.open > .dropdown-menu{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
 
-        .slide {
-            width: 100%;
-            height: 100%;
-            flex-shrink: 0;
-        }
-
-        .slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 1;
-        }
-
-        /* White Arrows (without black background) */
-        /* Style for slider buttons container */
+/* ✅ Invisible hover-bridge so it doesn't close when moving cursor down */
+.dropdown-menu::before{
+  content:"";
+  position:absolute;
+  top:-10px;        /* same as margin-top */
+  left:0;
+  right:0;
+  height:10px;
+}
 
 
-/* Mobile-specific adjustments */
+    .dropdown-menu li a{
+      display:block;
+      padding:12px 16px;
+      color:var(--text-color);
+      text-decoration:none;
+      font-size:14px;
+      white-space:nowrap;
+    }
+    .dropdown-menu li a:hover{
+      background:#f7f7f7;
+      color:var(--primary-color);
+    }
 
-        /* Adjust the right arrow position */
-      
-        /* Dots Section */
-        .dots {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            z-index: 2;
-        }
+    @media (hover:hover) and (pointer:fine){
+      .dropdown:hover > .dropdown-menu{
+        opacity:1;
+        transform:translateY(0);
+        pointer-events:auto;
+      }
+    }
 
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: rgba(101, 99, 99, 0.5);
-            transition: background-color 0.3s ease;
-            cursor: pointer;
-        }
+    /* MOBILE NAV */
+    @media (max-width:900px){
+      .header-actions{ display:none !important; }
+      .mobile-cta-item{ display:block; }
 
-        .dot.active {
-            background-color: rgb(37, 35, 35);
-        }
-    </style>
+      .main-nav{
+        position:fixed;
+        top:70px;
+        left:12px;
+        right:12px;
+        background:#fff;
+        border-radius:14px;
+        border:1px solid #eee;
+        box-shadow:0 10px 30px rgba(0,0,0,0.10);
 
+        transform:translateY(-140%);
+        transition:transform .25s ease;
+        padding:12px 14px;
+        z-index:999;
+      }
+      .main-nav.open{ transform:translateY(0); }
+
+      .main-nav ul{
+        flex-direction:column;
+        align-items:stretch;
+        gap:6px;
+      }
+
+      .nav-link, .dropdown-toggle{
+        width:100%;
+        padding:12px 10px;
+        justify-content:space-between;
+        border-radius:10px;
+      }
+
+      .dropdown-head{
+        width:100%;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+      }
+      .dropdown-head .nav-link,
+      .dropdown-head .dropdown-toggle{
+        width:auto;
+        padding:12px 10px;
+      }
+
+    }
+
+    /* =========================
+       HERO
+       ========================= */
+    .hero {
+      width: 100%;
+      background: linear-gradient(rgba(153, 209, 196, 0.15), rgba(113, 180, 164, 0.85)),
+        url('images/back.png') no-repeat center/cover;
+      color: white;
+      padding: 110px 20px 80px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 44px;
+      line-height: 1.15;
+      margin-bottom: 34px;
+      font-weight: 700;
+    }
+
+    .carousel-container {
+      width: 100%;
+      overflow: hidden;
+      padding-bottom: 8px;
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 18px;
+      animation: scrollX 12s linear infinite; /* ✅ still moves on desktop */
+      width: max-content;
+    }
+
+    @keyframes scrollX {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .hero-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 18px;
+      width: 320px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-card h2 {
+      font-size: 15px;
+      margin-top: 10px;
+      color: #1a1a1a;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .hero-card img {
+      width: 100%;
+      border-radius: 10px;
+      height: 170px;
+      object-fit: cover;
+    }
+
+    .hero-card a {
+      display: inline-block;
+      margin-top: 14px;
+      background: var(--secondary-color);
+      color: #000;
+      padding: 10px 18px;
+      border-radius: 30px;
+      font-weight: 700;
+      text-decoration: none;
+      width: fit-content;
+      font-size: 13px;
+    }
+
+    /* =========================
+       SECTIONS
+       ========================= */
+    .section {
+      padding: 70px 20px;
+      background: var(--light-bg);
+    }
+    .section h2 {
+      text-align: center;
+      font-size: 34px;
+      margin-bottom: 34px;
+      font-weight: 700;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+      gap: 26px;
+      flex-wrap: wrap;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .column {
+      background: #fff;
+      border-radius: 12px;
+      padding: 26px;
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .column p { color: #555; line-height: 1.7; }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 22px;
+      background: var(--primary-color);
+      color: #fff;
+      border-radius: 25px;
+      text-decoration: none;
+      margin-top: 18px;
+      font-weight: 600;
+    }
+
+    /* Stats */
+    .stats-section {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .stats-grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 28px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .stat { min-width: 160px; }
+    .stat i { font-size: 34px; margin-bottom: 8px; }
+    .stat h3 { font-size: 28px; margin: 6px 0; }
+
+    /* Air quality */
+    .air-quality-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    .who-table {
+      width: 100%;
+      background: #fff;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .who-table th, .who-table td {
+      padding: 14px;
+      border-bottom: 1px solid #eee;
+      text-align: center;
+    }
+    .who-table th { background: var(--primary-color); color: #fff; }
+
+    footer {
+      background: #007a5e;
+      color: #fff;
+      padding: 40px 20px;
+    }
+
+    /* =========================
+       MOBILE RESPONSIVE
+       ========================= */
+    @media (max-width: 900px) {
+      /* ✅ hide CTA in header on mobile */
+      .header-actions { display: none !important; }
+
+      /* ✅ show the CTA only inside the mobile menu */
+      .mobile-cta-item { display: block; } /* ✅ ADDED */
+
+      .nav-toggle { display: inline-flex; }
+
+      .main-nav {
+        position: fixed;
+        top: 70px;
+        left: 12px;
+        right: 12px;
+        background: #fff;
+        border-radius: 14px;
+        border: 1px solid #eee;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+
+        transform: translateY(-140%);
+        transition: transform .25s ease;
+        padding: 12px 14px;
+        z-index: 999;
+      }
+
+      .main-nav.open { transform: translateY(0); }
+
+      .main-nav ul {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+      }
+
+      .nav-link, .dropdown-toggle {
+        width: 100%;
+        padding: 12px 10px;
+        justify-content: space-between;
+        border-radius: 10px;
+      }
+
+      /* inline dropdown on mobile */
+      .dropdown-menu {
+        position: static;
+        min-width: 100%;
+        margin-top: 0;
+        box-shadow: none;
+        border-radius: 10px;
+        padding: 6px 0;
+
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
+
+        display: none;
+      }
+
+      .dropdown.open > .dropdown-menu { display: block; }
+
+      /* ✅ Full-width feel */
+/* ✅ Mobile: same look but AUTO-MOVES like desktop */
+.carousel-container{
+  overflow: hidden;             /* important: enables smooth moving */
+  scroll-snap-type: none;
+  -webkit-overflow-scrolling: auto;
+}
+
+.carousel-track{
+  animation: scrollX 12s linear infinite;  /* ✅ enable movement */
+  width: max-content;
+  padding-bottom: 6px;
+}
+
+.hero-card{
+  width: 260px;                 /* keep your mobile size */
+}
+
+
+      .air-quality-grid { grid-template-columns: 1fr; }
+      iframe { height: 700px !important; }
+    }
+  </style>
 </head>
 
 <body>
+<header class="main-header">
+  <div class="nav-container">
+    <a href="index.html" class="brand">
+      <img src="images/GLLOGO.png" alt="Green Leaders Logo" class="logo" />
+    </a>
 
-    <section class="header scroll-animation">
-        <nav>
-            <div class="logo">
-                <img src="images/GLLOGO.png" alt="Green Leaders">
-            </div>
-            <div class="nav-links" id="navLinks">
-                <ul>
-                    <li><a href="index.html">HOME</a></li>
-                    <li class="dropdown">
-                        <a href="WhoWeAre.html">WHO WE ARE</a>
-                    <li class="dropdown">
-                        <a href="OurImpact.html">OUR IMPACT</a>
+    <!-- Mobile hamburger -->
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
 
-                    <li><a href="GetInvolved.html">GET INVOLVED</a></li>
-                
-                    
-                    <!-- New line for awareness and research -->
-                    <div class="centered-links">
-                        <li><a href="NewsLetter.html">Newsletter</a></li>
-                        <li><a href="Awarness&Education.html">Awarness</a></li>
-                        <li><a href="Research&Studies.html">Studies</a></li>
-                        <li><a href="ContactUs.html">Contact Us</a></li>
-                        <li><a href="WaterAudit.html">Water Audit Tool</a></li>
-                        
-                    </div>
-                    </div>
-                </ul>
-            </div>
-        </nav>
-    </section>
-    
-    
-    <!-- Slide Section -->
-    <section class="slider">
-        <div class="slides">
-            <div class="slide">
-               <a href="https://lobbyview.senseware.co/dashboards/12110235f1b594666ebefdc23192c5b3316430/" style="z-index:10000;"> 
-                 <img src="landing4.png" alt="Slide 1"></a>
-            </div>
-            <div class="slide">
-                <img src="images/akh2.png" alt="Slide 2">
-            </div>
-            <div class="slide">
-                <img src="images/akh3.png" alt="Slide 3">
-            </div>
-        </div>
-        <div class="dots">
-            <div class="dot" onclick="goToSlide(0)"></div>
-            <div class="dot" onclick="goToSlide(1)"></div>
-            <div class="dot" onclick="goToSlide(2)"></div>
-        </div>
-        
-    </section>
+    <!-- ✅ Desktop CTA (shows only on laptop/desktop) -->
+    <div class="header-actions desktop-only">
+      <a href="GetInvolved.html" class="cta-button">Become a Member</a>
+    </div>
 
-         
-</section>  
-   
+    <nav class="main-nav" id="mainNav">
+      <ul>
+        <li class="dropdown">
+  <div class="dropdown-head">
+    <a class="nav-link" href="index.html">Home</a>
 
-
-    <!-- About Section -->
-    <section id="whoweare" class="about2 scroll-animation">
-        <div class="row3">
-            <div class="course-col2">
-                <h3>Welcome To Green Leaders</h3>
-                <p>Founded in Lebanon in 2023, Green Leaders is a non-governmental organization committed to advancing sustainable development and environmental stewardship...</p>
-                <a href="WhoWeAre.html" class="hero-btn1">Explore More</a>
-            </div>
-            <div class="course-co2">
-                <h3>Become a Member</h3>
-                <p>Green Leaders currently offers three membership levels: Corporate, Professional, and Student...</p>
-                <a href="GetInvolved.html" class="hero-btn">Explore More</a>    
-            </div>
-        </div>
-    </section>
-
-
-
-
-
-
-    
-    <div class="slide">
-            <img src="images/im.png">
-        </div>
-
-
-<section id="whoweare" class="about2 scroll-animation">
-        <div class="row3">
-            <div class="course-col2">
-                <h3>Live Air Quality in Beirut-Verdun</h3>
-            </div>
-        </div>
-            </section>
-            </section>
-        </div>
-        
-
-<!-- Side-by-side layout: iframe + WHO table, same height, no gap, darker bg, and bottom spacing -->
-<div style="display: flex; width: 100vw; height: 760px; margin: 0 0 40px 0; padding: 0;">
-
-  <!-- Left Panel: LobbyView iframe (80%) -->
-  <div style="flex: 4;">
-    <iframe 
-      src="https://lobbyview.senseware.co/dashboards/12110235f1b594666ebefdc23192c5b3316430/"
-      width="100%" 
-      height="100%" 
-      style="border: none; display: block;">
-    </iframe>
+    <!-- dropdown toggle only for the arrow -->
+    <button class="dropdown-toggle" type="button" aria-label="Open Home menu">
+      <i class="fa fa-caret-down"></i>
+    </button>
   </div>
 
-  <!-- Right Panel: WHO Table (20%) -->
-  <div style="
-    flex: 1;
-    height: 100%;
-    background-color: #d8f3d1; /* slightly darker green-tinted background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-left: 2px solid #ccc;
-    box-sizing: border-box;
-  ">
-    <table style="
-      width: 90%;
-      border-collapse: collapse;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      background-color: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      border-radius: 12px;
-      overflow: hidden;
-    ">
+  <ul class="dropdown-menu">
+    <li><a href="ContactUs.html">Contact Us</a></li>
+  </ul>
+</li>
+
+
+        <li><a class="nav-link" href="WhoWeAre.html">About Us</a></li>
+
+       <li class="dropdown">
+  <div class="dropdown-head">
+    <a class="nav-link" href="OurImpact.html">Our Impact</a>
+
+    <!-- dropdown toggle only for the arrow -->
+    <button class="dropdown-toggle" type="button" aria-label="Open Home menu">
+      <i class="fa fa-caret-down"></i>
+    </button>
+  </div>
+
+  <ul class="dropdown-menu">
+    <li><a href="Research&Studies.html">Reaserch & Studies</a></li>
+    <li><a href="Awarness&Education.html">Awarness & Education</a></li>
+  </ul>
+</li>
+
+
+        <li><a class="nav-link" href="NewsLetter.html">Newsletter</a></li>
+        <li><a class="nav-link" href="WaterAudit.html">Water Audit Tool</a></li>
+
+        <!-- ✅ MOBILE CTA (shows only inside menu on phones) -->
+        <li class="mobile-cta-item">
+          <a href="GetInvolved.html" class="cta-button" style="width:100%; margin-top: 10px;">
+            Become a Member
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Welcome to Green Leaders</h1>
+
+  <div class="carousel-container">
+    <div class="carousel-track">
+      <div class="hero-card">
+        <img src="nl4.png" alt="Newsletter" />
+        <h2>Green Leaders is officially registered!Read more in Newsletter Issue 4</h2>
+        <a href="NewsLetter.html">Read More</a>
+      </div>
+
+      <div class="hero-card">
+        <img src="trend1.png" alt="Air Quality Report" />
+        <h2>Trend Observations from the Beirut Air Quality Study</h2>
+        <a href="Research&Studies.html">Read More</a>
+      </div>
+
+      <div class="hero-card">
+        <img src="images/mesures.png" alt="Measurements" />
+        <h2>Live Air Quality Monitoring in Beirut, Lebanon</h2>
+        <a href="https://lobbyview.senseware.co/dashboards/12110235f1b594666ebefdc23192c5b3316430/">Explore</a>
+      </div>
+
+      <!-- Duplicate set for desktop scroll -->
+      <div class="hero-card">
+        <img src="nl4.png" alt="Newsletter" />
+        <h2>Green Leaders is officially registered!Read more in Newsletter Issue 4</h2>
+        <a href="NewsLetter.html">Read More</a>
+      </div>
+
+      <div class="hero-card">
+        <img src="trend1.png" alt="Air Quality Report" />
+        <h2>Trend Observations from the Beirut Air Quality Study</h2>
+        <a href="Research&Studies.html">Read More</a>
+      </div>
+
+      <div class="hero-card">
+        <img src="mesures.png" alt="Measurements" />
+        <h2>Live Air Quality Monitoring in Beirut, Lebanon</h2>
+        <a href="https://lobbyview.senseware.co/dashboards/12110235f1b594666ebefdc23192c5b3316430/">Explore</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>About Green Leaders</h2>
+  <div class="row">
+    <div class="column">
+      <p>
+        Founded in Lebanon in 2023, Green Leaders is a non-governmental organization committed to advancing sustainable
+        development and environmental stewardship.
+      </p>
+      <a href="WhoWeAre.html" class="btn">Learn More</a>
+    </div>
+
+    <div class="column">
+      <p>
+        We offer membership levels for Corporates, Professionals, and Students to help create a greater environmental impact.
+      </p>
+      <a href="GetInvolved.html" class="btn">Join Us</a>
+    </div>
+  </div>
+</section>
+
+<section class="stats-section">
+  <div class="stats-grid">
+    <div class="stat"><i class="fas fa-users"></i><h3>35+</h3><p>Members</p></div>
+    <div class="stat"><i class="fas fa-handshake"></i><h3>2</h3><p>Partners</p></div>
+    <div class="stat"><i class="fas fa-search"></i><h3>2</h3><p>Research Projects</p></div>
+    <div class="stat"><i class="fas fa-chalkboard-teacher"></i><h3>26,000+</h3><p>Students Impacted</p></div>
+    <div class="stat"><i class="fas fa-industry"></i><h3>50 Ktons</h3><p>CO₂ Offset Target</p></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Live Air Quality - Verdun, Beirut</h2>
+  <div class="air-quality-grid">
+    <iframe
+      src="https://lobbyview.senseware.co/dashboards/12110235f1b594666ebefdc23192c5b3316430/"
+      width="100%"
+      height="1200"
+      style="border:0; border-radius: 12px;"
+      loading="lazy"
+    ></iframe>
+
+    <table class="who-table">
       <thead>
-        <tr style="background-color: #4CAF50; color: white;">
-          <th style="padding: 12px; text-align: left;">Pollutant</th>
-          <th style="padding: 12px; text-align: center;">WHO 24-Hour Outdoor Air Quality Guidelines</th>
-        </tr>
+        <tr><th>Pollutant</th><th>WHO 24-Hour Guidelines</th></tr>
       </thead>
       <tbody>
-        <tr style="background-color: #e8f5e9;">
-          <td style="padding: 10px;">PM<sub>2.5</sub> (µg/m³)</td>
-          <td style="padding: 10px; text-align: center;">15</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px;">PM<sub>10</sub> (µg/m³)</td>
-          <td style="padding: 10px; text-align: center;">45</td>
-        </tr>
-        <tr style="background-color: #e8f5e9;">
-          <td style="padding: 10px;">NO<sub>2</sub> (ppb)</td>
-          <td style="padding: 10px; text-align: center;">13.3</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px;">SO<sub>2</sub> (ppb)</td>
-          <td style="padding: 10px; text-align: center;">15.3</td>
-        </tr>
-        <tr style="background-color: #e8f5e9;">
-          <td style="padding: 10px;">CO (ppm)</td>
-          <td style="padding: 10px; text-align: center;">3.5</td>
-        </tr>
+        <tr><td>PM2.5 (µg/m³)</td><td>15</td></tr>
+        <tr><td>PM10 (µg/m³)</td><td>45</td></tr>
+        <tr><td>NO₂ (ppb)</td><td>13.3</td></tr>
+        <tr><td>SO₂ (ppb)</td><td>15.3</td></tr>
+        <tr><td>CO (ppm)</td><td>3.5</td></tr>
       </tbody>
     </table>
   </div>
-</div>
+</section>
 
+<footer>
+  <div style="max-width: 1200px; margin: auto; display:flex; flex-wrap:wrap; justify-content:space-between; gap:30px;">
+    <div>
+      <h4 style="margin-bottom: 10px;">Quick Links</h4>
+      <ul style="list-style:none; padding:0; line-height: 2;">
+        <li><a href="index.html" style="color:white; text-decoration:none;">Home</a></li>
+        <li><a href="WhoWeAre.html" style="color:white; text-decoration:none;">Who We Are</a></li>
+        <li><a href="OurImpact.html" style="color:white; text-decoration:none;">Our Impact</a></li>
+        <li><a href="Awarness&Education.html" style="color:white; text-decoration:none;">Awareness & Education</a></li>
+        <li><a href="Research&Studies.html" style="color:white; text-decoration:none;">Research & Studies</a></li>
+        <li><a href="GetInvolved.html" style="color:white; text-decoration:none;">Membership</a></li>
+        <li><a href="NewsLetter.html" style="color:white; text-decoration:none;">Newsletter</a></li>
+      </ul>
+    </div>
 
+    <div>
+      <h4 style="margin-bottom: 10px;">Contact Us</h4>
+      <p><i class="fas fa-envelope" style="margin-right: 8px;"></i> admin@grleaders.org</p>
+      <p><i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i> Lebanon</p>
+    </div>
 
+    <div>
+      <h4 style="margin-bottom: 10px;">Follow Us</h4>
+      <a href="https://www.linkedin.com/company/grleaders/" target="_blank" style="color:white; margin-right:12px; font-size:20px;"><i class="fab fa-linkedin"></i></a>
+      <a href="https://www.instagram.com/green_leaders.ngo" target="_blank" style="color:white; margin-right:12px; font-size:20px;"><i class="fab fa-instagram"></i></a>
+      <a href="https://x.com/gr_leaders" target="_blank" style="color:white; margin-right:12px; font-size:20px;"><i class="fa-solid fa-xmark"></i></a>
+      <a href="https://www.facebook.com/grleaders" target="_blank" style="color:white; margin-right:12px; font-size:20px;"><i class="fab fa-facebook"></i></a>
+    </div>
+  </div>
 
+  <div style="text-align:center; margin-top:30px; font-size:12px;">
+    &copy; 2025 Green Leaders. All Rights Reserved.
+  </div>
+</footer>
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const navToggle = document.getElementById('navToggle');
+    const mainNav = document.getElementById('mainNav');
+    const dropdowns = document.querySelectorAll('.dropdown');
 
+    function closeAllDropdowns() {
+      dropdowns.forEach(d => d.classList.remove('open'));
+    }
 
-
-    <!-- Footer -->
-    <footer style="background-color: #00883f; color: white; text-align: center; position: relative; ">
-        <div style="display: flex; justify-content: center; flex-wrap: wrap;">
-            <!-- Column 1: Contact Us -->
-            <div style="min-width: 150px; margin: 10px;">
-                <p style="font-size: 16px; font-weight: bold;">
-                </p>
-            </div>
-    
-            <!-- Column 2: Social Media Links -->
-            <div style="min-width: 200px; margin: 10px; text-align: center;">
-                <h4 style="font-size: 20px;font-weight: 300; color: white;transform:translateX(-30%);">Follow us on</h4>
-                <div class="social-icons" style="margin-top: 10px; text-align: center;transform:translateX(-30%);">
-                    <a href="https://www.linkedin.com/company/grleaders/" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                        <i class="fa-brands fa-linkedin"></i>
-                    </a>
-                    <a href="https://www.instagram.com/green_leaders.ngo" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
-                    <a href="https://x.com/gr_leaders" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                        <i class="fa-solid fa-xmark"></i>
-                    </a>
-                    <a href="https://www.facebook.com/grleaders" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                        <i class="fa-brands fa-facebook"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    
-        <!-- Column 3: Copyright (aligned to the bottom left corner) -->
-        <p style="font-size: 12px; position: absolute; bottom: 10px; left: 10px;">&copy; 2025 Green Leaders. All Rights Reserved.</p>
-    </footer>
-    
-    
-    
-    
-    
-    <script>
-        function openSlide(slideIndex) {
-            document.querySelector('.slides').style.transform = `translateX(-${slideIndex * 100}%)`;
-            updateDots(slideIndex);
-        }
-    
-        function updateDots(slideIndex) {
-            const dots = document.querySelectorAll('.dot');
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[slideIndex].classList.add('active');
-        }
-    </script>
-    
-    
-    <script>
-        function openSlide(slideIndex) {
-            document.querySelector('.slides').style.transform = `translateX(-${slideIndex * 100}%)`;
-            updateDots(slideIndex);
-        }
-    
-        function updateDots(slideIndex) {
-            const dots = document.querySelectorAll('.dot');
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[slideIndex].classList.add('active');
-        }
-    </script>
-    
-
-    <!-- JavaScript for Scroll Effect -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-    const elements = document.querySelectorAll(".scroll-animation");
-
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("show");
-            }
-        });
-    }, { threshold: 0.2 });
-
-    elements.forEach(element => observer.observe(element));
-});
-
-let currentSlide = 0;
-const slides = document.querySelectorAll('.slide');
-const dots = document.querySelectorAll('.dot');
-
-function moveSlide(step) {
-    currentSlide = (currentSlide + step + slides.length) % slides.length;
-    document.querySelector('.slides').style.transform = `translateX(-${currentSlide * 100}%)`;
-    updateDots();
-}
-
-function goToSlide(slideIndex) {
-    currentSlide = slideIndex;
-    document.querySelector('.slides').style.transform = `translateX(-${currentSlide * 100}%)`;
-    updateDots();
-}
-
-function updateDots() {
-    dots.forEach((dot, index) => {
-        dot.classList.remove('active');
-        if (index === currentSlide) {
-            dot.classList.add('active');
-        }
+    navToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = mainNav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (!isOpen) closeAllDropdowns();
     });
-}
 
-// Auto-slide every 5 seconds
-setInterval(() => {
-    moveSlide(1); // Moves forward to the next slide
-}, 8000); // 5 seconds for auto-slide
+    dropdowns.forEach(dropdown => {
+      const toggle = dropdown.querySelector('.dropdown-toggle');
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains('open');
+        closeAllDropdowns();
+        if (!isOpen) dropdown.classList.add('open');
+      });
+    });
 
+    document.addEventListener('click', () => {
+      closeAllDropdowns();
+      mainNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
 
+    mainNav.addEventListener('click', (e) => e.stopPropagation());
 
-    </script>
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAllDropdowns();
+        mainNav.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
 
- 
-
+    window.addEventListener('resize', () => {
+      closeAllDropdowns();
+      mainNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
 </body>
 </html>
-
