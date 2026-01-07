@@ -1,186 +1,663 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="with=device-width, initial scale=1.0">
-    <title>Green Leaders Website </title>
-    <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">  
-<head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Water Audit Tool | Green Leaders</title>
 
-  </head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
 
-    
+  <style>
+    :root{
+      --primary:#007a5e;
+      --secondary:#fcd738;
+      --text:#1a1a1a;
+      --light-bg:#f5f5f5;
+      --font:'Poppins', sans-serif;
+    }
 
-    <section class="header scroll-animation">
-        <nav>
-            <div class="logo">
-                <img src="images/GLLOGO.png" alt="Green Leaders">
-            </div>
-            <div class="nav-links" id="navLinks">
-                <ul>
-                    <li><a href="index.html">HOME</a></li>
-                    <li class="dropdown">
-                        <a href="WhoWeAre.html">WHO WE ARE</a>
-                    <li class="dropdown">
-                        <a href="OurImpact.html">OUR IMPACT</a>
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    html, body{ width:100%; max-width:100%; overflow-x:hidden; }
+    body{ font-family:var(--font); color:var(--text); background:#fff; }
 
-                    <li><a href="GetInvolved.html">GET INVOLVED</a></li>
-                
-                    
-                    <!-- New line for awareness and research -->
-                    <div class="centered-links">
-                        <li><a href="NewsLetter.html">Newsletter</a></li>
-                        <li><a href="Awarness&Education.html">Awarness</a></li>
-                        <li><a href="Research&Studies.html">Studies</a></li>
-                        <li><a href="ContactUs.html">Contact Us</a></li>
-                        <li><a href="WaterAudit.html">Water Audit Tool</a></li>
-                        
-                    </div>
-                    </div>
-                </ul>
-            </div>
-        </nav>
-    </section>
+    /* =========================
+       HEADER / NAV (SAME SYSTEM)
+       ========================= */
+    .main-header{
+      background:#fff;
+      border-bottom:1px solid #eee;
+      position:sticky;
+      top:0;
+      z-index:999;
+      box-shadow:0 2px 4px rgba(0,0,0,0.04);
+    }
 
-    <!-- ===== Water Audit • HERO ===== -->
-<section class="wa-hero">
-  <img class="wa-logo" src="images/GLLOGO.png" alt="Green Leaders logo">
-  <h1 class="wa-title">Water Audit Tool</h1>
-  <p class="wa-subtitle">
-    Empowering educational institutions with comprehensive water management tools to
-    achieve measurable conservation outcomes and environmental sustainability goals.
-  </p>
-  <a class="wa-cta" href="WaterAudit - Login.html">
-    Begin Water Assessment <i class="fa-solid fa-arrow-right" aria-hidden="true" style="margin-left:8px"></i>
-  </a>
-</section>
+    .nav-container{
+      width:100%;
+      max-width:1200px;
+      margin:0 auto;
+      padding:14px 18px;
+      display:grid;
+      grid-template-columns:1fr auto;
+      align-items:center;
+      gap:12px;
+    }
 
-<!-- Optional: where the button scrolls -->
-<section id="start" class="wa-section">
-  <!-- You can put the first step of your assessment here later -->
-</section>
-    
+    .brand{ display:inline-flex; align-items:center; }
+    .logo{ height:52px; display:block; }
 
-    <!-- Footer -->
-    <footer style="background-color: #00883f; color: white; text-align: center; position: relative; ">
-        <div style="display: flex; justify-content: center; flex-wrap: wrap;">
-            <!-- Column 1: Contact Us -->
-            <div style="min-width: 150px; margin: 10px;">
-                <p style="font-size: 16px; font-weight: bold;">
-                </p>
-            </div>
-    
-            <!-- Column 2: Social Media Links -->
-            <div style="min-width: 200px; margin: 10px; text-align: center;">
-                <h4 style="font-size: 20px;font-weight: 300; color: white;transform:translateX(-30%);">Follow us on</h4>
-                <div class="social-icons" style="margin-top: 10px; text-align: center;transform:translateX(-30%);">
-                    <a href="https://www.linkedin.com/company/grleaders/" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                        <i class="fa-brands fa-linkedin"></i>
-                    </a>
-                    <a href="https://www.instagram.com/green_leaders.ngo" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
-                    <a href="https://x.com/gr_leaders" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                        <i class="fa-solid fa-xmark"></i>
-                    </a>
-                    <a href="https://www.facebook.com/grleaders" target="_blank" style="color: white; margin: 0 15px; font-size: 22px; font-weight: bold;transform:translateX(-30%);">
-                        <i class="fa-brands fa-facebook"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    
-        <!-- Column 3: Copyright (aligned to the bottom left corner) -->
-        <p style="font-size: 12px; position: absolute; bottom: 10px; left: 10px;">&copy; 2025 Green Leaders. All Rights Reserved.</p>
-    </footer>
-    
-    
-    
-    
-    
-    <script>
-        function openSlide(slideIndex) {
-            document.querySelector('.slides').style.transform = `translateX(-${slideIndex * 100}%)`;
-            updateDots(slideIndex);
-        }
-    
-        function updateDots(slideIndex) {
-            const dots = document.querySelectorAll('.dot');
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[slideIndex].classList.add('active');
-        }
-    </script>
-    
-    
-    <script>
-        function openSlide(slideIndex) {
-            document.querySelector('.slides').style.transform = `translateX(-${slideIndex * 100}%)`;
-            updateDots(slideIndex);
-        }
-    
-        function updateDots(slideIndex) {
-            const dots = document.querySelectorAll('.dot');
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[slideIndex].classList.add('active');
-        }
-    </script>
-    
+    .nav-toggle{
+      background:none;
+      border:0;
+      font-size:22px;
+      cursor:pointer;
+      padding:8px 10px;
+      border-radius:10px;
+    }
+    .nav-toggle:focus{
+      outline:2px solid rgba(0,122,94,0.25);
+      outline-offset:2px;
+    }
 
-    <!-- JavaScript for Scroll Effect -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-    const elements = document.querySelectorAll(".scroll-animation");
+    .header-actions{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:14px;
+    }
 
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("show");
-            }
-        });
-    }, { threshold: 0.2 });
+    .cta-button{
+      background:#67b7a4;
+      color:#fff;
+      font-weight:600;
+      padding:10px 18px;
+      border-radius:999px;
+      text-decoration:none;
+      transition:all .25s ease;
+      white-space:nowrap;
+      display:inline-block;
+      text-align:center;
+    }
+    .cta-button:hover{ background:var(--primary); }
 
-    elements.forEach(element => observer.observe(element));
-});
+    .desktop-only{ display:none; }
+    .mobile-cta-item{ display:none; }
 
-let currentSlide = 0;
-const slides = document.querySelectorAll('.slide');
-const dots = document.querySelectorAll('.dot');
+    @media (min-width:901px){
+      .nav-container{
+        display:flex;
+        justify-content:space-between;
+        gap:16px;
+      }
+      .desktop-only{ display:flex; }
+      .nav-toggle{ display:none; }
+    }
 
-function moveSlide(step) {
-    currentSlide = (currentSlide + step + slides.length) % slides.length;
-    document.querySelector('.slides').style.transform = `translateX(-${currentSlide * 100}%)`;
-    updateDots();
+    .main-nav{
+      display:flex;
+      align-items:center;
+      gap:20px;
+    }
+
+   .main-nav > ul{
+  list-style:none;
+  display:flex;
+  align-items:center;
+  gap:26px;
+  margin:0;
+  padding:0;
 }
 
-function goToSlide(slideIndex) {
-    currentSlide = slideIndex;
-    document.querySelector('.slides').style.transform = `translateX(-${currentSlide * 100}%)`;
-    updateDots();
+    .main-nav li{ position:relative; }
+
+    .nav-link,
+    .dropdown-toggle{
+      text-decoration:none;
+      color:var(--text);
+      font-weight:500;
+      font-size:16px;
+      padding:10px 0;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+      background:none;
+      border:none;
+      font-family:inherit;
+    }
+
+    .nav-link:hover,
+    .dropdown-toggle:hover{ color:var(--primary); }
+
+    .nav-link.active{ color:var(--primary); }
+
+    .dropdown-head{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+
+/* Dropdown menu */
+.dropdown-menu{
+  position:absolute;
+  top:100%;
+  left:0;
+  margin-top:10px;              /* spacing */
+  min-width:220px;
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.12);
+  padding:8px 0;
+  list-style:none;
+  z-index:999;
+
+  opacity:0;
+  transform:translateY(-6px);
+  pointer-events:none;
+  transition:opacity .18s ease, transform .18s ease;
 }
 
-function updateDots() {
-    dots.forEach((dot, index) => {
-        dot.classList.remove('active');
-        if (index === currentSlide) {
-            dot.classList.add('active');
-        }
+.dropdown.open > .dropdown-menu{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+
+/* ✅ Invisible hover-bridge so it doesn't close when moving cursor down */
+.dropdown-menu::before{
+  content:"";
+  position:absolute;
+  top:-10px;        /* same as margin-top */
+  left:0;
+  right:0;
+  height:10px;
+}
+
+    .dropdown-menu li a{
+      display:block;
+      padding:12px 16px;
+      color:var(--text);
+      text-decoration:none;
+      font-size:14px;
+      white-space:nowrap;
+    }
+    .dropdown-menu li a:hover{
+      background:#f7f7f7;
+      color:var(--primary);
+    }
+
+    @media (hover:hover) and (pointer:fine){
+      .dropdown:hover > .dropdown-menu{
+        opacity:1;
+        transform:translateY(0);
+        pointer-events:auto;
+      }
+    }
+
+    @media (max-width:900px){
+      .header-actions{ display:none !important; }
+      .mobile-cta-item{ display:block; }
+
+      .main-nav{
+        position:fixed;
+        top:70px;
+        left:12px;
+        right:12px;
+        background:#fff;
+        border-radius:14px;
+        border:1px solid #eee;
+        box-shadow:0 10px 30px rgba(0,0,0,0.10);
+
+        transform:translateY(-140%);
+        transition:transform .25s ease;
+        padding:12px 14px;
+        z-index:999;
+      }
+      .main-nav.open{ transform:translateY(0); }
+
+      .main-nav ul{
+        flex-direction:column;
+        align-items:stretch;
+        gap:6px;
+      }
+
+      .nav-link, .dropdown-toggle{
+        width:100%;
+        padding:12px 10px;
+        justify-content:space-between;
+        border-radius:10px;
+      }
+
+      .dropdown-head{
+        width:100%;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+      }
+      .dropdown-head .nav-link,
+      .dropdown-head .dropdown-toggle{
+        width:auto;
+        padding:12px 10px;
+      }
+
+      .dropdown-menu{
+        position:static;
+        min-width:100%;
+        box-shadow:none;
+        border-radius:10px;
+        padding:6px 0;
+
+        opacity:1;
+        transform:none;
+        pointer-events:auto;
+        display:none;
+      }
+      .dropdown.open > .dropdown-menu{ display:block; }
+    }
+
+    /* =========================
+       HERO (MATCH OTHER PAGES)
+       ========================= */
+    .hero{
+      background:linear-gradient(rgba(0,122,94,.78), rgba(0,122,94,.78)),
+        url('images/green-pattern.png') repeat;
+      color:#fff;
+      text-align:center;
+      padding:110px 20px 70px;
+    }
+    .hero .hero-inner{
+      max-width:980px;
+      margin:0 auto;
+    }
+    .hero .mark{
+      width:150px;
+      height:150px;
+      object-fit:contain;
+      margin:0 auto 10px;
+      filter:drop-shadow(0 10px 18px rgba(0,0,0,0.10));
+    }
+    .hero h1{
+      font-size:52px;
+      font-weight:700;
+      letter-spacing:0.2px;
+    }
+    .hero p{
+      font-size:18px;
+      margin-top:12px;
+      max-width:860px;
+      margin-left:auto;
+      margin-right:auto;
+      opacity:0.95;
+      line-height:1.7;
+    }
+    .hero .actions{
+      margin-top:22px;
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .hero .primary-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      background:var(--secondary);
+      color:#000;
+      padding:13px 22px;
+      border-radius:999px;
+      font-weight:800;
+      text-decoration:none;
+      box-shadow:0 12px 24px rgba(0,0,0,0.18);
+      transition:transform .18s ease;
+    }
+    .hero .primary-btn:hover{ transform:translateY(-1px); }
+
+    .hero .ghost-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      background:transparent;
+      color:#fff;
+      padding:13px 20px;
+      border-radius:999px;
+      font-weight:700;
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,0.35);
+      transition:all .18s ease;
+    }
+    .hero .ghost-btn:hover{
+      border-color:rgba(255,255,255,0.6);
+      transform:translateY(-1px);
+    }
+
+    /* =========================
+       SECTIONS / CARDS
+       ========================= */
+    .section{
+      padding:70px 20px;
+      background:var(--light-bg);
+    }
+    .section.white{ background:#fff; }
+    .container{
+      max-width:1200px;
+      margin:0 auto;
+    }
+    .section h2{
+      text-align:center;
+      font-size:34px;
+      margin-bottom:12px;
+      color:#0f3b2d;
+    }
+    .subtitle{
+      text-align:center;
+      max-width:900px;
+      margin:0 auto 34px;
+      color:#555;
+      line-height:1.75;
+      font-size:16px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:18px;
+    }
+    .card{
+      background:#fff;
+      border-radius:16px;
+      padding:22px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.06);
+      border:1px solid rgba(0,0,0,0.04);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      transition:transform .25s ease, box-shadow .25s ease;
+      height:100%;
+    }
+    .card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 14px 28px rgba(0,0,0,0.08);
+    }
+    .card i{ font-size:24px; color:var(--primary); }
+    .card h3{ font-size:18px; color:#0f3b2d; }
+    .card p{ color:#555; line-height:1.65; font-size:14.5px; }
+
+    /* CTA STRIP */
+    .cta-strip{
+      background:linear-gradient(90deg, rgba(0,122,94,1), rgba(103,183,164,1));
+      color:#fff;
+      padding:60px 20px;
+      text-align:center;
+    }
+    .cta-strip h2{ font-size:34px; margin-bottom:10px; color:#fff; }
+    .cta-strip p{
+      max-width:860px;
+      margin:0 auto 18px;
+      opacity:0.95;
+      line-height:1.7;
+    }
+    .cta-strip a{
+      display:inline-block;
+      background:var(--secondary);
+      color:#000;
+      padding:12px 22px;
+      border-radius:999px;
+      font-weight:800;
+      text-decoration:none;
+    }
+
+    /* FOOTER (MATCH OTHER PAGES) */
+    footer{
+      background:var(--primary);
+      color:#fff;
+      padding:40px 20px;
+    }
+    .footer-wrap{
+      max-width:1200px;
+      margin:auto;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      gap:30px;
+    }
+    .footer-wrap h4{ margin-bottom:10px; }
+    .footer-wrap ul{ list-style:none; padding:0; }
+    .footer-wrap a{ color:#fff; text-decoration:none; }
+    .footer-wrap a:hover{ text-decoration:underline; }
+    .footer-social a{ margin-right:12px; font-size:20px; }
+
+    .footer-bottom{
+      text-align:center;
+      margin-top:26px;
+      font-size:12px;
+      opacity:0.9;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width:1100px){
+      .grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width:900px){
+      .hero h1{ font-size:42px; }
+    }
+    @media (max-width:720px){
+      .grid{ grid-template-columns:1fr; }
+      .section h2{ font-size:28px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="main-header">
+  <div class="nav-container">
+    <a href="index.html" class="brand">
+      <img src="images/GLLOGO.png" alt="Green Leaders Logo" class="logo" />
+    </a>
+
+    <!-- Mobile hamburger -->
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- ✅ Desktop CTA (shows only on laptop/desktop) -->
+    <div class="header-actions desktop-only">
+      <a href="GetInvolved.html" class="cta-button">Become a Member</a>
+    </div>
+
+    <nav class="main-nav" id="mainNav">
+      <ul>
+        <li class="dropdown">
+  <div class="dropdown-head">
+    <a class="nav-link" href="index.html">Home</a>
+
+    <!-- dropdown toggle only for the arrow -->
+    <button class="dropdown-toggle" type="button" aria-label="Open Home menu">
+      <i class="fa fa-caret-down"></i>
+    </button>
+  </div>
+
+  <ul class="dropdown-menu">
+    <li><a href="ContactUs.html">Contact Us</a></li>
+  </ul>
+</li>
+
+
+        <li><a class="nav-link" href="WhoWeAre.html">About Us</a></li>
+
+       <li class="dropdown">
+  <div class="dropdown-head">
+    <a class="nav-link" href="OurImpact.html">Our Impact</a>
+
+    <!-- dropdown toggle only for the arrow -->
+    <button class="dropdown-toggle" type="button" aria-label="Open Home menu">
+      <i class="fa fa-caret-down"></i>
+    </button>
+  </div>
+
+  <ul class="dropdown-menu">
+    <li><a href="Research&Studies.html">Reaserch & Studies</a></li>
+    <li><a href="Awarness&Education.html">Awarness & Education</a></li>
+  </ul>
+</li>
+
+
+        <li><a class="nav-link" href="NewsLetter.html">Newsletter</a></li>
+        <li><a class="nav-link" href="WaterAudit.html">Water Audit Tool</a></li>
+
+        <!-- ✅ MOBILE CTA (shows only inside menu on phones) -->
+        <li class="mobile-cta-item">
+          <a href="GetInvolved.html" class="cta-button" style="width:100%; margin-top: 10px;">
+            Become a Member
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <img class="mark" src="images/GLLOGO.png" alt="Green Leaders logo">
+    <h1>Water Audit Tool</h1>
+    <p>
+      Empowering educational institutions with comprehensive water management tools to achieve measurable
+      conservation outcomes and environmental sustainability goals.
+    </p>
+
+    <div class="actions">
+      <a class="primary-btn" href="WaterAudit - Login.html">
+        Begin Water Assessment <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+      <a class="ghost-btn" href="#how-it-works">
+        How it works <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section white" id="how-it-works">
+  <div class="container">
+    <h2>How It Works</h2>
+    <p class="subtitle">
+      A simple step-by-step process to help schools and institutions understand consumption, identify leaks, and improve efficiency.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <i class="fa-solid fa-clipboard-list"></i>
+        <h3>1) Collect Inputs</h3>
+        <p>Enter basic information about your facility and water usage to establish a baseline.</p>
+      </div>
+
+      <div class="card">
+        <i class="fa-solid fa-chart-column"></i>
+        <h3>2) Analyze & Benchmark</h3>
+        <p>Review usage patterns and compare performance across different areas and periods.</p>
+      </div>
+
+      <div class="card">
+        <i class="fa-solid fa-droplet"></i>
+        <h3>3) Save Water</h3>
+        <p>Get actionable recommendations to reduce consumption, costs, and environmental impact.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-wrap">
+    <div>
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="WhoWeAre.html">Who We Are</a></li>
+        <li><a href="OurImpact.html">Our Impact</a></li>
+        <li><a href="Awarness&Education.html">Awareness & Education</a></li>
+        <li><a href="Research&Studies.html">Research & Studies</a></li>
+        <li><a href="GetInvolved.html">Membership</a></li>
+        <li><a href="NewsLetter.html">Newsletter</a></li>
+        <li><a href="ContactUs.html">Contact Us</a></li>
+        <li><a href="WaterAudit.html">Water Audit Tool</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Contact Us</h4>
+      <p><i class="fas fa-envelope" style="margin-right:8px;"></i> admin@grleaders.org</p>
+      <p><i class="fas fa-map-marker-alt" style="margin-right:8px;"></i> Lebanon</p>
+    </div>
+
+    <div class="footer-social">
+      <h4>Follow Us</h4>
+      <a href="https://www.linkedin.com/company/grleaders/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
+      <a href="https://www.instagram.com/green_leaders.ngo" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+      <a href="https://x.com/gr_leaders" target="_blank" rel="noopener"><i class="fa-solid fa-xmark"></i></a>
+      <a href="https://www.facebook.com/grleaders" target="_blank" rel="noopener"><i class="fab fa-facebook"></i></a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">&copy; 2025 Green Leaders. All Rights Reserved.</div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const navToggle = document.getElementById('navToggle');
+    const mainNav = document.getElementById('mainNav');
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    function closeAllDropdowns() {
+      dropdowns.forEach(d => d.classList.remove('open'));
+    }
+
+    navToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = mainNav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (!isOpen) closeAllDropdowns();
     });
-}
 
-// Auto-slide every 5 seconds
-setInterval(() => {
-    moveSlide(1); // Moves forward to the next slide
-}, 8000); // 5 seconds for auto-slide
+    dropdowns.forEach(dropdown => {
+      const toggle = dropdown.querySelector('.dropdown-toggle');
+      if (!toggle) return;
 
+      toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const isOpen = dropdown.classList.contains('open');
+        closeAllDropdowns();
+        if (!isOpen) dropdown.classList.add('open');
+      });
+    });
 
+    document.addEventListener('click', () => {
+      closeAllDropdowns();
+      mainNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
 
-    </script>
+    mainNav.addEventListener('click', (e) => e.stopPropagation());
 
- 
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAllDropdowns();
+        mainNav.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      closeAllDropdowns();
+      mainNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
 
 </body>
 </html>
-
