@@ -5,797 +5,910 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Who We Are | Green Leaders</title>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
     :root{
-      --primary-color:#007a5e;
-      --secondary-color:#fcd738;
-      --text-color:#1a1a1a;
-      --light-bg:#f5f5f5;
-      --dark-bg:#0d2916;
-      --font:'Poppins', sans-serif;
+      --deep:#003d2d;
+      --dark:#002b20;
+      --green:#007a5e;
+      --green-2:#008a66;
+      --lime:#a8ff2f;
+      --soft:#f4fbf7;
+      --line:#dcebe4;
+      --text:#09251d;
+      --muted:#5d7068;
+      --white:#ffffff;
+      --shadow:0 24px 70px rgba(0,48,35,.14);
+      --radius:28px;
     }
 
-    *{ margin:0; padding:0; box-sizing:border-box; }
-
-    html, body{
-      width:100%;
-      max-width:100%;
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:Poppins, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(168,255,47,.16), transparent 35%),
+        linear-gradient(180deg,#f8fcfa 0%, #ffffff 42%, #f4fbf7 100%);
       overflow-x:hidden;
     }
+    a{text-decoration:none;color:inherit}
+    img{max-width:100%;display:block}
 
-    body{ font-family:var(--font); color:var(--text-color); background:#fff; }
+    .container{width:min(1180px, calc(100% - 40px));margin:auto}
 
-    /* =========================
-       HEADER / NAV (LIKE BEFORE)
-       ========================= */
-    .main-header{
-      background:#fff;
-      border-bottom:1px solid #eee;
+    /* Header */
+    .site-header{
       position:sticky;
       top:0;
-      z-index:999;
-      box-shadow:0 2px 4px rgba(0,0,0,0.04);
+      z-index:1000;
+      background:rgba(255,255,255,.88);
+      border-bottom:1px solid rgba(0,61,45,.12);
+      backdrop-filter:blur(18px);
     }
-
-    .nav-container{
-      width:100%;
-      max-width:1200px;
-      margin:0 auto;
-      padding:14px 18px;
-      display:grid;
-      grid-template-columns:1fr auto;
+    .nav-wrap{
+      min-height:82px;
+      display:flex;
       align-items:center;
-      gap:12px;
+      justify-content:space-between;
+      gap:24px;
     }
-
-    .brand{ display:inline-flex; align-items:center; }
-    .logo{ height:52px; display:block; }
-
-    /* hamburger */
-    .nav-toggle{
-      background:none;
-      border:0;
-      font-size:22px;
-      cursor:pointer;
-      padding:8px 10px;
-      border-radius:10px;
-    }
-    .nav-toggle:focus{
-      outline:2px solid rgba(0,122,94,0.25);
-      outline-offset:2px;
-    }
-
-    /* CTA */
-    .header-actions{
+    .brand{
       display:flex;
       align-items:center;
       gap:14px;
-      justify-content:flex-end;
+      min-width:max-content;
     }
-
-    .cta-button{
-      background:#67b7a4;
-      color:#fff;
-      font-weight:600;
-      padding:10px 18px;
-      border-radius:999px;
-      text-decoration:none;
-      transition:all .25s ease;
-      white-space:nowrap;
-      display:inline-block;
-      text-align:center;
+    .brand img{
+      width:86px;
+      height:auto;
+      object-fit:contain;
     }
-    .cta-button:hover{ background:var(--primary-color); }
-
-    /* Desktop CTA only */
-    .desktop-only{ display:none; }
-    /* Mobile CTA item hidden by default */
-    .mobile-cta-item{ display:none; }
-
-    @media (min-width:901px){
-      .nav-container{
-        display:flex;
-        justify-content:space-between;
-        gap:16px;
-      }
-      .desktop-only{ display:flex; }
-      .nav-toggle{ display:none; }
+    .brand span{
+      font-weight:800;
+      letter-spacing:-.03em;
+      color:var(--deep);
+      font-size:1.05rem;
     }
 
     .main-nav{
       display:flex;
       align-items:center;
-      gap:20px;
+      gap:8px;
     }
-
-   .main-nav > ul{
-  list-style:none;
-  display:flex;
-  align-items:center;
-  gap:26px;
-  margin:0;
-  padding:0;
-}
-
-    .main-nav li{ position:relative; }
-
-    .nav-link,
-    .dropdown-toggle{
-      text-decoration:none;
-      color:var(--text-color);
-      font-weight:500;
-      font-size:16px;
-      padding:10px 0;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
+    .main-nav > a,
+    .nav-dropdown > button{
+      border:0;
+      background:transparent;
+      padding:12px 14px;
+      font:700 .92rem Poppins, sans-serif;
+      color:var(--deep);
       cursor:pointer;
-      background:none;
-      border:none;
-      font-family:inherit;
+      border-radius:999px;
+      transition:.25s ease;
+    }
+    .main-nav > a:hover,
+    .nav-dropdown:hover > button{
+      background:#eff8f3;
+      color:var(--green);
+    }
+    .nav-cta{
+      background:var(--lime)!important;
+      color:#082017!important;
+      box-shadow:0 12px 32px rgba(168,255,47,.25);
     }
 
-    .nav-link:hover,
-    .dropdown-toggle:hover{ color:var(--primary-color); }
+    .nav-dropdown{position:relative}
+    .nav-dropdown::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      top:100%;
+      height:18px;
+    }
+    .dropdown-menu{
+      position:absolute;
+      top:calc(100% + 14px);
+      right:0;
+      width:285px;
+      padding:12px;
+      background:rgba(255,255,255,.96);
+      border:1px solid rgba(0,61,45,.12);
+      border-radius:22px;
+      box-shadow:0 24px 70px rgba(0,48,35,.18);
+      opacity:0;
+      visibility:hidden;
+      transform:translateY(8px);
+      transition:.22s ease;
+      backdrop-filter:blur(18px);
+    }
+    .nav-dropdown:hover .dropdown-menu,
+    .nav-dropdown:focus-within .dropdown-menu{
+      opacity:1;
+      visibility:visible;
+      transform:translateY(0);
+    }
+    .dropdown-menu a{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 13px;
+      border-radius:14px;
+      font-weight:700;
+      color:var(--deep);
+      transition:.2s ease;
+    }
+    .dropdown-menu a:hover{
+      background:#eff8f3;
+      color:var(--green);
+      transform:translateX(4px);
+    }
 
-    .nav-link.active{ color:var(--primary-color); }
+    .menu-toggle{
+      display:none;
+      border:0;
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      background:var(--deep);
+      color:white;
+      font-size:1.1rem;
+    }
 
-    /* Home / Our Impact: text link + arrow button */
-    .dropdown-head{
+    /* Hero */
+    .page-hero{
+      position:relative;
+      padding:94px 0 74px;
+      background:
+        linear-gradient(135deg, rgba(0,43,32,.98), rgba(0,104,77,.94)),
+        radial-gradient(circle at 15% 20%, rgba(168,255,47,.18), transparent 34%);
+      color:white;
+      overflow:hidden;
+      isolation:isolate;
+    }
+    .page-hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+      background-size:74px 74px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.9), transparent 85%);
+      z-index:-2;
+    }
+    .page-hero::after{
+      content:"";
+      position:absolute;
+      width:520px;
+      height:520px;
+      border-radius:50%;
+      right:-160px;
+      top:-190px;
+      background:radial-gradient(circle, rgba(168,255,47,.28), transparent 63%);
+      z-index:-1;
+      animation:pulseGlow 7s ease-in-out infinite alternate;
+    }
+    @keyframes pulseGlow{
+      from{transform:scale(.88);opacity:.7}
+      to{transform:scale(1.08);opacity:1}
+    }
+    .hero-inner{
+      width:min(980px,100%);
+      margin:auto;
+      text-align:center;
+    }
+    .eyebrow{
       display:inline-flex;
       align-items:center;
       gap:10px;
+      padding:9px 16px;
+      border:1px solid rgba(255,255,255,.22);
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      color:var(--lime);
+      font-weight:800;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+      font-size:.78rem;
+      margin-bottom:22px;
     }
-    .dropdown-head .dropdown-toggle{
-      padding:10px 0;
+    h1{
+      font-size:clamp(3rem, 8vw, 6.5rem);
+      line-height:.92;
+      letter-spacing:-.08em;
+      font-weight:800;
+      max-width:920px;
+      margin:0 auto 24px;
     }
-
-    /* DROPDOWN */
-  /* Dropdown menu */
-.dropdown-menu{
-  position:absolute;
-  top:100%;
-  left:0;
-  margin-top:10px;              /* spacing */
-  min-width:220px;
-  background:#fff;
-  border-radius:10px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.12);
-  padding:8px 0;
-  list-style:none;
-  z-index:999;
-
-  opacity:0;
-  transform:translateY(-6px);
-  pointer-events:none;
-  transition:opacity .18s ease, transform .18s ease;
-}
-
-.dropdown.open > .dropdown-menu{
-  opacity:1;
-  transform:translateY(0);
-  pointer-events:auto;
-}
-
-/* ✅ Invisible hover-bridge so it doesn't close when moving cursor down */
-.dropdown-menu::before{
-  content:"";
-  position:absolute;
-  top:-10px;        /* same as margin-top */
-  left:0;
-  right:0;
-  height:10px;
-}
-
-
-    .dropdown-menu li a{
-      display:block;
-      padding:12px 16px;
-      color:var(--text-color);
-      text-decoration:none;
-      font-size:14px;
-      white-space:nowrap;
-    }
-    .dropdown-menu li a:hover{
-      background:#f7f7f7;
-      color:var(--primary-color);
+    .hero-inner p{
+      max-width:760px;
+      margin:0 auto;
+      color:rgba(255,255,255,.84);
+      font-size:clamp(1.02rem, 2vw, 1.25rem);
+      line-height:1.8;
     }
 
-    @media (hover:hover) and (pointer:fine){
-      .dropdown:hover > .dropdown-menu{
-        opacity:1;
-        transform:translateY(0);
-        pointer-events:auto;
-      }
+    .hero-actions{
+      margin-top:34px;
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
     }
-
-    /* MOBILE NAV */
-    @media (max-width:900px){
-      .header-actions{ display:none !important; }
-      .mobile-cta-item{ display:block; }
-
-      .main-nav{
-        position:fixed;
-        top:70px;
-        left:12px;
-        right:12px;
-        background:#fff;
-        border-radius:14px;
-        border:1px solid #eee;
-        box-shadow:0 10px 30px rgba(0,0,0,0.10);
-
-        transform:translateY(-140%);
-        transition:transform .25s ease;
-        padding:12px 14px;
-        z-index:999;
-      }
-      .main-nav.open{ transform:translateY(0); }
-
-      .main-nav ul{
-        flex-direction:column;
-        align-items:stretch;
-        gap:6px;
-      }
-
-      .nav-link, .dropdown-toggle{
-        width:100%;
-        padding:12px 10px;
-        justify-content:space-between;
-        border-radius:10px;
-      }
-
-      .dropdown-head{
-        width:100%;
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-      }
-      .dropdown-head .nav-link,
-      .dropdown-head .dropdown-toggle{
-        width:auto;
-        padding:12px 10px;
-      }
-
-      /* inline dropdown on mobile */
-      .dropdown-menu{
-        position:static;
-        min-width:100%;
-        margin-top:0;
-        box-shadow:none;
-        border-radius:10px;
-        padding:6px 0;
-
-        opacity:1;
-        transform:none;
-        pointer-events:auto;
-        display:none;
-      }
-      .dropdown.open > .dropdown-menu{ display:block; }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-height:54px;
+      padding:0 24px;
+      border-radius:999px;
+      font-weight:800;
+      transition:.25s ease;
     }
+    .btn-primary{background:var(--lime);color:#082017}
+    .btn-secondary{border:1px solid rgba(255,255,255,.32);color:white;background:rgba(255,255,255,.06)}
+    .btn:hover{transform:translateY(-3px)}
 
-    /* ---------- PAGE ANIMATIONS ---------- */
-    .fade-in{ animation:fadeIn 1.1s ease-in-out both; }
-    @keyframes fadeIn{
-      from{ opacity:0; transform:translateY(16px); }
-      to{ opacity:1; transform:translateY(0); }
+    /* Floating statement */
+    .identity-strip{
+      position:relative;
+      margin-top:-34px;
+      z-index:5;
     }
-
-    /* ---------- HERO ---------- */
-    .who-we-are-hero{
-      background:linear-gradient(rgba(0,122,94,.78), rgba(0,122,94,.78)), url('images/green-pattern.png') repeat;
-      color:#fff;
-      text-align:center;
-      padding:110px 20px 70px;
+    .identity-card{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:22px;
+      background:white;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
     }
-    .who-we-are-hero h1{
-      font-size:52px;
+    .identity-card > div{
+      padding:36px;
+    }
+    .identity-card .statement{
+      background:linear-gradient(135deg, #ffffff, #f3fff1);
+    }
+    .statement h2{
+      font-size:clamp(2rem,4vw,3.3rem);
+      line-height:1.05;
+      letter-spacing:-.055em;
+      color:var(--deep);
+      margin-bottom:18px;
+    }
+    .statement p{
+      color:var(--muted);
+      line-height:1.9;
+      font-size:1.03rem;
+    }
+    .identity-card .facts{
+      background:linear-gradient(135deg, var(--deep), var(--green));
+      color:white;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    .mini-fact{
+      min-height:132px;
+      padding:22px;
+      border-radius:22px;
+      background:rgba(255,255,255,.09);
+      border:1px solid rgba(255,255,255,.14);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .mini-fact strong{
+      font-size:2.25rem;
+      line-height:1;
+      color:white;
+      letter-spacing:-.05em;
+    }
+    .mini-fact span{
       font-weight:700;
-      letter-spacing:0.2px;
+      color:rgba(255,255,255,.78);
     }
-    .who-we-are-hero p{
-      font-size:18px;
-      margin-top:12px;
-      max-width:720px;
-      margin-left:auto;
-      margin-right:auto;
-      opacity:0.95;
+
+    section{padding:88px 0}
+    .section-head{
+      max-width:780px;
+      margin:0 auto 38px;
+      text-align:center;
+    }
+    .section-head .eyebrow{
+      color:var(--green);
+      border-color:rgba(0,122,94,.18);
+      background:#eff8f3;
+      margin-bottom:16px;
+    }
+    .section-head h2{
+      font-size:clamp(2rem,4vw,4rem);
+      line-height:1.03;
+      letter-spacing:-.06em;
+      color:var(--deep);
+      margin-bottom:16px;
+    }
+    .section-head p{
+      color:var(--muted);
+      line-height:1.8;
+      font-size:1.04rem;
+    }
+
+    .mission-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:24px;
+    }
+    .feature-card{
+      position:relative;
+      padding:34px;
+      background:white;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:0 20px 55px rgba(0,48,35,.08);
+      overflow:hidden;
+      transition:.28s ease;
+    }
+    .feature-card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 28px 70px rgba(0,48,35,.14);
+    }
+    .feature-card::after{
+      content:"";
+      position:absolute;
+      right:-60px;
+      top:-60px;
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(168,255,47,.38), transparent 68%);
+    }
+    .icon-bubble{
+      width:58px;
+      height:58px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg, var(--lime), #ffffff);
+      color:var(--deep);
+      font-size:1.35rem;
+      margin-bottom:22px;
+    }
+    .feature-card h3{
+      font-size:clamp(1.55rem,2vw,2.1rem);
+      color:var(--deep);
+      letter-spacing:-.04em;
+      margin-bottom:14px;
+    }
+    .feature-card p{
+      color:var(--muted);
+      line-height:1.9;
+      position:relative;
+      z-index:1;
+    }
+
+    .values-section{
+      background:
+        linear-gradient(135deg, rgba(0,61,45,.96), rgba(0,126,93,.92));
+      color:white;
+      position:relative;
+      overflow:hidden;
+    }
+    .values-section::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px);
+      background-size:68px 68px;
+      opacity:.7;
+    }
+    .values-section .container{position:relative}
+    .values-section .section-head h2,
+    .values-section .section-head p{color:white}
+    .values-section .section-head p{color:rgba(255,255,255,.76)}
+    .values-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+    .value-card{
+      min-height:210px;
+      padding:28px;
+      border-radius:26px;
+      background:rgba(255,255,255,.09);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter:blur(16px);
+    }
+    .value-card span{
+      display:inline-flex;
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:22px;
+      background:var(--lime);
+      color:#072016;
+      font-weight:800;
+    }
+    .value-card h3{
+      font-size:1.25rem;
+      margin-bottom:12px;
+      letter-spacing:-.035em;
+    }
+    .value-card p{
+      color:rgba(255,255,255,.74);
+      line-height:1.75;
+    }
+
+    .principles-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+    }
+    .principle{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:26px;
+      padding:28px;
+      box-shadow:0 18px 50px rgba(0,48,35,.08);
+      min-height:250px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      transition:.28s ease;
+    }
+    .principle:hover{transform:translateY(-6px)}
+    .principle .number{
+      font-weight:800;
+      font-size:2.2rem;
+      color:var(--green);
+      letter-spacing:-.06em;
+    }
+    .principle h3{
+      color:var(--deep);
+      font-size:1.1rem;
+      line-height:1.35;
+      margin:18px 0 10px;
+    }
+    .principle p{
+      color:var(--muted);
+      font-size:.95rem;
       line-height:1.7;
     }
 
-    /* ---------- GLOBAL SECTION WRAPPER ---------- */
-    .section{
-      padding:70px 20px;
-      background:var(--light-bg);
-    }
-    .container{
-      max-width:1200px;
-      margin:0 auto;
-    }
-    .section h2{
-      text-align:center;
-      font-size:34px;
-      margin-bottom:34px;
-    }
-
-    /* ---------- INTRO ---------- */
-    .intro-wrap{
-      padding:65px 20px;
-      background:#fff;
-    }
-    .intro-text{
-      max-width:1000px;
-      margin:0 auto;
-      text-align:center;
-      font-size:18px;
-      line-height:1.85;
-      padding:0 20px;
-      color:#2a2a2a;
-    }
-    .facts{
-      display:flex;
-      justify-content:center;
-      flex-wrap:wrap;
-      gap:12px;
-      margin:28px auto 0;
-      max-width:980px;
-      padding:0 20px;
-    }
-    .chip{
-      background:#f2fbf7;
-      border:1px solid rgba(0,122,94,0.18);
-      color:#0f3b2d;
-      padding:10px 14px;
-      border-radius:999px;
-      font-size:14px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.03);
-    }
-    .chip i{ color:var(--primary-color); }
-
-    /* ---------- MISSION / VISION ---------- */
-    .mission-vision-section{
-      padding:60px 20px;
-      background:#f4fbf8;
-    }
-    .mv-grid{
-      max-width:1200px;
-      margin:0 auto;
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:22px;
-    }
-    .mv-box{
-      background:#fff;
-      border-radius:14px;
-      padding:28px;
-      max-width:540px;
-      flex:1 1 320px;
-      box-shadow:0 10px 24px rgba(0,0,0,0.06);
-      border:1px solid rgba(0,0,0,0.04);
-    }
-    .mv-title{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-bottom:12px;
-    }
-    .mv-title i{
-      color:var(--primary-color);
-      font-size:20px;
-    }
-    .mv-box h3{
-      margin:0;
-      color:#0f3b2d;
-      font-size:20px;
-    }
-    .mv-box p{
-      font-size:16px;
-      line-height:1.85;
-      color:#333;
-    }
-
-    /* ---------- VALUES ---------- */
-    .scrolling-wrapper{ overflow:hidden; padding:18px 0; }
-    .scrolling-cards{
-      display:flex;
-      width:max-content;
-      animation:scroll-left 28s linear infinite;
-      gap:18px;
-    }
-    @keyframes scroll-left{
-      0%{ transform:translateX(0); }
-      100%{ transform:translateX(-50%); }
-    }
-    .scrolling-card-duplicate{ display:flex; gap:18px; }
-
-    .icon-box{
-      text-align:left;
-      padding:22px;
-      border-radius:14px;
-      background:#fff;
-      width:310px;
-      min-width:310px;
-      box-shadow:0 10px 24px rgba(0,0,0,0.06);
-      border:1px solid rgba(0,0,0,0.04);
-      transition:transform .25s ease, box-shadow .25s ease;
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-start;
-      gap:10px;
-    }
-    .icon-box:hover{
-      transform:translateY(-6px);
-      box-shadow:0 14px 28px rgba(0,0,0,0.08);
-    }
-    .icon-box i{
-      font-size:26px;
-      color:var(--primary-color);
-      margin-bottom:2px;
-    }
-    .icon-box strong{ font-size:18px; }
-    .icon-box p{ color:#555; line-height:1.6; font-size:14.5px; }
-
-    /* ---------- PRINCIPLES ---------- */
-    .principles-grid{
+    .cta-panel{
+      border-radius:34px;
+      padding:48px;
+      background:
+        linear-gradient(135deg, var(--deep), var(--green)),
+        radial-gradient(circle at top right, rgba(168,255,47,.3), transparent 40%);
+      color:white;
       display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:18px;
-      max-width:980px;
-      margin:0 auto;
+      grid-template-columns:1.2fr auto;
+      align-items:center;
+      gap:24px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
     }
-    .principle-card{
-      background:#fff;
-      border-radius:14px;
-      padding:22px;
-      box-shadow:0 10px 24px rgba(0,0,0,0.06);
-      border:1px solid rgba(0,0,0,0.04);
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
+    .cta-panel::after{
+      content:"";
+      position:absolute;
+      inset:auto -120px -120px auto;
+      width:340px;
+      height:340px;
+      border-radius:50%;
+      background:rgba(168,255,47,.18);
     }
-    .principle-card i{
-      color:var(--primary-color);
-      font-size:20px;
-      margin-top:2px;
+    .cta-panel h2{
+      font-size:clamp(2rem,4vw,3.4rem);
+      line-height:1.05;
+      letter-spacing:-.06em;
+      margin-bottom:14px;
     }
-    .principle-card h4{
-      margin:0 0 6px;
-      font-size:16px;
-      color:#0f3b2d;
+    .cta-panel p{
+      color:rgba(255,255,255,.78);
+      line-height:1.75;
+      max-width:680px;
     }
-    .principle-card p{
-      margin:0;
-      color:#555;
-      line-height:1.6;
-      font-size:14.5px;
+    .cta-panel .btn{
+      background:var(--lime);
+      color:#082017;
+      position:relative;
+      z-index:1;
     }
 
-    /* ---------- FOOTER ---------- */
     footer{
-      background:var(--primary-color);
-      color:#fff;
-      padding:40px 20px;
+      background:#00261c;
+      color:white;
+      padding:58px 0 24px;
     }
-    .footer-wrap{
-      max-width:1200px;
-      margin:auto;
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:space-between;
-      gap:30px;
+    .footer-grid{
+      display:grid;
+      grid-template-columns:1.2fr .8fr .8fr;
+      gap:34px;
+      padding-bottom:34px;
+      border-bottom:1px solid rgba(255,255,255,.12);
     }
-    .footer-wrap h4{ margin-bottom:10px; }
-    .footer-wrap ul{ list-style:none; padding:0; }
-    .footer-wrap a{ color:#fff; text-decoration:none; }
-    .footer-wrap a:hover{ text-decoration:underline; }
-    .footer-social a{ margin-right:12px; font-size:20px; }
+    footer img{width:92px;margin-bottom:16px}
+    footer p, footer a{color:rgba(255,255,255,.72);line-height:1.8}
+    footer h3{margin-bottom:14px;color:white}
+    .socials{display:flex;gap:10px;margin-top:16px}
+    .socials a{
+      width:42px;height:42px;border-radius:50%;
+      background:rgba(255,255,255,.08);
+      display:grid;place-items:center;
+      transition:.2s ease;
+    }
+    .socials a:hover{background:var(--lime);color:#082017}
+    .copyright{
+      padding-top:22px;
+      color:rgba(255,255,255,.55);
+      font-size:.9rem;
+    }
 
-    .footer-bottom{
-      text-align:center;
-      margin-top:26px;
-      font-size:12px;
-      opacity:0.9;
+    .reveal{
+      opacity:0;
+      transform:translateY(26px);
+      transition:opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible{
+      opacity:1;
+      transform:translateY(0);
     }
 
-    /* ---------- RESPONSIVE ---------- */
-    @media (max-width: 900px){
-      .who-we-are-hero h1{ font-size:42px; }
-      .principles-grid{ grid-template-columns:1fr; }
+    @media(max-width:980px){
+      .menu-toggle{display:grid;place-items:center}
+      .main-nav{
+        position:absolute;
+        left:20px;
+        right:20px;
+        top:92px;
+        background:white;
+        border:1px solid var(--line);
+        border-radius:24px;
+        box-shadow:var(--shadow);
+        padding:14px;
+        display:none;
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .main-nav.active{display:flex}
+      .main-nav > a,
+      .nav-dropdown > button{
+        width:100%;
+        text-align:left;
+        border-radius:14px;
+      }
+      .dropdown-menu{
+        position:static;
+        opacity:1;
+        visibility:visible;
+        transform:none;
+        box-shadow:none;
+        width:100%;
+        border-radius:16px;
+        display:none;
+        margin-top:6px;
+      }
+      .nav-dropdown.open .dropdown-menu{display:block}
+      .identity-card,
+      .mission-grid,
+      .cta-panel{
+        grid-template-columns:1fr;
+      }
+      .values-grid,
+      .principles-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
     }
-    @media (max-width: 720px){
-      .who-we-are-hero{ padding:95px 18px 60px; }
-      .intro-text{ font-size:16.5px; }
-      .section h2{ font-size:28px; }
+
+    @media(max-width:640px){
+      .container{width:min(100% - 28px, 1180px)}
+      .brand span{display:none}
+      .brand img{width:74px}
+      .page-hero{padding:70px 0 58px}
+      h1{font-size:3.2rem}
+      .identity-card > div,
+      .feature-card,
+      .cta-panel{padding:26px}
+      .identity-card .facts,
+      .values-grid,
+      .principles-grid{
+        grid-template-columns:1fr;
+      }
+      .hero-actions{flex-direction:column}
+      .btn{width:100%}
+      section{padding:64px 0}
+      .footer-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
 
 <body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html" aria-label="Green Leaders home">
+        <img src="GLLOGO2.png" alt="Green Leaders logo">
+        <span>Green Leaders</span>
+      </a>
 
-<!-- ✅ UPDATED HEADER -->
-<header class="main-header">
-  <div class="nav-container">
-    <a href="index.html" class="brand">
-      <img src="images/GLLOGO.png" alt="Green Leaders Logo" class="logo" />
-    </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
 
-    <!-- Mobile hamburger -->
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
-      <i class="fa-solid fa-bars"></i>
-    </button>
+      <nav class="main-nav" id="mainNav">
+        <a href="index.html">Home</a>
 
-    <!-- ✅ Desktop CTA (shows only on laptop/desktop) -->
-    <div class="header-actions desktop-only">
-      <a href="GetInvolved.html" class="cta-button">Become a Member</a>
+        <div class="nav-dropdown">
+          <button type="button">About <i class="fa-solid fa-chevron-down"></i></button>
+          <div class="dropdown-menu">
+            <a href="WhoWeAre.html"><i class="fa-solid fa-seedling"></i> Who We Are</a>
+            <a href="OurImpact.html"><i class="fa-solid fa-chart-line"></i> Our Impact</a>
+            <a href="Research&Studies.html"><i class="fa-solid fa-microscope"></i> Research & Studies</a>
+            <a href="Awarness&Education.html"><i class="fa-solid fa-book-open-reader"></i> Awareness & Education</a>
+          </div>
+        </div>
+
+        <a href="NewsLetter.html">Newsletter</a>
+        <a href="WaterAudit.html">Water Audit Tool</a>
+        <a href="ContactUs.html">Contact</a>
+        <a class="nav-cta" href="GetInvolved.html">Become a Member</a>
+      </nav>
     </div>
+  </header>
 
-    <nav class="main-nav" id="mainNav">
-      <ul>
-        <li class="dropdown">
-  <div class="dropdown-head">
-    <a class="nav-link" href="index.html">Home</a>
-
-    <!-- dropdown toggle only for the arrow -->
-    <button class="dropdown-toggle" type="button" aria-label="Open Home menu">
-      <i class="fa fa-caret-down"></i>
-    </button>
-  </div>
-
-  <ul class="dropdown-menu">
-    <li><a href="ContactUs.html">Contact Us</a></li>
-  </ul>
-</li>
-
-
-        <li><a class="nav-link" href="WhoWeAre.html">About Us</a></li>
-
-       <li class="dropdown">
-  <div class="dropdown-head">
-    <a class="nav-link" href="OurImpact.html">Our Impact</a>
-
-    <!-- dropdown toggle only for the arrow -->
-    <button class="dropdown-toggle" type="button" aria-label="Open Home menu">
-      <i class="fa fa-caret-down"></i>
-    </button>
-  </div>
-
-  <ul class="dropdown-menu">
-    <li><a href="Research&Studies.html">Reaserch & Studies</a></li>
-    <li><a href="Awarness&Education.html">Awarness & Education</a></li>
-  </ul>
-</li>
-
-
-        <li><a class="nav-link" href="NewsLetter.html">Newsletter</a></li>
-        <li><a class="nav-link" href="WaterAudit.html">Water Audit Tool</a></li>
-
-        <!-- ✅ MOBILE CTA (shows only inside menu on phones) -->
-        <li class="mobile-cta-item">
-          <a href="GetInvolved.html" class="cta-button" style="width:100%; margin-top: 10px;">
-            Become a Member
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</header>
-
-<!-- HERO -->
-<section class="who-we-are-hero fade-in">
-  <h1>Who We Are</h1>
-  <p>Empowering sustainability through education, research, and collective action.</p>
-</section>
-
-<!-- INTRO -->
-<section class="intro-wrap fade-in">
-  <div class="intro-text">
-    <p>
-      Founded in Lebanon in 2023, Green Leaders is a non-governmental organization committed to advancing sustainable development and environmental stewardship. While primarily operating in Lebanon, our reach extends across the MENA region, with global partnerships amplifying our impact.<br><br>
-      Our mission is to foster environmental awareness, drive sustainability research, and implement transformative initiatives in energy efficiency, water stewardship, pollution mitigation, and climate resilience. Through data-driven strategies and collaborative partnerships, we address critical environmental challenges and contribute to global sustainability goals.<br><br>
-      As of January 2025, Green Leaders brings together 30 dedicated professionals and student members, actively working to advance the organization’s mission and accelerate efforts to combat climate change.<br><br>
-      Advocating for circular economy principles and responsible resource management, we strive to build a regenerative and resilient future. Our approach is built on collaboration. By forging strategic partnerships with governments, businesses, academic institutions, and local communities, Green Leaders bridges diverse sectors to deliver scalable, impactful solutions.
-    </p>
-  </div>
-
-  <div class="facts">
-    <div class="chip"><i class="fa-solid fa-calendar"></i> Founded: 2023</div>
-    <div class="chip"><i class="fa-solid fa-location-dot"></i> Based: Lebanon</div>
-    <div class="chip"><i class="fa-solid fa-earth-americas"></i> Reach: MENA + Global</div>
-    <div class="chip"><i class="fa-solid fa-users"></i> Members: 30+</div>
-  </div>
-</section>
-
-<!-- MISSION / VISION -->
-<section class="mission-vision-section fade-in">
-  <div class="mv-grid">
-    <div class="mv-box">
-      <div class="mv-title">
-        <i class="fa-solid fa-bullseye"></i>
-        <h3>Our Mission</h3>
-      </div>
-      <p>
-        To foster environmental awareness, drive sustainability research, and implement transformative initiatives in energy efficiency,
-        water stewardship, pollution mitigation, and climate resilience. Through data-driven strategies and collaborative partnerships,
-        we address critical environmental challenges and contribute to global sustainability goals.
-      </p>
-    </div>
-
-    <div class="mv-box">
-      <div class="mv-title">
-        <i class="fa-solid fa-eye"></i>
-        <h3>Our Vision</h3>
-      </div>
-      <p>
-        To shape a world where environmental responsibility integrates seamlessly with economic progress and social equity, ensuring a sustainable
-        and thriving planet for generations to come. We strive to build a regenerative and resilient future through circular economy principles
-        and strategic collaboration.
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- VALUES -->
-<section class="section fade-in">
-  <div class="container">
-    <h2>Our Values</h2>
-
-    <div class="scrolling-wrapper">
-      <div class="scrolling-cards">
-        <div class="scrolling-card-duplicate">
-          <div class="icon-box"><i class="fas fa-leaf"></i><strong>Sustainability</strong><p>We embed long-term ecological responsibility in all we do.</p></div>
-          <div class="icon-box"><i class="fas fa-handshake"></i><strong>Collaboration</strong><p>We partner locally and globally to maximize impact.</p></div>
-          <div class="icon-box"><i class="fas fa-balance-scale"></i><strong>Integrity</strong><p>We uphold transparency and public trust in all our actions.</p></div>
-          <div class="icon-box"><i class="fas fa-flask"></i><strong>Innovation</strong><p>We create evidence-based and forward-thinking solutions.</p></div>
-          <div class="icon-box"><i class="fas fa-graduation-cap"></i><strong>Education</strong><p>We empower society through awareness and advocacy.</p></div>
-          <div class="icon-box"><i class="fas fa-clipboard-check"></i><strong>ESG Commitment</strong><p>We integrate ESG standards into our operations and work.</p></div>
-
-          <!-- Duplicate set -->
-          <div class="icon-box"><i class="fas fa-leaf"></i><strong>Sustainability</strong><p>We embed long-term ecological responsibility in all we do.</p></div>
-          <div class="icon-box"><i class="fas fa-handshake"></i><strong>Collaboration</strong><p>We partner locally and globally to maximize impact.</p></div>
-          <div class="icon-box"><i class="fas fa-balance-scale"></i><strong>Integrity</strong><p>We uphold transparency and public trust in all our actions.</p></div>
-          <div class="icon-box"><i class="fas fa-flask"></i><strong>Innovation</strong><p>We create evidence-based and forward-thinking solutions.</p></div>
-          <div class="icon-box"><i class="fas fa-graduation-cap"></i><strong>Education</strong><p>We empower society through awareness and advocacy.</p></div>
-          <div class="icon-box"><i class="fas fa-clipboard-check"></i><strong>ESG Commitment</strong><p>We integrate ESG standards into our operations and work.</p></div>
+  <main>
+    <section class="page-hero">
+      <div class="container hero-inner reveal">
+        <span class="eyebrow"><i class="fa-solid fa-leaf"></i> Who We Are</span>
+        <h1>Green action, built through people.</h1>
+        <p>
+          Green Leaders is an environmental NGO turning awareness into measurable local action through education,
+          research, partnerships, and practical sustainability tools.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="OurImpact.html">Explore Our Impact <i class="fa-solid fa-arrow-right"></i></a>
+          <a class="btn btn-secondary" href="GetInvolved.html">Join the Movement</a>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- PRINCIPLES -->
-<section class="section fade-in" style="background:#fff;">
-  <div class="container">
-    <h2>Our Principles</h2>
+    <section class="identity-strip">
+      <div class="container">
+        <div class="identity-card reveal">
+          <div class="statement">
+            <h2>We make sustainability clearer, practical, and locally relevant.</h2>
+            <p>
+              Our work connects environmental knowledge with real action. From schools and communities to research
+              initiatives and digital tools, Green Leaders helps people understand environmental challenges and take
+              informed steps toward better resource use, cleaner air, and stronger climate awareness.
+            </p>
+          </div>
+          <div class="facts">
+            <div class="mini-fact">
+              <strong>35+</strong>
+              <span>Members contributing to environmental action</span>
+            </div>
+            <div class="mini-fact">
+              <strong>2</strong>
+              <span>Research projects supporting evidence-based awareness</span>
+            </div>
+            <div class="mini-fact">
+              <strong>26k+</strong>
+              <span>Students impacted through education initiatives</span>
+            </div>
+            <div class="mini-fact">
+              <strong>1</strong>
+              <span>Water Audit Tool turning data into savings action</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <div class="principles-grid">
-      <div class="principle-card">
-        <i class="fa-solid fa-seedling"></i>
+    <section>
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Mission & Vision</span>
+          <h2>Designed for environmental awareness and measurable change.</h2>
+          <p>
+            Green Leaders combines sustainability education, research communication, and practical tools to support a
+            more informed and resilient society.
+          </p>
+        </div>
+
+        <div class="mission-grid">
+          <article class="feature-card reveal">
+            <div class="icon-bubble"><i class="fa-solid fa-bullseye"></i></div>
+            <h3>Our Mission</h3>
+            <p>
+              To foster environmental awareness, drive sustainability research, and implement transformative initiatives
+              in energy efficiency, water stewardship, pollution mitigation, and climate resilience. Through data-driven
+              strategies and collaborative partnerships, we address critical environmental challenges and contribute to
+              global sustainability goals.
+            </p>
+          </article>
+
+          <article class="feature-card reveal">
+            <div class="icon-bubble"><i class="fa-solid fa-eye"></i></div>
+            <h3>Our Vision</h3>
+            <p>
+              To shape a world where environmental responsibility integrates seamlessly with economic progress and social
+              equity, ensuring a sustainable and thriving planet for generations to come. We strive to build a
+              regenerative and resilient future through circular economy principles and strategic collaboration.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="values-section">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Our Values</span>
+          <h2>What guides our work.</h2>
+          <p>
+            Our values shape how we educate, research, collaborate, and communicate sustainability in a way that is
+            practical, credible, and community-centered.
+          </p>
+        </div>
+
+        <div class="values-grid">
+          <article class="value-card reveal">
+            <span>01</span>
+            <h3>Environmental Responsibility</h3>
+            <p>We promote conscious choices that protect natural resources and reduce environmental pressure.</p>
+          </article>
+          <article class="value-card reveal">
+            <span>02</span>
+            <h3>Evidence-Based Action</h3>
+            <p>We connect research, data, and field observations to make sustainability easier to understand.</p>
+          </article>
+          <article class="value-card reveal">
+            <span>03</span>
+            <h3>Community Empowerment</h3>
+            <p>We equip students, institutions, and communities with tools and awareness to lead change.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Our Principles</span>
+          <h2>From values to measurable impact.</h2>
+          <p>
+            Green Leaders works through principles that keep our initiatives transparent, practical, and aligned with
+            environmental, social, and governance thinking.
+          </p>
+        </div>
+
+        <div class="principles-grid">
+          <article class="principle reveal">
+            <div>
+              <div class="number">01</div>
+              <h3>Sustainability, Integrity & Action</h3>
+              <p>We act with responsibility and transparency, turning values into measurable impact.</p>
+            </div>
+          </article>
+          <article class="principle reveal">
+            <div>
+              <div class="number">02</div>
+              <h3>Innovation, Research & Empowerment</h3>
+              <p>We advance evidence-based solutions and empower people to lead environmental change.</p>
+            </div>
+          </article>
+          <article class="principle reveal">
+            <div>
+              <div class="number">03</div>
+              <h3>Climate Action, Stewardship & Circular Economy</h3>
+              <p>We promote resilient systems, resource efficiency, and circular thinking.</p>
+            </div>
+          </article>
+          <article class="principle reveal">
+            <div>
+              <div class="number">04</div>
+              <h3>Advancing ESG Principles</h3>
+              <p>We integrate environmental, social, and governance best practices across our work.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="cta-panel reveal">
+          <div>
+            <h2>Be part of the Green Leaders movement.</h2>
+            <p>
+              Join our network of members, volunteers, researchers, and partners working to make sustainability visible,
+              understandable, and actionable.
+            </p>
+          </div>
+          <a class="btn" href="GetInvolved.html">Get Involved <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
         <div>
-          <h4>Sustainability, Integrity & Action</h4>
-          <p>We act with responsibility and transparency, turning values into measurable impact.</p>
+          <img src="GLLOGO2.png" alt="Green Leaders logo">
+          <p>
+            Green Leaders works across education, research, and partnerships to make sustainability clearer,
+            more accessible, and more practical.
+          </p>
+          <div class="socials">
+            <a href="https://www.linkedin.com/company/grleaders/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://www.instagram.com/green_leaders.ngo" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://x.com/gr_leaders" target="_blank" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+            <a href="https://www.facebook.com/grleaders" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          </div>
         </div>
-      </div>
 
-      <div class="principle-card">
-        <i class="fa-solid fa-lightbulb"></i>
         <div>
-          <h4>Innovation, Research & Empowerment</h4>
-          <p>We advance evidence-based solutions and empower people to lead change.</p>
+          <h3>Quick Links</h3>
+          <p><a href="WhoWeAre.html">Who We Are</a></p>
+          <p><a href="OurImpact.html">Our Impact</a></p>
+          <p><a href="Awarness&Education.html">Awareness & Education</a></p>
+          <p><a href="Research&Studies.html">Research & Studies</a></p>
         </div>
-      </div>
 
-      <div class="principle-card">
-        <i class="fa-solid fa-globe"></i>
         <div>
-          <h4>Climate Action, Stewardship & Circular Economy</h4>
-          <p>We promote resilient systems, resource efficiency, and circular thinking.</p>
+          <h3>Contact</h3>
+          <p><a href="ContactUs.html">Contact Us</a></p>
+          <p><a href="GetInvolved.html">Become a Member</a></p>
+          <p><a href="WaterAudit.html">Water Audit Tool</a></p>
         </div>
       </div>
 
-      <div class="principle-card">
-        <i class="fa-solid fa-clipboard-check"></i>
-        <div>
-          <h4>Advancing ESG Principles</h4>
-          <p>We integrate environmental, social, and governance best practices across our work.</p>
-        </div>
+      <div class="copyright">
+        © 2026 Green Leaders. All rights reserved.
       </div>
     </div>
-  </div>
-</section>
+  </footer>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-wrap">
-    <div>
-      <h4>Quick Links</h4>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="WhoWeAre.html">Who We Are</a></li>
-        <li><a href="OurImpact.html">Our Impact</a></li>
-        <li><a href="Awarness&Education.html">Awareness & Education</a></li>
-        <li><a href="Research&Studies.html">Research & Studies</a></li>
-        <li><a href="GetInvolved.html">Membership</a></li>
-        <li><a href="NewsLetter.html">Newsletter</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <h4>Contact Us</h4>
-      <p><i class="fas fa-envelope" style="margin-right:8px;"></i> admin@grleaders.org</p>
-      <p><i class="fas fa-map-marker-alt" style="margin-right:8px;"></i> Lebanon</p>
-    </div>
-
-    <div class="footer-social">
-      <h4>Follow Us</h4>
-      <a href="https://www.linkedin.com/company/grleaders/" target="_blank"><i class="fab fa-linkedin"></i></a>
-      <a href="https://www.instagram.com/green_leaders.ngo" target="_blank"><i class="fab fa-instagram"></i></a>
-      <a href="https://x.com/gr_leaders" target="_blank"><i class="fa-solid fa-xmark"></i></a>
-      <a href="https://www.facebook.com/grleaders" target="_blank"><i class="fab fa-facebook"></i></a>
-    </div>
-  </div>
-
-  <div class="footer-bottom">&copy; 2026 Green Leaders. All Rights Reserved.</div>
-</footer>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const navToggle = document.getElementById('navToggle');
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
     const mainNav = document.getElementById('mainNav');
-    const dropdowns = document.querySelectorAll('.dropdown');
 
-    function closeAllDropdowns() {
-      dropdowns.forEach(d => d.classList.remove('open'));
-    }
-
-    navToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isOpen = mainNav.classList.toggle('open');
-      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      if (!isOpen) closeAllDropdowns();
+    menuToggle.addEventListener('click', () => {
+      mainNav.classList.toggle('active');
+      menuToggle.innerHTML = mainNav.classList.contains('active')
+        ? '<i class="fa-solid fa-xmark"></i>'
+        : '<i class="fa-solid fa-bars"></i>';
     });
 
-    dropdowns.forEach(dropdown => {
-      const toggle = dropdown.querySelector('.dropdown-toggle');
-      if (!toggle) return;
-
-      toggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const isOpen = dropdown.classList.contains('open');
-        closeAllDropdowns();
-        if (!isOpen) dropdown.classList.add('open');
+    document.querySelectorAll('.nav-dropdown > button').forEach(button => {
+      button.addEventListener('click', () => {
+        if (window.innerWidth <= 980) {
+          button.parentElement.classList.toggle('open');
+        }
       });
     });
 
-    document.addEventListener('click', () => {
-      closeAllDropdowns();
-      mainNav.classList.remove('open');
-      navToggle.setAttribute('aria-expanded', 'false');
-    });
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.16 });
 
-    mainNav.addEventListener('click', (e) => e.stopPropagation());
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeAllDropdowns();
-        mainNav.classList.remove('open');
-        navToggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    window.addEventListener('resize', () => {
-      closeAllDropdowns();
-      mainNav.classList.remove('open');
-      navToggle.setAttribute('aria-expanded', 'false');
-    });
-  });
-</script>
-
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>
