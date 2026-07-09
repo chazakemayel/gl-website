@@ -776,54 +776,81 @@
       .hero-btn{width:100%;justify-content:center}
       .logo{height:50px}
     }
+  
+    /* Header and footer alignment with index/contact pages */
+    .main-header{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border-bottom:1px solid rgba(7,52,35,.08)}
+    .nav-container{width:min(1180px,calc(100% - 40px));margin:0 auto;min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:22px}
+    .brand{display:inline-flex;align-items:center;text-decoration:none}
+    .logo{height:50px;width:auto}
+    .main-nav ul{list-style:none;display:flex;align-items:center;gap:24px}
+    .main-nav li{position:relative}
+    .nav-link,.dropdown-toggle{color:var(--green-2);text-decoration:none;border:0;background:none;font:inherit;font-size:14px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:10px 0}
+    .nav-link:hover,.dropdown-toggle:hover,.nav-link.active{color:var(--green)}
+    .dropdown-head{display:flex;align-items:center;gap:5px}
+    .dropdown:after{content:"";position:absolute;left:-12px;right:-12px;top:100%;height:16px}
+    .dropdown-menu{position:absolute;top:100%;left:0;min-width:230px;margin-top:10px;padding:8px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);opacity:0;transform:translateY(-8px);pointer-events:none;transition:.18s ease}
+    .dropdown-menu:before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
+    .dropdown.open>.dropdown-menu,.dropdown:hover>.dropdown-menu{opacity:1;transform:translateY(0);pointer-events:auto}
+    .dropdown-menu a{display:block;padding:11px 12px;color:var(--green-2);text-decoration:none;border-radius:10px;font-size:14px;font-weight:700;white-space:nowrap}
+    .dropdown-menu a:hover,.dropdown-menu a.active-sub{background:#eaf7ef;color:var(--green)}
+    .cta-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;background:var(--green-2);color:#fff;border-radius:999px;text-decoration:none;font-weight:900;font-size:14px;box-shadow:0 12px 24px rgba(7,52,35,.16)}
+    .nav-toggle{display:none;width:44px;height:44px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--green-2);font-size:19px}
+    .mobile-cta-item{display:none}
+
+    .pdf-actions{display:flex;justify-content:flex-start;gap:12px;flex-wrap:wrap}
+    .pdf-actions .download-only{min-width:170px;justify-content:center}
+
+    footer{background:var(--green-2);color:#fff;padding:48px 20px 28px}
+    .footer-grid{width:min(1180px,100%);margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:34px}
+    footer h4{margin-bottom:14px;color:#fff}
+    footer ul{list-style:none;display:grid;gap:9px;padding:0;margin:0}
+    footer a{color:rgba(255,255,255,.82);text-decoration:none}
+    footer p{color:rgba(255,255,255,.82);margin-bottom:9px}
+    footer .social{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+    footer .social a{width:42px;height:42px;border-radius:999px;display:inline-grid;place-items:center;background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.16);text-decoration:none;font-size:18px;margin:0;transition:.2s ease}
+    footer .social a:hover{background:var(--lime);color:var(--green-2);transform:translateY(-3px)}
+    .copyright{width:min(1180px,100%);margin:30px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);text-align:center;color:rgba(255,255,255,.65);font-size:12px}
+
+    @media(max-width:940px){
+      .nav-container{width:min(100% - 28px,1180px);min-height:68px}
+      .nav-toggle{display:inline-grid;place-items:center}
+      .desktop-only{display:none}
+      .mobile-cta-item{display:block}
+      .main-nav{position:fixed;top:76px;left:14px;right:14px;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:12px;transform:translateY(-135%);transition:transform .24s ease}
+      .main-nav.open{transform:translateY(0)}
+      .main-nav ul{flex-direction:column;align-items:stretch;gap:4px}
+      .dropdown:after{content:none}
+      .dropdown-head{width:100%;justify-content:space-between}
+      .nav-link,.dropdown-toggle{width:100%;justify-content:space-between;padding:12px;border-radius:14px}
+      .dropdown-menu{position:static;margin:0;box-shadow:none;border:0;padding:0 0 6px 12px;opacity:1;transform:none;pointer-events:auto;display:none}
+      .dropdown-menu:before{content:none}
+      .dropdown.open>.dropdown-menu{display:block}
+      .footer-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:520px){
+      .logo{height:42px}
+      .main-nav{top:68px}
+    }
+
   </style>
 </head>
 
 <body>
 <header class="main-header">
   <div class="nav-container">
-    <a href="index.html" class="brand" aria-label="Green Leaders Home">
-      <img src="GLLOGO2.png" alt="Green Leaders Logo" class="logo" />
-    </a>
-
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-
+    <a href="index.html" class="brand"><img src="GLLOGO2.png" alt="Green Leaders Logo" class="logo" /></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
     <nav class="main-nav" id="mainNav">
       <ul>
-        <li class="dropdown">
-          <div class="dropdown-head">
-            <a class="nav-link" href="index.html">Home</a>
-            <button class="dropdown-toggle" type="button" aria-label="Open Home menu"><i class="fa fa-caret-down"></i></button>
-          </div>
-          <ul class="dropdown-menu">
-            <li><a href="ContactUs.html">Contact Us</a></li>
-          </ul>
-        </li>
-
+        <li class="dropdown"><div class="dropdown-head"><a class="nav-link" href="index.html">Home</a><button class="dropdown-toggle" type="button" aria-label="Open Home menu"><i class="fa fa-caret-down"></i></button></div><ul class="dropdown-menu"><li><a href="ContactUs.html">Contact Us</a></li></ul></li>
         <li><a class="nav-link" href="WhoWeAre.html">About Us</a></li>
-
-        <li class="dropdown">
-          <div class="dropdown-head">
-            <a class="nav-link active" href="OurImpact.html">Our Impact</a>
-            <button class="dropdown-toggle" type="button" aria-label="Open Impact menu"><i class="fa fa-caret-down"></i></button>
-          </div>
-          <ul class="dropdown-menu">
-            <li><a href="Research&Studies.html">Research & Studies</a></li>
-            <li><a class="active-sub" href="Awarness&Education.html">Awareness & Education</a></li>
-          </ul>
-        </li>
-
+        <li class="dropdown"><div class="dropdown-head"><a class="nav-link" href="OurImpact.html">Our Impact</a><button class="dropdown-toggle" type="button" aria-label="Open impact menu"><i class="fa fa-caret-down"></i></button></div><ul class="dropdown-menu"><li><a href="Research&Studies.html">Research & Studies</a></li><li><a href="Awarness&Education.html">Awareness & Education</a></li></ul></li>
         <li><a class="nav-link" href="NewsLetter.html">Newsletter</a></li>
         <li><a class="nav-link" href="WaterAudit.html">Water Audit Tool</a></li>
         <li class="mobile-cta-item"><a href="GetInvolved.html" class="cta-button">Become a Member</a></li>
       </ul>
     </nav>
-
-    <div class="header-actions desktop-only">
-      <a href="GetInvolved.html" class="cta-button">Become a Member</a>
-    </div>
+    <a href="GetInvolved.html" class="cta-button desktop-only">Become a Member</a>
   </div>
 </header>
 
@@ -986,10 +1013,7 @@
             </div>
             <p>Multi-year highlights from school-based activities, education moments, and sustainability campaigns.</p>
             <div class="pdf-actions">
-              <a class="btn primary" href="https://github.com/chazakemayel/gl-website/raw/refs/heads/pdf/MoodBoard-2019-2023-LR.pdf" target="_blank" rel="noopener">
-                <i class="fa-regular fa-eye"></i> View PDF
-              </a>
-              <a class="btn ghost" href="https://github.com/chazakemayel/gl-website/raw/refs/heads/pdf/MoodBoard-2019-2023-LR.pdf" download>
+              <a class="btn primary download-only" href="https://github.com/chazakemayel/gl-website/raw/refs/heads/pdf/MoodBoard-2019-2023-LR.pdf" download>
                 <i class="fa-solid fa-download"></i> Download
               </a>
             </div>
@@ -1008,10 +1032,7 @@
             </div>
             <p>Recent program visuals and activities from the 2024 Green Apple Day and education campaign.</p>
             <div class="pdf-actions">
-              <a class="btn primary" href="https://github.com/chazakemayel/gl-website/raw/refs/heads/pdf/MoodBoard-2024-LR.pdf" target="_blank" rel="noopener">
-                <i class="fa-regular fa-eye"></i> View PDF
-              </a>
-              <a class="btn ghost" href="https://github.com/chazakemayel/gl-website/raw/refs/heads/pdf/MoodBoard-2024-LR.pdf" download>
+              <a class="btn primary download-only" href="https://github.com/chazakemayel/gl-website/raw/refs/heads/pdf/MoodBoard-2024-LR.pdf" download>
                 <i class="fa-solid fa-download"></i> Download
               </a>
             </div>
@@ -1029,35 +1050,12 @@
 </main>
 
 <footer>
-  <div class="footer-wrap">
-    <div>
-      <h4>Quick Links</h4>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="WhoWeAre.html">Who We Are</a></li>
-        <li><a href="OurImpact.html">Our Impact</a></li>
-        <li><a href="Awarness&Education.html">Awareness & Education</a></li>
-        <li><a href="Research&Studies.html">Research & Studies</a></li>
-        <li><a href="GetInvolved.html">Membership</a></li>
-        <li><a href="NewsLetter.html">Newsletter</a></li>
-      </ul>
-    </div>
-
-    <div>
-      <h4>Contact Us</h4>
-      <p><i class="fas fa-envelope" style="margin-right:8px;"></i> admin@grleaders.org</p>
-      <p><i class="fas fa-map-marker-alt" style="margin-right:8px;"></i> Lebanon</p>
-    </div>
-
-    <div class="footer-social">
-      <h4>Follow Us</h4>
-      <a href="https://www.linkedin.com/company/grleaders/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
-      <a href="https://www.instagram.com/green_leaders.ngo" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-      <a href="https://x.com/gr_leaders" target="_blank" rel="noopener"><i class="fa-solid fa-xmark"></i></a>
-      <a href="https://www.facebook.com/grleaders" target="_blank" rel="noopener"><i class="fab fa-facebook"></i></a>
-    </div>
+  <div class="footer-grid">
+    <div><h4>Green Leaders</h4><p>Advancing sustainable development and environmental stewardship in Lebanon through action, research, and education.</p></div>
+    <div><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="WhoWeAre.html">Who We Are</a></li><li><a href="OurImpact.html">Our Impact</a></li><li><a href="Awarness&Education.html">Awareness & Education</a></li><li><a href="Research&Studies.html">Research & Studies</a></li><li><a href="GetInvolved.html">Membership</a></li><li><a href="NewsLetter.html">Newsletter</a></li></ul></div>
+    <div><h4>Contact Us</h4><p><i class="fas fa-envelope"></i> admin@grleaders.org</p><p><i class="fas fa-map-marker-alt"></i> Lebanon</p><div class="social"><a href="https://www.linkedin.com/company/grleaders/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a><a href="https://www.instagram.com/green_leaders.ngo" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a><a href="https://x.com/gr_leaders" target="_blank" rel="noopener"><i class="fa-solid fa-xmark"></i></a><a href="https://www.facebook.com/grleaders" target="_blank" rel="noopener"><i class="fab fa-facebook"></i></a></div></div>
   </div>
-  <div class="footer-bottom">&copy; 2026 Green Leaders. All Rights Reserved.</div>
+  <div class="copyright">&copy; 2025 Green Leaders. All Rights Reserved.</div>
 </footer>
 
 <script>
