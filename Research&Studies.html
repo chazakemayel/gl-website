@@ -105,16 +105,16 @@
     .finding-card p{color:var(--muted);font-size:15px;}
 
     .publications{background:#fff;}
-    .reports-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-    .report-card{background:#fff;border:1px solid var(--line);border-radius:30px;overflow:hidden;box-shadow:var(--soft-shadow);display:flex;flex-direction:column;transition:.25s ease;}
+    .reports-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;align-items:stretch;}
+    .report-card{background:#fff;border:1px solid var(--line);border-radius:30px;overflow:hidden;box-shadow:var(--soft-shadow);display:flex;flex-direction:column;transition:.25s ease;min-width:0;}
     .report-card:hover{transform:translateY(-8px);box-shadow:var(--shadow);}
-    .cover{height:260px;background:linear-gradient(135deg,var(--green-100),#fff);display:grid;place-items:center;padding:18px;}
-    .cover img{max-width:100%;max-height:100%;object-fit:contain;border-radius:16px;box-shadow:0 18px 35px rgba(0,0,0,.12);}
-    .report-body{padding:24px;display:flex;flex-direction:column;gap:16px;flex:1;}
-    .tags{display:flex;gap:8px;flex-wrap:wrap;}
-    .tag{display:inline-flex;align-items:center;gap:6px;background:var(--green-100);color:var(--green-800);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:800;}
-    .report-title{font-size:20px;line-height:1.25;font-weight:900;color:var(--green-950);}
-    .report-meta{color:var(--muted);font-size:14px;font-weight:700;}
+    .cover{height:225px;background:linear-gradient(145deg,#f7fcf9 0%,#e9f7ef 100%);display:flex;align-items:center;justify-content:center;padding:18px;overflow:hidden;border-bottom:1px solid var(--line);}
+    .cover img{width:100%;height:100%;object-fit:contain;border-radius:18px;display:block;box-shadow:0 12px 28px rgba(7,52,35,.14);background:#fff;}
+    .report-body{padding:24px;background:#fff;display:flex;flex-direction:column;gap:14px;flex:1;position:relative;z-index:2;}
+    .tags{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+    .tag{display:inline-flex;align-items:center;gap:6px;background:var(--green-100);color:var(--green-800);border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800;line-height:1;white-space:nowrap;}
+    .report-title{font-size:19px;line-height:1.22;font-weight:900;color:var(--green-950);letter-spacing:-.025em;}
+    .report-meta{color:var(--muted);font-size:13px;font-weight:700;}
     .report-actions{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap;}
     .report-actions .btn{min-height:44px;font-size:14px;padding:0 16px;}
     .report-actions .btn.primary{background:var(--green-900);color:#fff;box-shadow:none;}
@@ -130,6 +130,12 @@
 
     .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease;}
     .reveal.visible{opacity:1;transform:translateY(0);}
+
+
+    /* GitHub publication cards fix: keep covers and text separated */
+    #publications .report-card{background:#fff!important;}
+    #publications .cover{position:relative;flex:0 0 225px;}
+    #publications .report-body{background:#fff!important;}
 
     @media(max-width:980px){
       .nav-container{width:min(100% - 28px,1180px);min-height:68px;}
@@ -147,6 +153,7 @@
       .dropdown::after,.dropdown-menu::before{content:none;}
       .dash-card{grid-template-columns:1fr;}
       .workflow,.findings-grid,.reports-grid{grid-template-columns:1fr 1fr;}
+      .cover{height:210px;}
       .footer-grid{grid-template-columns:1fr;}
     }
     @media(max-width:640px){
@@ -157,7 +164,7 @@
       .dash-main,.dash-side{padding:24px;border-radius:20px;}
       .mini-grid,.workflow,.findings-grid,.reports-grid{grid-template-columns:1fr;}
       .section{padding:68px 16px;}
-      .cover{height:220px;}
+      .cover{height:200px;}
     }
   </style>
 </head>
