@@ -5,660 +5,828 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Water Audit Tool | Green Leaders</title>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
     :root{
-      --primary:#007a5e;
-      --secondary:#fcd738;
-      --text:#1a1a1a;
-      --light-bg:#f5f5f5;
-      --font:'Poppins', sans-serif;
+      --deep:#002f24;
+      --green:#007f63;
+      --green-2:#005642;
+      --lime:#a8ff2f;
+      --mint:#eefaf4;
+      --line:#dbece4;
+      --text:#08251d;
+      --muted:#5f736b;
+      --white:#ffffff;
+      --shadow:0 22px 60px rgba(0,47,36,.14);
+      --radius:28px;
     }
 
-    *{ margin:0; padding:0; box-sizing:border-box; }
-    html, body{ width:100%; max-width:100%; overflow-x:hidden; }
-    body{ font-family:var(--font); color:var(--text); background:#fff; }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:"Poppins",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(168,255,47,.14), transparent 32rem),
+        linear-gradient(180deg,#f6fbf8 0%,#ffffff 45%,#f4faf7 100%);
+      overflow-x:hidden;
+    }
 
-    /* =========================
-       HEADER / NAV (SAME SYSTEM)
-       ========================= */
+    a{color:inherit}
+    img{max-width:100%;display:block}
+
     .main-header{
-      background:#fff;
-      border-bottom:1px solid #eee;
       position:sticky;
       top:0;
-      z-index:999;
-      box-shadow:0 2px 4px rgba(0,0,0,0.04);
+      z-index:1000;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(0,47,36,.09);
     }
 
     .nav-container{
-      width:100%;
-      max-width:1200px;
-      margin:0 auto;
-      padding:14px 18px;
-      display:grid;
-      grid-template-columns:1fr auto;
-      align-items:center;
-      gap:12px;
-    }
-
-    .brand{ display:inline-flex; align-items:center; }
-    .logo{ height:52px; display:block; }
-
-    .nav-toggle{
-      background:none;
-      border:0;
-      font-size:22px;
-      cursor:pointer;
-      padding:8px 10px;
-      border-radius:10px;
-    }
-    .nav-toggle:focus{
-      outline:2px solid rgba(0,122,94,0.25);
-      outline-offset:2px;
-    }
-
-    .header-actions{
+      width:min(1180px,92%);
+      margin:auto;
+      min-height:84px;
       display:flex;
       align-items:center;
-      justify-content:flex-end;
-      gap:14px;
+      justify-content:space-between;
+      gap:24px;
     }
+
+    .brand{display:flex;align-items:center;text-decoration:none}
+    .logo{height:58px;width:auto;object-fit:contain}
+
+    .main-nav{display:flex;align-items:center;gap:22px}
+    .main-nav ul{
+      display:flex;
+      align-items:center;
+      gap:22px;
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+    .main-nav li{position:relative}
+    .nav-link,.dropdown-toggle{
+      border:0;
+      background:transparent;
+      font:inherit;
+      font-weight:600;
+      font-size:14px;
+      color:rgba(8,37,29,.78);
+      text-decoration:none;
+      cursor:pointer;
+      padding:30px 0;
+      display:flex;
+      align-items:center;
+      gap:7px;
+      white-space:nowrap;
+    }
+    .nav-link:hover,.dropdown-toggle:hover{color:var(--green)}
+
+    .dropdown::after{
+      content:"";
+      position:absolute;
+      left:-18px;
+      right:-18px;
+      top:64px;
+      height:22px;
+    }
+    .dropdown-menu{
+      position:absolute;
+      top:74px;
+      left:50%;
+      transform:translate(-50%,8px);
+      min-width:245px;
+      background:rgba(255,255,255,.98);
+      border:1px solid rgba(0,47,36,.1);
+      box-shadow:0 24px 55px rgba(0,47,36,.16);
+      border-radius:20px;
+      padding:10px;
+      opacity:0;
+      pointer-events:none;
+      transition:.2s ease;
+    }
+    .dropdown:hover .dropdown-menu,
+    .dropdown:focus-within .dropdown-menu{
+      opacity:1;
+      pointer-events:auto;
+      transform:translate(-50%,0);
+    }
+    .dropdown-menu a{
+      display:block;
+      padding:12px 14px;
+      border-radius:14px;
+      text-decoration:none;
+      font-weight:600;
+      font-size:14px;
+      color:var(--text);
+    }
+    .dropdown-menu a:hover{background:var(--mint);color:var(--green)}
 
     .cta-button{
-      background:#67b7a4;
-      color:#fff;
-      font-weight:600;
-      padding:10px 18px;
-      border-radius:999px;
       text-decoration:none;
-      transition:all .25s ease;
-      white-space:nowrap;
-      display:inline-block;
-      text-align:center;
-    }
-    .cta-button:hover{ background:var(--primary); }
-
-    .desktop-only{ display:none; }
-    .mobile-cta-item{ display:none; }
-
-    @media (min-width:901px){
-      .nav-container{
-        display:flex;
-        justify-content:space-between;
-        gap:16px;
-      }
-      .desktop-only{ display:flex; }
-      .nav-toggle{ display:none; }
-    }
-
-    .main-nav{
-      display:flex;
-      align-items:center;
-      gap:20px;
-    }
-
-   .main-nav > ul{
-  list-style:none;
-  display:flex;
-  align-items:center;
-  gap:26px;
-  margin:0;
-  padding:0;
-}
-
-    .main-nav li{ position:relative; }
-
-    .nav-link,
-    .dropdown-toggle{
-      text-decoration:none;
-      color:var(--text);
-      font-weight:500;
-      font-size:16px;
-      padding:10px 0;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      cursor:pointer;
-      background:none;
-      border:none;
-      font-family:inherit;
-    }
-
-    .nav-link:hover,
-    .dropdown-toggle:hover{ color:var(--primary); }
-
-    .nav-link.active{ color:var(--primary); }
-
-    .dropdown-head{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-    }
-
-/* Dropdown menu */
-.dropdown-menu{
-  position:absolute;
-  top:100%;
-  left:0;
-  margin-top:10px;              /* spacing */
-  min-width:220px;
-  background:#fff;
-  border-radius:10px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.12);
-  padding:8px 0;
-  list-style:none;
-  z-index:999;
-
-  opacity:0;
-  transform:translateY(-6px);
-  pointer-events:none;
-  transition:opacity .18s ease, transform .18s ease;
-}
-
-.dropdown.open > .dropdown-menu{
-  opacity:1;
-  transform:translateY(0);
-  pointer-events:auto;
-}
-
-/* ✅ Invisible hover-bridge so it doesn't close when moving cursor down */
-.dropdown-menu::before{
-  content:"";
-  position:absolute;
-  top:-10px;        /* same as margin-top */
-  left:0;
-  right:0;
-  height:10px;
-}
-
-    .dropdown-menu li a{
-      display:block;
-      padding:12px 16px;
-      color:var(--text);
-      text-decoration:none;
-      font-size:14px;
-      white-space:nowrap;
-    }
-    .dropdown-menu li a:hover{
-      background:#f7f7f7;
-      color:var(--primary);
-    }
-
-    @media (hover:hover) and (pointer:fine){
-      .dropdown:hover > .dropdown-menu{
-        opacity:1;
-        transform:translateY(0);
-        pointer-events:auto;
-      }
-    }
-
-    @media (max-width:900px){
-      .header-actions{ display:none !important; }
-      .mobile-cta-item{ display:block; }
-
-      .main-nav{
-        position:fixed;
-        top:70px;
-        left:12px;
-        right:12px;
-        background:#fff;
-        border-radius:14px;
-        border:1px solid #eee;
-        box-shadow:0 10px 30px rgba(0,0,0,0.10);
-
-        transform:translateY(-140%);
-        transition:transform .25s ease;
-        padding:12px 14px;
-        z-index:999;
-      }
-      .main-nav.open{ transform:translateY(0); }
-
-      .main-nav ul{
-        flex-direction:column;
-        align-items:stretch;
-        gap:6px;
-      }
-
-      .nav-link, .dropdown-toggle{
-        width:100%;
-        padding:12px 10px;
-        justify-content:space-between;
-        border-radius:10px;
-      }
-
-      .dropdown-head{
-        width:100%;
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-      }
-      .dropdown-head .nav-link,
-      .dropdown-head .dropdown-toggle{
-        width:auto;
-        padding:12px 10px;
-      }
-
-      .dropdown-menu{
-        position:static;
-        min-width:100%;
-        box-shadow:none;
-        border-radius:10px;
-        padding:6px 0;
-
-        opacity:1;
-        transform:none;
-        pointer-events:auto;
-        display:none;
-      }
-      .dropdown.open > .dropdown-menu{ display:block; }
-    }
-
-    /* =========================
-       HERO (MATCH OTHER PAGES)
-       ========================= */
-    .hero{
-      background:linear-gradient(rgba(0,122,94,.78), rgba(0,122,94,.78)),
-        url('images/green-pattern.png') repeat;
-      color:#fff;
-      text-align:center;
-      padding:110px 20px 70px;
-    }
-    .hero .hero-inner{
-      max-width:980px;
-      margin:0 auto;
-    }
-    .hero .mark{
-      width:150px;
-      height:150px;
-      object-fit:contain;
-      margin:0 auto 10px;
-      filter:drop-shadow(0 10px 18px rgba(0,0,0,0.10));
-    }
-    .hero h1{
-      font-size:52px;
-      font-weight:700;
-      letter-spacing:0.2px;
-    }
-    .hero p{
-      font-size:18px;
-      margin-top:12px;
-      max-width:860px;
-      margin-left:auto;
-      margin-right:auto;
-      opacity:0.95;
-      line-height:1.7;
-    }
-    .hero .actions{
-      margin-top:22px;
-      display:flex;
-      justify-content:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .hero .primary-btn{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      background:var(--secondary);
-      color:#000;
-      padding:13px 22px;
-      border-radius:999px;
-      font-weight:800;
-      text-decoration:none;
-      box-shadow:0 12px 24px rgba(0,0,0,0.18);
-      transition:transform .18s ease;
-    }
-    .hero .primary-btn:hover{ transform:translateY(-1px); }
-
-    .hero .ghost-btn{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      background:transparent;
-      color:#fff;
+      background:var(--lime);
+      color:#052117;
       padding:13px 20px;
       border-radius:999px;
-      font-weight:700;
-      text-decoration:none;
-      border:1px solid rgba(255,255,255,0.35);
-      transition:all .18s ease;
+      font-weight:800;
+      box-shadow:0 10px 26px rgba(168,255,47,.28);
+      white-space:nowrap;
     }
-    .hero .ghost-btn:hover{
-      border-color:rgba(255,255,255,0.6);
-      transform:translateY(-1px);
+    .cta-button:hover{transform:translateY(-1px)}
+
+    .nav-toggle{
+      display:none;
+      border:0;
+      background:#eef8f2;
+      color:var(--deep);
+      border-radius:14px;
+      padding:10px 12px;
+      font-size:22px;
+      cursor:pointer;
     }
 
-    /* =========================
-       SECTIONS / CARDS
-       ========================= */
-    .section{
-      padding:70px 20px;
-      background:var(--light-bg);
+    .page-hero{
+      position:relative;
+      overflow:hidden;
+      padding:104px 0 78px;
+      background:
+        linear-gradient(135deg, rgba(0,47,36,.98), rgba(0,96,72,.94)),
+        linear-gradient(90deg, rgba(168,255,47,.09) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(168,255,47,.09) 1px, transparent 1px);
+      background-size:auto, 72px 72px, 72px 72px;
+      color:white;
     }
-    .section.white{ background:#fff; }
-    .container{
-      max-width:1200px;
-      margin:0 auto;
+    .page-hero::before{
+      content:"";
+      position:absolute;
+      width:560px;
+      height:560px;
+      right:-180px;
+      top:-190px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(168,255,47,.25), transparent 62%);
+      filter:blur(6px);
     }
-    .section h2{
-      text-align:center;
-      font-size:34px;
-      margin-bottom:12px;
-      color:#0f3b2d;
-    }
-    .subtitle{
-      text-align:center;
-      max-width:900px;
-      margin:0 auto 34px;
-      color:#555;
-      line-height:1.75;
-      font-size:16px;
+    .page-hero::after{
+      content:"";
+      position:absolute;
+      inset:auto 0 0;
+      height:1px;
+      background:linear-gradient(90deg,transparent,var(--lime),transparent);
     }
 
-    .grid{
+    .hero-wrap{
+      position:relative;
+      width:min(1180px,92%);
+      margin:auto;
       display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:18px;
+      grid-template-columns:1.05fr .95fr;
+      gap:52px;
+      align-items:center;
     }
-    .card{
-      background:#fff;
-      border-radius:16px;
-      padding:22px;
-      box-shadow:0 10px 24px rgba(0,0,0,0.06);
-      border:1px solid rgba(0,0,0,0.04);
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      color:var(--lime);
+      font-weight:800;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-size:13px;
+      margin-bottom:18px;
+    }
+    .eyebrow::before{
+      content:"";
+      width:38px;
+      height:2px;
+      background:var(--lime);
+      border-radius:999px;
+    }
+    h1{
+      font-size:clamp(44px,6vw,82px);
+      line-height:.98;
+      margin:0 0 22px;
+      letter-spacing:-.055em;
+    }
+    .hero-copy{
+      max-width:680px;
+      color:rgba(255,255,255,.82);
+      font-size:18px;
+      line-height:1.8;
+      margin:0 0 34px;
+    }
+    .hero-actions{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+    .primary-btn,.secondary-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      text-decoration:none;
+      border-radius:999px;
+      padding:16px 24px;
+      font-weight:800;
+      transition:.2s ease;
+    }
+    .primary-btn{background:var(--lime);color:#061b13}
+    .secondary-btn{border:1px solid rgba(255,255,255,.35);color:white;background:rgba(255,255,255,.05)}
+    .primary-btn:hover,.secondary-btn:hover{transform:translateY(-2px)}
+
+    .audit-panel{
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:34px;
+      padding:26px;
+      background:linear-gradient(145deg, rgba(255,255,255,.13), rgba(255,255,255,.04));
+      box-shadow:0 30px 90px rgba(0,0,0,.23);
+      backdrop-filter:blur(10px);
+    }
+    .audit-screen{
+      position:relative;
+      min-height:430px;
+      border-radius:28px;
+      overflow:hidden;
+      background:
+        linear-gradient(90deg, rgba(168,255,47,.1) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(168,255,47,.1) 1px, transparent 1px),
+        linear-gradient(160deg,#003126,#00795f);
+      background-size:42px 42px,42px 42px,auto;
+      padding:26px;
       display:flex;
       flex-direction:column;
-      gap:10px;
-      transition:transform .25s ease, box-shadow .25s ease;
-      height:100%;
-    }
-    .card:hover{
-      transform:translateY(-6px);
-      box-shadow:0 14px 28px rgba(0,0,0,0.08);
-    }
-    .card i{ font-size:24px; color:var(--primary); }
-    .card h3{ font-size:18px; color:#0f3b2d; }
-    .card p{ color:#555; line-height:1.65; font-size:14.5px; }
-
-    /* CTA STRIP */
-    .cta-strip{
-      background:linear-gradient(90deg, rgba(0,122,94,1), rgba(103,183,164,1));
-      color:#fff;
-      padding:60px 20px;
-      text-align:center;
-    }
-    .cta-strip h2{ font-size:34px; margin-bottom:10px; color:#fff; }
-    .cta-strip p{
-      max-width:860px;
-      margin:0 auto 18px;
-      opacity:0.95;
-      line-height:1.7;
-    }
-    .cta-strip a{
-      display:inline-block;
-      background:var(--secondary);
-      color:#000;
-      padding:12px 22px;
-      border-radius:999px;
-      font-weight:800;
-      text-decoration:none;
-    }
-
-    /* FOOTER (MATCH OTHER PAGES) */
-    footer{
-      background:var(--primary);
-      color:#fff;
-      padding:40px 20px;
-    }
-    .footer-wrap{
-      max-width:1200px;
-      margin:auto;
-      display:flex;
-      flex-wrap:wrap;
       justify-content:space-between;
-      gap:30px;
     }
-    .footer-wrap h4{ margin-bottom:10px; }
-    .footer-wrap ul{ list-style:none; padding:0; }
-    .footer-wrap a{ color:#fff; text-decoration:none; }
-    .footer-wrap a:hover{ text-decoration:underline; }
-    .footer-social a{ margin-right:12px; font-size:20px; }
+    .audit-screen::before{
+      content:"WATER AUDIT";
+      position:absolute;
+      right:20px;
+      top:18px;
+      color:rgba(255,255,255,.09);
+      font-size:54px;
+      font-weight:900;
+      letter-spacing:-.04em;
+    }
+    .screen-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      position:relative;
+      z-index:1;
+    }
+    .chip{
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.18);
+      color:white;
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:700;
+      font-size:13px;
+    }
+    .screen-cards{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+    }
+    .mini-card{
+      background:rgba(255,255,255,.92);
+      color:var(--text);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 16px 36px rgba(0,0,0,.14);
+    }
+    .mini-card strong{
+      display:block;
+      color:var(--green);
+      font-size:26px;
+      line-height:1;
+      margin-bottom:7px;
+    }
+    .mini-card span{font-weight:700;font-size:13px;color:var(--muted)}
+    .screen-note{
+      position:relative;
+      z-index:1;
+      background:rgba(0,47,36,.86);
+      border:1px solid rgba(168,255,47,.24);
+      border-radius:24px;
+      padding:22px;
+    }
+    .screen-note h3{
+      color:var(--lime);
+      margin:0 0 8px;
+      font-size:26px;
+    }
+    .screen-note p{margin:0;color:rgba(255,255,255,.85);line-height:1.6}
 
-    .footer-bottom{
+    .section{
+      padding:86px 0;
+    }
+    .container{
+      width:min(1180px,92%);
+      margin:auto;
+    }
+    .section-head{
       text-align:center;
-      margin-top:26px;
-      font-size:12px;
-      opacity:0.9;
+      max-width:820px;
+      margin:0 auto 44px;
+    }
+    .section-label{
+      color:var(--green);
+      font-weight:900;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+      font-size:13px;
+      margin-bottom:12px;
+    }
+    h2{
+      margin:0;
+      font-size:clamp(34px,4vw,58px);
+      line-height:1.05;
+      letter-spacing:-.045em;
+      color:var(--text);
+    }
+    .section-head p{
+      margin:18px auto 0;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:17px;
     }
 
-    /* RESPONSIVE */
-    @media (max-width:1100px){
-      .grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .feature-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
     }
-    @media (max-width:900px){
-      .hero h1{ font-size:42px; }
+    .feature-card{
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:white;
+      border-radius:var(--radius);
+      padding:30px;
+      min-height:290px;
+      box-shadow:var(--shadow);
+      transition:.24s ease;
     }
-    @media (max-width:720px){
-      .grid{ grid-template-columns:1fr; }
-      .section h2{ font-size:28px; }
+    .feature-card:hover{transform:translateY(-6px)}
+    .feature-card::after{
+      content:"";
+      position:absolute;
+      right:-40px;
+      top:-40px;
+      width:130px;
+      height:130px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(168,255,47,.45), transparent 70%);
+    }
+    .step-number{
+      display:inline-flex;
+      width:54px;
+      height:54px;
+      border-radius:18px;
+      align-items:center;
+      justify-content:center;
+      background:#effbe8;
+      color:var(--green);
+      font-weight:900;
+      font-size:22px;
+      margin-bottom:24px;
+    }
+    .feature-card h3{
+      font-size:24px;
+      margin:0 0 12px;
+      letter-spacing:-.02em;
+    }
+    .feature-card p{
+      color:var(--muted);
+      line-height:1.75;
+      margin:0;
+    }
+
+    .dashboard-preview{
+      background:linear-gradient(135deg,#003126,#007a5e);
+      color:white;
+      border-radius:38px;
+      overflow:hidden;
+      box-shadow:0 26px 70px rgba(0,47,36,.22);
+      display:grid;
+      grid-template-columns:.9fr 1.1fr;
+      align-items:stretch;
+      border:1px solid rgba(0,47,36,.08);
+    }
+    .preview-copy{
+      padding:52px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .preview-copy h2{color:white}
+    .preview-copy p{
+      color:rgba(255,255,255,.8);
+      line-height:1.8;
+      font-size:17px;
+      margin:20px 0 28px;
+    }
+    .preview-board{
+      padding:34px;
+      background:
+        linear-gradient(90deg, rgba(168,255,47,.08) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(168,255,47,.08) 1px, transparent 1px);
+      background-size:44px 44px;
+      display:grid;
+      gap:16px;
+    }
+    .kpi-row{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+    }
+    .kpi{
+      background:rgba(255,255,255,.96);
+      color:var(--text);
+      border-radius:22px;
+      padding:22px;
+    }
+    .kpi strong{
+      display:block;
+      color:var(--green);
+      font-size:32px;
+      line-height:1;
+      margin-bottom:8px;
+    }
+    .kpi span{font-weight:700;color:var(--muted);font-size:13px}
+    .mock-chart{
+      min-height:210px;
+      background:rgba(255,255,255,.93);
+      border-radius:24px;
+      padding:22px;
+      display:flex;
+      align-items:flex-end;
+      gap:13px;
+    }
+    .bar{
+      flex:1;
+      border-radius:12px 12px 4px 4px;
+      background:linear-gradient(180deg,var(--lime),var(--green));
+      min-height:36px;
+    }
+    .bar:nth-child(1){height:46%}
+    .bar:nth-child(2){height:62%}
+    .bar:nth-child(3){height:38%}
+    .bar:nth-child(4){height:74%}
+    .bar:nth-child(5){height:55%}
+    .bar:nth-child(6){height:88%}
+
+    .cta-band{
+      position:relative;
+      overflow:hidden;
+      border-radius:38px;
+      padding:54px;
+      background:
+        linear-gradient(135deg, rgba(0,47,36,.94), rgba(0,127,99,.9)),
+        url('gl-forest-strip.png') center/cover;
+      color:white;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:30px;
+      box-shadow:var(--shadow);
+    }
+    .cta-band h2{color:white;max-width:720px}
+    .cta-band p{
+      color:rgba(255,255,255,.82);
+      line-height:1.8;
+      margin:16px 0 0;
+      max-width:740px;
+    }
+
+    footer{
+      background:#002f24;
+      color:white;
+      padding:64px 0 24px;
+    }
+    .footer-grid{
+      width:min(1180px,92%);
+      margin:auto;
+      display:grid;
+      grid-template-columns:1.3fr repeat(3,1fr);
+      gap:34px;
+    }
+    footer h4{color:var(--lime);margin:0 0 15px}
+    footer p,footer a{
+      color:rgba(255,255,255,.76);
+      text-decoration:none;
+      line-height:1.9;
+      font-size:14px;
+    }
+    footer a:hover{color:var(--lime)}
+    .footer-logo{height:64px;margin-bottom:18px}
+    .socials{display:flex;gap:10px;margin-top:14px}
+    .socials a{
+      width:38px;height:38px;border-radius:50%;
+      display:inline-flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,.08);
+    }
+    .copyright{
+      width:min(1180px,92%);
+      margin:34px auto 0;
+      padding-top:22px;
+      border-top:1px solid rgba(255,255,255,.12);
+      color:rgba(255,255,255,.62);
+      font-size:13px;
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(24px);
+      transition:opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible{opacity:1;transform:none}
+
+    @media(max-width:980px){
+      .nav-toggle{display:block}
+      .main-nav{
+        position:absolute;
+        top:84px;
+        left:0;
+        right:0;
+        background:white;
+        border-bottom:1px solid var(--line);
+        box-shadow:0 20px 40px rgba(0,47,36,.12);
+        display:none;
+        padding:18px 5%;
+      }
+      .main-nav.active{display:block}
+      .main-nav ul{display:block}
+      .main-nav li{margin:4px 0}
+      .nav-link,.dropdown-toggle{padding:13px 0;width:100%;justify-content:space-between}
+      .dropdown::after{display:none}
+      .dropdown-menu{
+        position:static;
+        transform:none;
+        opacity:1;
+        pointer-events:auto;
+        box-shadow:none;
+        border:0;
+        padding:0 0 0 12px;
+        display:none;
+        min-width:0;
+      }
+      .dropdown.open .dropdown-menu{display:block}
+      .header-actions{display:none}
+      .hero-wrap,.dashboard-preview{grid-template-columns:1fr}
+      .audit-panel{max-width:620px;margin:auto}
+      .feature-grid{grid-template-columns:1fr}
+      .kpi-row{grid-template-columns:1fr}
+      .cta-band{display:block;text-align:center}
+      .cta-band .primary-btn{margin-top:24px}
+      .footer-grid{grid-template-columns:1fr 1fr}
+    }
+
+    @media(max-width:620px){
+      .page-hero{padding:72px 0 56px}
+      h1{font-size:46px}
+      .hero-actions{display:grid}
+      .audit-screen{min-height:390px;padding:20px}
+      .screen-cards{grid-template-columns:1fr}
+      .section{padding:64px 0}
+      .preview-copy,.preview-board,.cta-band{padding:28px}
+      .footer-grid{grid-template-columns:1fr}
+      .logo{height:50px}
     }
   </style>
 </head>
 
 <body>
-
-<header class="main-header">
-  <div class="nav-container">
-    <a href="index.html" class="brand">
-      <img src="images/GLLOGO.png" alt="Green Leaders Logo" class="logo" />
-    </a>
-
-    <!-- Mobile hamburger -->
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-
-    <!-- ✅ Desktop CTA (shows only on laptop/desktop) -->
-    <div class="header-actions desktop-only">
-      <a href="GetInvolved.html" class="cta-button">Become a Member</a>
-    </div>
-
-    <nav class="main-nav" id="mainNav">
-      <ul>
-        <li class="dropdown">
-  <div class="dropdown-head">
-    <a class="nav-link" href="index.html">Home</a>
-
-    <!-- dropdown toggle only for the arrow -->
-    <button class="dropdown-toggle" type="button" aria-label="Open Home menu">
-      <i class="fa fa-caret-down"></i>
-    </button>
-  </div>
-
-  <ul class="dropdown-menu">
-    <li><a href="ContactUs.html">Contact Us</a></li>
-  </ul>
-</li>
-
-
-        <li><a class="nav-link" href="WhoWeAre.html">About Us</a></li>
-
-       <li class="dropdown">
-  <div class="dropdown-head">
-    <a class="nav-link" href="OurImpact.html">Our Impact</a>
-
-    <!-- dropdown toggle only for the arrow -->
-    <button class="dropdown-toggle" type="button" aria-label="Open Home menu">
-      <i class="fa fa-caret-down"></i>
-    </button>
-  </div>
-
-  <ul class="dropdown-menu">
-    <li><a href="Research&Studies.html">Reaserch & Studies</a></li>
-    <li><a href="Awarness&Education.html">Awarness & Education</a></li>
-  </ul>
-</li>
-
-
-        <li><a class="nav-link" href="NewsLetter.html">Newsletter</a></li>
-        <li><a class="nav-link" href="WaterAudit.html">Water Audit Tool</a></li>
-
-        <!-- ✅ MOBILE CTA (shows only inside menu on phones) -->
-        <li class="mobile-cta-item">
-          <a href="GetInvolved.html" class="cta-button" style="width:100%; margin-top: 10px;">
-            Become a Member
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</header>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-inner">
-    <img class="mark" src="images/GLLOGO.png" alt="Green Leaders logo">
-    <h1>Water Audit Tool</h1>
-    <p>
-      Empowering educational institutions with comprehensive water management tools to achieve measurable
-      conservation outcomes and environmental sustainability goals.
-    </p>
-
-    <div class="actions">
-      <a class="primary-btn" href="WaterAudit - Login.html">
-        Begin Water Assessment <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+  <header class="main-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand" aria-label="Green Leaders Home">
+        <img src="GLLOGO2.png" alt="Green Leaders Logo" class="logo" />
       </a>
-      <a class="ghost-btn" href="#how-it-works">
-        How it works <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-      </a>
-    </div>
-  </div>
-</section>
 
-<!-- HOW IT WORKS -->
-<section class="section white" id="how-it-works">
-  <div class="container">
-    <h2>How It Works</h2>
-    <p class="subtitle">
-      A simple step-by-step process to help schools and institutions understand consumption, identify leaks, and improve efficiency.
-    </p>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
 
-    <div class="grid">
-      <div class="card">
-        <i class="fa-solid fa-clipboard-list"></i>
-        <h3>1) Collect Inputs</h3>
-        <p>Enter basic information about your facility and water usage to establish a baseline.</p>
-      </div>
+      <nav class="main-nav" id="mainNav">
+        <ul>
+          <li><a class="nav-link" href="index.html">Home</a></li>
+          <li><a class="nav-link" href="WhoWeAre.html">Who We Are</a></li>
+          <li><a class="nav-link" href="OurImpact.html">Our Impact</a></li>
+          <li class="dropdown">
+            <button class="dropdown-toggle" type="button">Programs <i class="fa-solid fa-chevron-down"></i></button>
+            <div class="dropdown-menu">
+              <a href="Research&Studies.html">Research & Studies</a>
+              <a href="Awarness&Education.html">Awareness & Education</a>
+              <a href="NewsLetter.html">Newsletter</a>
+              <a href="WaterAudit.html">Water Audit Tool</a>
+            </div>
+          </li>
+          <li><a class="nav-link" href="ContactUs.html">Contact Us</a></li>
+        </ul>
+      </nav>
 
-      <div class="card">
-        <i class="fa-solid fa-chart-column"></i>
-        <h3>2) Analyze & Benchmark</h3>
-        <p>Review usage patterns and compare performance across different areas and periods.</p>
-      </div>
-
-      <div class="card">
-        <i class="fa-solid fa-droplet"></i>
-        <h3>3) Save Water</h3>
-        <p>Get actionable recommendations to reduce consumption, costs, and environmental impact.</p>
+      <div class="header-actions">
+        <a href="GetInvolved.html" class="cta-button">Become a Member</a>
       </div>
     </div>
-  </div>
-</section>
+  </header>
 
+  <main>
+    <section class="page-hero">
+      <div class="hero-wrap">
+        <div class="hero-text reveal">
+          <div class="eyebrow">Green Leaders Platform</div>
+          <h1>Water data made clear, practical, and actionable.</h1>
+          <p class="hero-copy">
+            The Water Audit Tool helps schools and institutions understand water use, identify waste,
+            and turn facility observations into measurable conservation decisions.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-btn" href="WaterAudit-Login.html">Begin Water Assessment <i class="fa-solid fa-arrow-right"></i></a>
+            <a class="secondary-btn" href="#how-it-works">See how it works</a>
+          </div>
+        </div>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-wrap">
-    <div>
-      <h4>Quick Links</h4>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="WhoWeAre.html">Who We Are</a></li>
-        <li><a href="OurImpact.html">Our Impact</a></li>
-        <li><a href="Awarness&Education.html">Awareness & Education</a></li>
-        <li><a href="Research&Studies.html">Research & Studies</a></li>
-        <li><a href="GetInvolved.html">Membership</a></li>
-        <li><a href="NewsLetter.html">Newsletter</a></li>
-        <li><a href="ContactUs.html">Contact Us</a></li>
-      </ul>
+        <div class="audit-panel reveal">
+          <div class="audit-screen">
+            <div class="screen-top">
+              <span class="chip"><i class="fa-solid fa-droplet"></i> Facility audit</span>
+              <span class="chip"><i class="fa-solid fa-chart-line"></i> Live dashboard</span>
+            </div>
+
+            <div class="screen-cards">
+              <div class="mini-card"><strong>01</strong><span>Collect facility inputs</span></div>
+              <div class="mini-card"><strong>02</strong><span>Track water outputs</span></div>
+              <div class="mini-card"><strong>03</strong><span>Identify leakage areas</span></div>
+              <div class="mini-card"><strong>04</strong><span>Build savings measures</span></div>
+            </div>
+
+            <div class="screen-note">
+              <h3>From awareness to action.</h3>
+              <p>Designed to support practical water conservation inside educational institutions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-label">How it works</div>
+          <h2>A guided audit process from observation to measurable savings.</h2>
+          <p>
+            The platform turns simple inputs into a structured assessment, helping teams move from scattered notes
+            to a clear picture of consumption, leaks, and potential savings.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card reveal">
+            <span class="step-number">1</span>
+            <h3>Collect Inputs</h3>
+            <p>Enter basic facility information, occupancy, audited rooms, fixture types, and operating patterns to establish a useful water baseline.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="step-number">2</span>
+            <h3>Analyze & Benchmark</h3>
+            <p>Review outputs through organized indicators and charts that make consumption patterns easier to understand and compare.</p>
+          </article>
+
+          <article class="feature-card reveal">
+            <span class="step-number">3</span>
+            <h3>Save Water</h3>
+            <p>Document leak areas, propose saving measures, and communicate practical recommendations through a professional report.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="dashboard-preview reveal">
+          <div class="preview-copy">
+            <div class="section-label">Dashboard Experience</div>
+            <h2>Built for clarity, not complexity.</h2>
+            <p>
+              The dashboard highlights the most important audit indicators first, then supports deeper review through
+              tables, charts, and PDF reporting.
+            </p>
+            <a class="primary-btn" href="WaterAudit-Login.html">Open the platform <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+
+          <div class="preview-board">
+            <div class="kpi-row">
+              <div class="kpi"><strong>L/day</strong><span>Water output</span></div>
+              <div class="kpi"><strong>Leaks</strong><span>Audited areas</span></div>
+              <div class="kpi"><strong>PDF</strong><span>Audit report</span></div>
+            </div>
+            <div class="mock-chart" aria-label="Dashboard preview chart">
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+              <span class="bar"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-band reveal">
+          <div>
+            <div class="section-label">Start the assessment</div>
+            <h2>Make water efficiency visible across your institution.</h2>
+            <p>
+              Use the Water Audit Tool to collect data, identify inefficiencies, and communicate results in a way
+              that supports real conservation decisions.
+            </p>
+          </div>
+          <a class="primary-btn" href="WaterAudit-Login.html">Begin now <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <img src="GLLOGO2.png" alt="Green Leaders Logo" class="footer-logo" />
+        <p>Green Leaders turns sustainability awareness into local, practical, and measurable action.</p>
+        <div class="socials">
+          <a href="https://www.linkedin.com/company/grleaders/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://www.instagram.com/green_leaders.ngo" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://x.com/gr_leaders" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+          <a href="https://www.facebook.com/grleaders" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h4>Explore</h4>
+        <p><a href="index.html">Home</a></p>
+        <p><a href="WhoWeAre.html">Who We Are</a></p>
+        <p><a href="OurImpact.html">Our Impact</a></p>
+      </div>
+
+      <div>
+        <h4>Programs</h4>
+        <p><a href="Awarness&Education.html">Awareness & Education</a></p>
+        <p><a href="Research&Studies.html">Research & Studies</a></p>
+        <p><a href="WaterAudit.html">Water Audit Tool</a></p>
+      </div>
+
+      <div>
+        <h4>Contact</h4>
+        <p><a href="mailto:admin@grleaders.org">admin@grleaders.org</a></p>
+        <p>Lebanon</p>
+        <p><a href="GetInvolved.html">Become a Member</a></p>
+      </div>
     </div>
 
-    <div>
-      <h4>Contact Us</h4>
-      <p><i class="fas fa-envelope" style="margin-right:8px;"></i> admin@grleaders.org</p>
-      <p><i class="fas fa-map-marker-alt" style="margin-right:8px;"></i> Lebanon</p>
+    <div class="copyright">
+      © 2026 Green Leaders. All Rights Reserved.
     </div>
+  </footer>
 
-    <div class="footer-social">
-      <h4>Follow Us</h4>
-      <a href="https://www.linkedin.com/company/grleaders/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
-      <a href="https://www.instagram.com/green_leaders.ngo" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
-      <a href="https://x.com/gr_leaders" target="_blank" rel="noopener"><i class="fa-solid fa-xmark"></i></a>
-      <a href="https://www.facebook.com/grleaders" target="_blank" rel="noopener"><i class="fab fa-facebook"></i></a>
-    </div>
-  </div>
+  <script>
+    const navToggle = document.getElementById("navToggle");
+    const mainNav = document.getElementById("mainNav");
 
-  <div class="footer-bottom">&copy; 2026 Green Leaders. All Rights Reserved.</div>
-</footer>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const navToggle = document.getElementById('navToggle');
-    const mainNav = document.getElementById('mainNav');
-    const dropdowns = document.querySelectorAll('.dropdown');
-
-    function closeAllDropdowns() {
-      dropdowns.forEach(d => d.classList.remove('open'));
-    }
-
-    navToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isOpen = mainNav.classList.toggle('open');
-      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      if (!isOpen) closeAllDropdowns();
+    navToggle?.addEventListener("click", () => {
+      mainNav.classList.toggle("active");
+      const icon = navToggle.querySelector("i");
+      icon.className = mainNav.classList.contains("active") ? "fa-solid fa-xmark" : "fa-solid fa-bars";
     });
 
-    dropdowns.forEach(dropdown => {
-      const toggle = dropdown.querySelector('.dropdown-toggle');
-      if (!toggle) return;
-
-      toggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const isOpen = dropdown.classList.contains('open');
-        closeAllDropdowns();
-        if (!isOpen) dropdown.classList.add('open');
+    document.querySelectorAll(".dropdown-toggle").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        if (window.innerWidth > 980) return;
+        event.preventDefault();
+        btn.closest(".dropdown").classList.toggle("open");
       });
     });
 
-    document.addEventListener('click', () => {
-      closeAllDropdowns();
-      mainNav.classList.remove('open');
-      navToggle.setAttribute('aria-expanded', 'false');
-    });
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add("visible");
+      });
+    }, { threshold: 0.12 });
 
-    mainNav.addEventListener('click', (e) => e.stopPropagation());
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeAllDropdowns();
-        mainNav.classList.remove('open');
-        navToggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    window.addEventListener('resize', () => {
-      closeAllDropdowns();
-      mainNav.classList.remove('open');
-      navToggle.setAttribute('aria-expanded', 'false');
-    });
-  });
-</script>
-
+    document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+  </script>
 </body>
 </html>
-
-
