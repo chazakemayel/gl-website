@@ -2,468 +2,930 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- ✅ Correct viewport -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Green Leaders | Home</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-  <link rel="stylesheet" href="style.css" />
 
   <style>
     :root {
-      --primary-color: #007a5e;
-      --secondary-color: #fcd738;
-      --text-color: #1a1a1a;
-      --light-bg: #f5f5f5;
-      --dark-bg: #0d2916;
-      --font: 'Poppins', sans-serif;
+      --green-950: #041f16;
+      --green-900: #073423;
+      --green-800: #07543a;
+      --green-700: #007a5e;
+      --green-100: #e9f7ee;
+      --green-50: #f5fbf7;
+      --lime: #b7ff39;
+      --gold: #f7c948;
+      --text: #17251d;
+      --muted: #607166;
+      --line: #dfece4;
+      --white: #fff;
+      --shadow: 0 24px 60px rgba(4, 31, 22, 0.12);
+      --font: "Inter", sans-serif;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ✅ Full-width / no side gaps on mobile */
     html, body {
       width: 100%;
       max-width: 100%;
       overflow-x: hidden;
+      scroll-behavior: smooth;
     }
 
     body {
       font-family: var(--font);
-      color: var(--text-color);
-      background: #fff;
+      color: var(--text);
+      background: var(--green-50);
+      line-height: 1.6;
     }
 
-    /* =========================
-       HEADER / NAV
-       ========================= */
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+
     .main-header {
-      background: #fff;
-      border-bottom: 1px solid #eee;
       position: sticky;
       top: 0;
-      z-index: 999;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(7, 52, 35, 0.08);
     }
 
-    .nav-container{
-      width: 100%;
-      max-width: 1200px;
+    .nav-container {
+      width: min(1180px, calc(100% - 40px));
       margin: 0 auto;
-      padding: 14px 18px;
-      display: grid;
-      grid-template-columns: 1fr auto; /* ✅ CHANGED: remove 3rd column on small screens */
-      align-items: center;
-      gap: 12px;
-    }
-
-    .brand { display: inline-flex; align-items: center; }
-    .logo { height: 52px; display:block; }
-
-    /* hamburger */
-    .nav-toggle{
-      background: none;
-      border: 0;
-      font-size: 22px;
-      cursor: pointer;
-      padding: 8px 10px;
-      border-radius: 10px;
-    }
-    .nav-toggle:focus { outline: 2px solid rgba(0,122,94,0.25); outline-offset: 2px; }
-
-    /* CTA */
-    .header-actions {
+      min-height: 76px;
       display: flex;
       align-items: center;
-      gap: 14px;
-      justify-content: flex-end;
+      justify-content: space-between;
+      gap: 22px;
     }
 
-    .cta-button {
-      background: #67b7a4;
-      color: #fff;
-      font-weight: 600;
-      padding: 10px 18px;
-      border-radius: 25px;
+    .brand {
+      display: inline-flex;
+      align-items: center;
       text-decoration: none;
-      transition: all 0.25s ease;
-      white-space: nowrap;
-      display: inline-block;
-      text-align: center;
-    }
-    .cta-button:hover { background: var(--primary-color); }
-
-    /* ✅ Desktop CTA only (hidden by default, shown on desktop) */
-    .desktop-only { display: none; }
-
-    /* ✅ MOBILE CTA item hidden by default (shown only on phones) */
-    .mobile-cta-item { display: none; }  /* ✅ ADDED */
-
-    @media (min-width: 901px){
-      .nav-container{
-        display:flex;
-        justify-content: space-between;
-        gap: 16px;
-      }
-      .desktop-only { display: flex; }
-      .nav-toggle { display: none; }
     }
 
-    .main-nav {
+    .logo { height: 50px; width: auto; }
+
+    .main-nav ul {
+      list-style: none;
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 24px;
     }
-
-    .main-nav > ul{
-  list-style:none;
-  display:flex;
-  align-items:center;
-  gap:26px;
-  margin:0;
-  padding:0;
-}
-
-    .main-nav li { position: relative; }
 
     .nav-link,
     .dropdown-toggle {
+      color: var(--green-950);
       text-decoration: none;
-      color: var(--text-color);
-      font-weight: 500;
-      font-size: 16px;
-      padding: 10px 0;
+      border: 0;
+      background: none;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-family: inherit;
+      padding: 10px 0;
     }
 
     .nav-link:hover,
-    .dropdown-toggle:hover { color: var(--primary-color); }
+    .dropdown-toggle:hover { color: var(--green-700); }
 
-    /* =========================
-       DROPDOWN
-       ========================= */
-   /* Dropdown menu */
-    /* DROPDOWN */
-  /* Dropdown menu */
-.dropdown-menu{
-  position:absolute;
-  top:100%;
-  left:0;
-  margin-top:10px;              /* spacing */
-  min-width:220px;
-  background:#fff;
-  border-radius:10px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.12);
-  padding:8px 0;
-  list-style:none;
-  z-index:999;
+    .dropdown { position: relative; }
 
-  opacity:0;
-  transform:translateY(-6px);
-  pointer-events:none;
-  transition:opacity .18s ease, transform .18s ease;
-}
-
-.dropdown.open > .dropdown-menu{
-  opacity:1;
-  transform:translateY(0);
-  pointer-events:auto;
-}
-
-/* ✅ Invisible hover-bridge so it doesn't close when moving cursor down */
-.dropdown-menu::before{
-  content:"";
-  position:absolute;
-  top:-10px;        /* same as margin-top */
-  left:0;
-  right:0;
-  height:10px;
-}
-
-
-    .dropdown-menu li a{
-      display:block;
-      padding:12px 16px;
-      color:var(--text-color);
-      text-decoration:none;
-      font-size:14px;
-      white-space:nowrap;
-    }
-    .dropdown-menu li a:hover{
-      background:#f7f7f7;
-      color:var(--primary-color);
+    .dropdown::after {
+      content: "";
+      position: absolute;
+      left: -12px;
+      right: -12px;
+      top: 100%;
+      height: 16px;
     }
 
-    @media (hover:hover) and (pointer:fine){
-      .dropdown:hover > .dropdown-menu{
-        opacity:1;
-        transform:translateY(0);
-        pointer-events:auto;
-      }
+    .dropdown-head {
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
-    /* MOBILE NAV */
-    @media (max-width:900px){
-      .header-actions{ display:none !important; }
-      .mobile-cta-item{ display:block; }
-
-      .main-nav{
-        position:fixed;
-        top:70px;
-        left:12px;
-        right:12px;
-        background:#fff;
-        border-radius:14px;
-        border:1px solid #eee;
-        box-shadow:0 10px 30px rgba(0,0,0,0.10);
-
-        transform:translateY(-140%);
-        transition:transform .25s ease;
-        padding:12px 14px;
-        z-index:999;
-      }
-      .main-nav.open{ transform:translateY(0); }
-
-      .main-nav ul{
-        flex-direction:column;
-        align-items:stretch;
-        gap:6px;
-      }
-
-      .nav-link, .dropdown-toggle{
-        width:100%;
-        padding:12px 10px;
-        justify-content:space-between;
-        border-radius:10px;
-      }
-
-      .dropdown-head{
-        width:100%;
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-      }
-      .dropdown-head .nav-link,
-      .dropdown-head .dropdown-toggle{
-        width:auto;
-        padding:12px 10px;
-      }
-
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 220px;
+      margin-top: 10px;
+      padding: 8px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      transition: .18s ease;
     }
 
-    /* =========================
-       HERO
-       ========================= */
+    .dropdown-menu::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -12px;
+      height: 12px;
+    }
+
+    .dropdown.open > .dropdown-menu,
+    .dropdown:hover > .dropdown-menu {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 11px 12px;
+      color: var(--green-950);
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .dropdown-menu a:hover {
+      background: var(--green-100);
+      color: var(--green-700);
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 18px;
+      background: var(--green-900);
+      color: var(--white);
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow: 0 12px 24px rgba(7, 52, 35, 0.16);
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--white);
+      color: var(--green-950);
+      font-size: 19px;
+    }
+
+    .mobile-cta-item { display: none; }
+
     .hero {
-      width: 100%;
-      background: linear-gradient(rgba(153, 209, 196, 0.15), rgba(113, 180, 164, 0.85)),
-        url('back.png') no-repeat center/cover;
-      color: white;
-      padding: 110px 20px 80px;
+      background:
+        radial-gradient(circle at 84% 18%, rgba(183,255,57,.2), transparent 26%),
+        linear-gradient(135deg, #041f16 0%, #073423 56%, #007a5e 100%);
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(4,31,22,0) 66%, rgba(4,31,22,.72) 100%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: rgba(255,255,255,.22);
+    }
+
+    .hero-inner {
+      width: min(1180px, calc(100% - 40px));
+      min-height: 650px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 34px;
+      align-items: center;
+      justify-items: center;
       text-align: center;
+      padding: 72px 0 86px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--lime);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 42px;
+      height: 2px;
+      background: var(--lime);
     }
 
     .hero h1 {
-      font-size: 44px;
-      line-height: 1.15;
+      max-width: 760px;
+      font-size: clamp(48px, 6.2vw, 84px);
+      line-height: 1;
+      letter-spacing: -1.5px;
+      margin-bottom: 24px;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin-left: auto;
+      margin-right: auto;
+      color: rgba(255,255,255,.88);
+      font-size: 18px;
+      line-height: 1.75;
       margin-bottom: 34px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 48px;
+      padding: 0 22px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--lime);
+      color: var(--green-950);
+    }
+
+    .btn-ghost {
+      color: var(--white);
+      border-color: rgba(255,255,255,.5);
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-panel {
+      background: rgba(4,31,22,.58);
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 26px;
+      padding: 26px;
+      box-shadow: 0 28px 70px rgba(0,0,0,.24);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero-visual {
+      position: relative;
+      border-radius: 30px;
+      overflow: hidden;
+      min-height: 560px;
+      box-shadow: 0 34px 90px rgba(0,0,0,.32);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .hero-visual img {
+      width: 100%;
+      height: 100%;
+      min-height: 560px;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .hero-visual-caption {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(4,31,22,.68);
+      border: 1px solid rgba(255,255,255,.16);
+      backdrop-filter: blur(12px);
+      color: rgba(255,255,255,.88);
+      font-size: 14px;
       font-weight: 700;
     }
 
-    .carousel-container {
+    .hero-panel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .hero-panel-stat {
+      padding: 18px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.11);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .hero-panel-stat strong {
+      display: block;
+      color: var(--lime);
+      font-size: 26px;
+      line-height: 1;
+      margin-bottom: 7px;
+    }
+
+    .hero-panel-stat span {
+      color: rgba(255,255,255,.78);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .hero-panel h2 {
+      font-size: 26px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .hero-panel p {
+      color: rgba(255,255,255,.78);
+      font-size: 14px;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .impact-ribbon {
       width: 100%;
-      overflow: hidden;
-      padding-bottom: 8px;
+      margin: 0;
+      padding: 38px max(20px, calc((100vw - 1180px) / 2));
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(183,255,57,.14), transparent 24%),
+        linear-gradient(180deg, #ffffff 0%, #f6fbf8 100%);
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      overflow: visible;
     }
 
-    .carousel-track {
+    .impact-item {
+      position: relative;
+      min-height: 126px;
+      padding: 24px;
+      border: 1px solid rgba(7, 52, 35, .1);
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(183,255,57,.24), transparent 38%),
+        linear-gradient(180deg, #ffffff 0%, #f8fcfa 100%);
+      box-shadow: 0 22px 46px rgba(4,31,22,.1);
       display: flex;
-      gap: 18px;
-      animation: scrollX 12s linear infinite; /* ✅ still moves on desktop */
-      width: max-content;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      transition: transform .22s ease, box-shadow .22s ease;
     }
 
-    @keyframes scrollX {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+    .impact-item::before {
+      content: "";
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 36px;
+      height: 36px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--lime), rgba(0,122,94,.28));
+      opacity: .82;
     }
 
-    .hero-card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 18px;
-      width: 320px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+    .impact-item::after {
+      content: "";
+      position: absolute;
+      left: 24px;
+      right: auto;
+      bottom: 20px;
+      width: 54px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--lime);
+      opacity: .85;
+    }
+
+    .impact-item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 30px 70px rgba(4,31,22,.16);
+    }
+
+    .impact-item:last-child { border-right: 1px solid rgba(7, 52, 35, .1); }
+    .impact-item strong {
+      display: block;
+      color: var(--green-700);
+      font-size: clamp(34px, 3.2vw, 46px);
+      line-height: 1;
+      margin-bottom: 12px;
+      letter-spacing: -1.2px;
+      position: relative;
+      z-index: 1;
+    }
+    .impact-item span {
+      color: var(--muted);
+      font-weight: 850;
+      font-size: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section {
+      padding: 96px 20px;
+    }
+
+    .section-head {
+      width: min(800px, 100%);
+      margin: 0 auto 40px;
+      text-align: center;
+    }
+
+    .section-kicker {
+      color: var(--green-700);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .section h2 {
+      color: var(--green-950);
+      font-size: clamp(32px, 4.4vw, 54px);
+      line-height: 1.05;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .about-grid {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: .92fr 1.08fr;
+      gap: 30px;
+      align-items: stretch;
+    }
+
+    .about-image {
+      min-height: 480px;
+      border-radius: 28px;
+      background: #fff url("gl-solar-logo.png") center/cover no-repeat;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .about-image::before {
+      content: none;
+    }
+
+    .about-copy {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 52px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .about-copy h2 {
       text-align: left;
+      margin-bottom: 22px;
+    }
+
+    .about-copy p {
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: var(--green-100);
+      color: var(--green-800);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .focus-section { background: var(--white); }
+
+    .annual-report-section {
+      position: relative;
+      overflow: hidden;
+      padding: 96px 20px;
+      background:
+        radial-gradient(circle at 12% 12%, rgba(183,255,57,.18), transparent 30%),
+        linear-gradient(135deg, #041f16 0%, #073423 52%, #007a5e 100%);
+      color: var(--white);
+    }
+
+    .annual-report-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .16;
+      background-image:
+        linear-gradient(rgba(255,255,255,.22) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.22) 1px, transparent 1px);
+      background-size: 62px 62px;
+      pointer-events: none;
+    }
+
+    .annual-report-card {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 430px);
+      gap: 48px;
+      align-items: center;
+    }
+
+    .annual-copy { max-width: 720px; }
+    .annual-copy .section-kicker { color: var(--lime); }
+
+    .annual-copy h2 {
+      color: var(--white);
+      font-size: clamp(38px, 5vw, 72px);
+      line-height: .98;
+      letter-spacing: -1.8px;
+      margin-bottom: 20px;
+    }
+
+    .annual-copy p {
+      max-width: 620px;
+      color: rgba(255,255,255,.78);
+      font-size: 17px;
+      margin-bottom: 28px;
+    }
+
+    .annual-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .annual-note {
+      color: rgba(255,255,255,.62);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .report-cover-link {
+      position: relative;
+      display: block;
+      text-decoration: none;
+      transform: rotate(2deg);
+      transition: transform .28s ease;
+      filter: drop-shadow(0 34px 42px rgba(0,0,0,.34));
+    }
+
+    .report-cover-link::before {
+      content: "";
+      position: absolute;
+      inset: 24px -18px -20px 34px;
+      border-radius: 28px;
+      background: rgba(183,255,57,.22);
+      transform: rotate(-6deg);
+      z-index: -1;
+    }
+
+    .report-cover-link:hover { transform: rotate(0deg) translateY(-8px); }
+
+    .report-cover-link img {
+      width: 100%;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+
+    .report-cover-badge {
+      position: absolute;
+      left: -18px;
+      bottom: 34px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 16px;
+      border-radius: 999px;
+      background: var(--lime);
+      color: var(--green-950);
+      font-size: 13px;
+      font-weight: 900;
+      box-shadow: 0 16px 34px rgba(0,0,0,.18);
+    }
+
+    .image-band {
+      min-height: 330px;
+      background:
+        linear-gradient(90deg, rgba(4,31,22,.78), rgba(4,31,22,.22)),
+        url("gl-forest-strip.png") center/cover no-repeat;
+      display: grid;
+      place-items: center;
+      padding: 46px 20px;
+    }
+
+    .image-band-inner {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      color: var(--white);
+      text-align: center;
+      display: grid;
+      justify-items: center;
+    }
+
+    .image-band-inner h2 {
+      max-width: 660px;
+      font-size: clamp(30px, 4vw, 54px);
+      line-height: 1.05;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .image-band-inner p {
+      max-width: 560px;
+      color: rgba(255,255,255,.84);
+      font-size: 16px;
+      margin: 0 auto;
+    }
+
+    .focus-grid {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .focus-card {
+      min-height: 310px;
+      padding: 30px;
+      border-radius: 26px;
+      background: var(--green-50);
+      border: 1px solid var(--line);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
 
-    .hero-card h2 {
-      font-size: 15px;
-      margin-top: 10px;
-      color: #1a1a1a;
-      font-weight: 600;
-      line-height: 1.35;
+    .focus-card:nth-child(2) { background: #f8fbef; }
+    .focus-card:nth-child(3) { background: #f2f8f5; }
+
+    .focus-number {
+      color: var(--green-700);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 1.4px;
     }
 
-    .hero-card img {
+    .focus-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: var(--green-900);
+      color: var(--lime);
+      font-size: 22px;
+      margin: 28px 0 24px;
+    }
+
+    .focus-card h3 {
+      color: var(--green-950);
+      font-size: 23px;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .focus-card p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .news-section {
+      background:
+        linear-gradient(180deg, rgba(245,251,247,.96), rgba(245,251,247,1)),
+        url("gl-forest-strip.png") top center/100% auto no-repeat;
+    }
+
+    .news-grid {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .news-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: 0 16px 38px rgba(4,31,22,.08);
+    }
+
+    .news-card img {
       width: 100%;
-      border-radius: 10px;
-      height: 170px;
+      height: 220px;
       object-fit: cover;
     }
 
-    .hero-card a {
-      display: inline-block;
-      margin-top: 14px;
-      background: var(--secondary-color);
-      color: #000;
-      padding: 10px 18px;
-      border-radius: 30px;
-      font-weight: 700;
+    .news-content { padding: 24px; }
+
+    .news-tag {
+      display: inline-flex;
+      margin-bottom: 12px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: var(--green-100);
+      color: var(--green-800);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
+
+    .news-card h3 {
+      color: var(--green-950);
+      font-size: 21px;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .news-card p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .news-link {
+      color: var(--green-700);
+      font-weight: 900;
       text-decoration: none;
-      width: fit-content;
-      font-size: 13px;
     }
 
-    /* =========================
-       SECTIONS
-       ========================= */
-    .section {
-      padding: 70px 20px;
-      background: var(--light-bg);
-    }
-    .section h2 {
-      text-align: center;
-      font-size: 34px;
-      margin-bottom: 34px;
-      font-weight: 700;
-    }
+    .air-section { background: var(--white); }
 
-    .row {
-      display: flex;
-      justify-content: center;
-      gap: 26px;
-      flex-wrap: wrap;
-      max-width: 1100px;
+    .air-grid {
+      width: min(1180px, 100%);
       margin: 0 auto;
-    }
-
-    .column {
-      background: #fff;
-      border-radius: 12px;
-      padding: 26px;
-      width: 100%;
-      max-width: 520px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-      text-align: center;
-    }
-
-    .column p { color: #555; line-height: 1.7; }
-
-    .btn {
-      display: inline-block;
-      padding: 10px 22px;
-      background: var(--primary-color);
-      color: #fff;
-      border-radius: 25px;
-      text-decoration: none;
-      margin-top: 18px;
-      font-weight: 600;
-    }
-
-    /* Stats */
-    .stats-section {
-      background: var(--primary-color);
-      color: #fff;
-      padding: 60px 20px;
-      text-align: center;
-    }
-
-    .stats-grid {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 28px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .stat { min-width: 160px; }
-    .stat i { font-size: 34px; margin-bottom: 8px; }
-    .stat h3 { font-size: 28px; margin: 6px 0; }
-
-    /* Air quality */
-    .air-quality-grid {
       display: grid;
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: minmax(0, 1.6fr) .8fr;
       gap: 24px;
-      max-width: 1200px;
-      margin: 0 auto;
       align-items: start;
+    }
+
+    .air-frame {
+      padding: 12px;
+      background: var(--green-50);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: 0 18px 42px rgba(4,31,22,.08);
+    }
+
+    .air-frame iframe {
+      width: 100%;
+      height: 980px;
+      border: 0;
+      border-radius: 18px;
     }
 
     .who-table {
       width: 100%;
-      background: #fff;
       border-collapse: collapse;
-      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border-radius: 24px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 42px rgba(4,31,22,.08);
     }
 
-    .who-table th, .who-table td {
-      padding: 14px;
-      border-bottom: 1px solid #eee;
+    .who-table th,
+    .who-table td {
+      padding: 15px 12px;
       text-align: center;
+      border-bottom: 1px solid var(--line);
     }
-    .who-table th { background: var(--primary-color); color: #fff; }
+
+    .who-table th {
+      background: var(--green-900);
+      color: var(--white);
+      font-size: 14px;
+    }
+
+    .who-table td {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
 
     footer {
-      background: #007a5e;
-      color: #fff;
-      padding: 40px 20px;
+      background: var(--green-950);
+      color: var(--white);
+      padding: 48px 20px 28px;
     }
 
-    /* =========================
-       MOBILE RESPONSIVE
-       ========================= */
-    @media (max-width: 900px) {
-      /* ✅ hide CTA in header on mobile */
-      .header-actions { display: none !important; }
+    .footer-grid {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 34px;
+    }
 
-      /* ✅ show the CTA only inside the mobile menu */
-      .mobile-cta-item { display: block; } /* ✅ ADDED */
+    footer h4 { margin-bottom: 14px; }
+    footer ul { list-style: none; display: grid; gap: 9px; }
+    footer a { color: rgba(255,255,255,.82); text-decoration: none; }
+    footer p { color: rgba(255,255,255,.82); margin-bottom: 9px; }
+    .social a { font-size: 20px; margin-right: 14px; }
+    .copyright {
+      width: min(1180px, 100%);
+      margin: 30px auto 0;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      text-align: center;
+      color: rgba(255,255,255,.65);
+      font-size: 12px;
+    }
 
-      .nav-toggle { display: inline-flex; }
+    @media (max-width: 940px) {
+      .nav-container { width: min(100% - 28px, 1180px); min-height: 68px; }
+      .nav-toggle { display: inline-grid; place-items: center; }
+      .desktop-only { display: none; }
+      .mobile-cta-item { display: block; }
 
       .main-nav {
         position: fixed;
-        top: 70px;
-        left: 12px;
-        right: 12px;
-        background: #fff;
-        border-radius: 14px;
-        border: 1px solid #eee;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.10);
-
-        transform: translateY(-140%);
-        transition: transform .25s ease;
-        padding: 12px 14px;
-        z-index: 999;
+        top: 76px;
+        left: 14px;
+        right: 14px;
+        background: var(--white);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+        padding: 12px;
+        transform: translateY(-135%);
+        transition: transform .24s ease;
       }
 
       .main-nav.open { transform: translateY(0); }
@@ -471,69 +933,138 @@
       .main-nav ul {
         flex-direction: column;
         align-items: stretch;
-        gap: 6px;
+        gap: 4px;
       }
 
-      .nav-link, .dropdown-toggle {
+      .dropdown-head {
         width: 100%;
-        padding: 12px 10px;
         justify-content: space-between;
-        border-radius: 10px;
       }
 
-      /* inline dropdown on mobile */
+      .nav-link,
+      .dropdown-toggle {
+        width: 100%;
+        justify-content: space-between;
+        padding: 12px;
+        border-radius: 14px;
+      }
+
       .dropdown-menu {
         position: static;
-        min-width: 100%;
-        margin-top: 0;
+        margin: 0;
         box-shadow: none;
-        border-radius: 10px;
-        padding: 6px 0;
-
+        border: 0;
+        padding: 0 0 6px 12px;
         opacity: 1;
         transform: none;
         pointer-events: auto;
-
         display: none;
       }
 
+      .dropdown::after { content: none; }
+      .dropdown-menu::before { content: none; }
+
       .dropdown.open > .dropdown-menu { display: block; }
 
-      /* ✅ Full-width feel */
-/* ✅ Mobile: same look but AUTO-MOVES like desktop */
-.carousel-container{
-  overflow: hidden;             /* important: enables smooth moving */
-  scroll-snap-type: none;
-  -webkit-overflow-scrolling: auto;
-}
+      .hero-inner {
+        width: min(100% - 32px, 1180px);
+        min-height: auto;
+        grid-template-columns: 1fr;
+        padding: 62px 0 70px;
+      }
 
-.carousel-track{
-  animation: scrollX 12s linear infinite;  /* ✅ enable movement */
-  width: max-content;
-  padding-bottom: 6px;
-}
+      .hero-panel { display: none; }
+      .hero-visual {
+        min-height: 430px;
+        border-radius: 24px;
+      }
+      .hero-visual img {
+        min-height: 430px;
+      }
+      .hero h1 { font-size: clamp(38px, 11vw, 54px); }
+      .hero p { font-size: 16px; }
+      .hero-actions { flex-direction: column; }
+      .btn { width: 100%; }
 
-.hero-card{
-  width: 260px;                 /* keep your mobile size */
-}
+      .impact-ribbon {
+        width: 100%;
+        margin-top: 0;
+        padding: 28px 16px;
+        grid-template-columns: repeat(2, 1fr);
+      }
 
+      .impact-item:nth-child(2) { border-right: 1px solid rgba(7, 52, 35, .1); }
+      .impact-item:nth-child(1),
+      .impact-item:nth-child(2) { border-bottom: 1px solid rgba(7, 52, 35, .1); }
 
-      .air-quality-grid { grid-template-columns: 1fr; }
-      iframe { height: 700px !important; }
+      .about-grid,
+      .focus-grid,
+      .news-grid,
+      .air-grid,
+      .annual-report-card,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .annual-report-section { padding: 72px 16px; }
+      .annual-report-card { gap: 34px; }
+      .annual-copy { text-align: center; margin: 0 auto; }
+      .annual-copy p { margin-left: auto; margin-right: auto; }
+      .annual-actions { justify-content: center; }
+      .report-cover-link {
+        width: min(360px, 88vw);
+        margin: 0 auto;
+      }
+
+      .about-image { min-height: 290px; }
+      .about-copy { padding: 30px 24px; }
+      .air-frame iframe { height: 560px; }
+    }
+
+    @media (max-width: 520px) {
+      .logo { height: 42px; }
+      .main-nav { top: 68px; }
+      .hero-inner { padding: 46px 0 72px; }
+      .eyebrow { font-size: 10px; letter-spacing: 1.3px; }
+      .eyebrow::before { width: 26px; }
+      .hero h1 { font-size: 36px; letter-spacing: -0.5px; }
+      .hero p { font-size: 15px; }
+      .hero-visual,
+      .hero-visual img {
+        min-height: 360px;
+      }
+      .hero-visual-caption {
+        font-size: 12px;
+        padding: 14px;
+      }
+      .impact-ribbon {
+        grid-template-columns: 1fr;
+        border-radius: 0;
+        gap: 12px;
+        margin-top: 0;
+        padding: 24px 14px;
+      }
+      .impact-item {
+        border-right: 1px solid rgba(7, 52, 35, .1);
+        border-bottom: 1px solid rgba(7, 52, 35, .1);
+        min-height: 112px;
+        padding: 22px;
+      }
+      .impact-item:last-child { border-bottom: 1px solid rgba(7, 52, 35, .1); }
+      .section { padding: 68px 16px; }
+      .section h2 { font-size: 32px; }
+      .annual-report-section { padding: 62px 16px; }
+      .annual-copy h2 { font-size: 34px; letter-spacing: -0.8px; }
+      .report-cover-badge { left: 12px; bottom: 18px; }
+      .about-image { min-height: 230px; }
+      .focus-card { min-height: auto; padding: 24px; }
+      .news-card img { height: 185px; }
+      .air-frame iframe { height: 500px; }
+      .who-table th,
+      .who-table td { font-size: 12px; padding: 10px 7px; }
     }
   </style>
 </head>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Green Leaders",
-  "url": "https://www.grleaders.org",
-  "logo": "images/GLLOGO.png"
-}
-</script>
-
 
 <body>
 <header class="main-header">
@@ -542,201 +1073,273 @@
       <img src="images/GLLOGO.png" alt="Green Leaders Logo" class="logo" />
     </a>
 
-    <!-- Mobile hamburger -->
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
       <i class="fa-solid fa-bars"></i>
     </button>
 
-    <!-- ✅ Desktop CTA (shows only on laptop/desktop) -->
-    <div class="header-actions desktop-only">
-      <a href="GetInvolved.html" class="cta-button">Become a Member</a>
-    </div>
-
     <nav class="main-nav" id="mainNav">
       <ul>
         <li class="dropdown">
-  <div class="dropdown-head">
-    <a class="nav-link" href="index.html">Home</a>
-
-    <!-- dropdown toggle only for the arrow -->
-    <button class="dropdown-toggle" type="button" aria-label="Open Home menu">
-      <i class="fa fa-caret-down"></i>
-    </button>
-  </div>
-
-  <ul class="dropdown-menu">
-    <li><a href="ContactUs.html">Contact Us</a></li>
-  </ul>
-</li>
-
+          <div class="dropdown-head">
+            <a class="nav-link" href="index.html">Home</a>
+            <button class="dropdown-toggle" type="button" aria-label="Open Home menu">
+              <i class="fa fa-caret-down"></i>
+            </button>
+          </div>
+          <ul class="dropdown-menu">
+            <li><a href="ContactUs.html">Contact Us</a></li>
+          </ul>
+        </li>
 
         <li><a class="nav-link" href="WhoWeAre.html">About Us</a></li>
 
-       <li class="dropdown">
-  <div class="dropdown-head">
-    <a class="nav-link" href="OurImpact.html">Our Impact</a>
-
-    <!-- dropdown toggle only for the arrow -->
-    <button class="dropdown-toggle" type="button" aria-label="Open Home menu">
-      <i class="fa fa-caret-down"></i>
-    </button>
-  </div>
-
-  <ul class="dropdown-menu">
-    <li><a href="Research&Studies.html">Reaserch & Studies</a></li>
-    <li><a href="Awarness&Education.html">Awarness & Education</a></li>
-  </ul>
-</li>
-
+        <li class="dropdown">
+          <div class="dropdown-head">
+            <a class="nav-link" href="OurImpact.html">Our Impact</a>
+            <button class="dropdown-toggle" type="button" aria-label="Open impact menu">
+              <i class="fa fa-caret-down"></i>
+            </button>
+          </div>
+          <ul class="dropdown-menu">
+            <li><a href="Research&Studies.html">Research & Studies</a></li>
+            <li><a href="Awarness&Education.html">Awareness & Education</a></li>
+          </ul>
+        </li>
 
         <li><a class="nav-link" href="NewsLetter.html">Newsletter</a></li>
         <li><a class="nav-link" href="WaterAudit.html">Water Audit Tool</a></li>
-
-        <!-- ✅ MOBILE CTA (shows only inside menu on phones) -->
-        <li class="mobile-cta-item">
-          <a href="GetInvolved.html" class="cta-button" style="width:100%; margin-top: 10px;">
-            Become a Member
-          </a>
-        </li>
+        <li class="mobile-cta-item"><a href="GetInvolved.html" class="cta-button">Become a Member</a></li>
       </ul>
     </nav>
+
+    <a href="GetInvolved.html" class="cta-button desktop-only">Become a Member</a>
   </div>
 </header>
 
-<section class="hero">
-  <h1>Welcome to Green Leaders</h1>
-
-  <div class="carousel-container">
-    <div class="carousel-track">
-      <div class="hero-card">
-        <img src="nl4.png" alt="Newsletter" />
-        <h2>Green Leaders is officially registered! Read more in Newsletter Issue 4</h2>
-        <a href="NewsLetter.html">Read More</a>
+<main>
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">Environmental NGO in Lebanon</div>
+        <h1>Green action, made visible.</h1>
+        <p>
+          Green Leaders brings people, research, education, and partnerships together to build environmental awareness
+          and measurable sustainability impact across Lebanon.
+        </p>
+        <div class="hero-actions">
+          <a href="WhoWeAre.html" class="btn btn-primary">Discover Green Leaders <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="OurImpact.html" class="btn btn-ghost">View Our Impact</a>
+        </div>
       </div>
 
-      <div class="hero-card">
-        <img src="trend1.png" alt="Air Quality Report" />
-        <h2>Trend Observations from the Beirut Air Quality Study</h2>
-        <a href="Research&Studies.html">Read More</a>
+    </div>
+  </section>
+
+  <section class="impact-ribbon" aria-label="Green Leaders key numbers">
+    <div class="impact-item"><strong>35+</strong><span>Members</span></div>
+    <div class="impact-item"><strong>2</strong><span>Partners</span></div>
+    <div class="impact-item"><strong>2</strong><span>Research projects</span></div>
+    <div class="impact-item"><strong>26k+</strong><span>Students impacted</span></div>
+  </section>
+
+  <section class="annual-report-section" aria-labelledby="annual-report-title">
+    <div class="annual-report-card">
+      <div class="annual-copy">
+        <div class="section-kicker">2025 Annual Report</div>
+        <h2 id="annual-report-title">A year of visible environmental action.</h2>
+        <p>
+          Explore Green Leaders' latest annual report, featuring the initiatives, research, education work,
+          partnerships, and community impact shaping a cleaner and more informed Lebanon.
+        </p>
+        <div class="annual-actions">
+          <a href="Green-Leaders-Annual-Report.pdf" target="_blank" rel="noopener" class="btn btn-primary">
+            Read the Annual Report <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
       </div>
 
-      <div class="hero-card">
-        <img src="mesures.png" alt="Measurements" />
-        <h2>Live Air Quality Monitoring in Beirut, Lebanon</h2>
-        <a href="https://lobbyview.senseware.co/dashboards/12110235f1b594666ebefdc23192c5b3316430/">Explore</a>
-      </div>
+      <a href="Green-Leaders-Annual-Report.pdf" target="_blank" rel="noopener" class="report-cover-link" aria-label="Read the Green Leaders annual report PDF">
+        <img src="gl-cover-wind.jpg" alt="Green Leaders 2025 Annual Report cover" />
+        <span class="report-cover-badge">Open report <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+    </div>
+  </section>
 
-      <!-- Duplicate set for desktop scroll -->
-      <div class="hero-card">
-        <img src="nl4.png" alt="Newsletter" />
-        <h2>Green Leaders is officially registered!Read more in Newsletter Issue 4</h2>
-        <a href="NewsLetter.html">Read More</a>
+  <section class="section">
+    <div class="about-grid">
+      <div class="about-image" aria-hidden="true">
       </div>
-
-      <div class="hero-card">
-        <img src="trend1.png" alt="Air Quality Report" />
-        <h2>Trend Observations from the Beirut Air Quality Study</h2>
-        <a href="Research&Studies.html">Read More</a>
-      </div>
-
-      <div class="hero-card">
-        <img src="mesures.png" alt="Measurements" />
-        <h2>Live Air Quality Monitoring in Beirut, Lebanon</h2>
-        <a href="https://lobbyview.senseware.co/dashboards/12110235f1b594666ebefdc23192c5b3316430/">Explore</a>
+      <div class="about-copy">
+        <div class="section-kicker">Who we are</div>
+        <h2>Building a cleaner future through knowledge and action.</h2>
+        <p>
+          Green Leaders is a non-governmental organization committed to advancing sustainable development and
+          environmental stewardship through practical action, research, awareness, and education.
+        </p>
+        <p>
+          The organization connects students, professionals, corporates, and partners around one shared objective:
+          making environmental responsibility easier to understand, communicate, and apply.
+        </p>
+        <div class="tags">
+          <span class="tag">Research</span>
+          <span class="tag">Education</span>
+          <span class="tag">Partnerships</span>
+          <span class="tag">Community impact</span>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="section">
-  <h2>About Green Leaders</h2>
-  <div class="row">
-    <div class="column">
-      <p>
-        Founded in Lebanon in 2023, Green Leaders is a non-governmental organization committed to advancing sustainable
-        development and environmental stewardship.
-      </p>
-      <a href="WhoWeAre.html" class="btn">Learn More</a>
+  <section class="image-band">
+    <div class="image-band-inner">
+      <h2>Turning environmental awareness into measurable local action.</h2>
+      <p>Green Leaders works across education, research, and partnerships to make sustainability clearer, more accessible, and more practical.</p>
+    </div>
+  </section>
+
+  <section class="section focus-section">
+    <div class="section-head">
+      <div class="section-kicker">Our focus</div>
+      <h2>Three ways Green Leaders creates impact.</h2>
+      <p>Each initiative is designed to turn environmental awareness into useful knowledge, visible action, and long-term engagement.</p>
     </div>
 
-    <div class="column">
-      <p>
-        We offer membership levels for Corporates, Professionals, and Students to help create a greater environmental impact.
-      </p>
-      <a href="GetInvolved.html" class="btn">Join Us</a>
+    <div class="focus-grid">
+      <article class="focus-card">
+        <div>
+          <div class="focus-number">01</div>
+          <div class="focus-icon"><i class="fa-solid fa-seedling"></i></div>
+          <h3>Awareness & Education</h3>
+        </div>
+        <p>Programs and campaigns that help communities, schools, and youth understand environmental challenges and act on them.</p>
+      </article>
+
+      <article class="focus-card">
+        <div>
+          <div class="focus-number">02</div>
+          <div class="focus-icon"><i class="fa-solid fa-chart-line"></i></div>
+          <h3>Research & Studies</h3>
+        </div>
+        <p>Data-driven environmental studies that make local issues easier to understand, communicate, and improve.</p>
+      </article>
+
+      <article class="focus-card">
+        <div>
+          <div class="focus-number">03</div>
+          <div class="focus-icon"><i class="fa-solid fa-handshake-angle"></i></div>
+          <h3>Partnerships & Action</h3>
+        </div>
+        <p>Collaborations with members, partners, and institutions to support measurable environmental impact in Lebanon.</p>
+      </article>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="stats-section">
-  <div class="stats-grid">
-    <div class="stat"><i class="fas fa-users"></i><h3>35+</h3><p>Members</p></div>
-    <div class="stat"><i class="fas fa-handshake"></i><h3>2</h3><p>Partners</p></div>
-    <div class="stat"><i class="fas fa-search"></i><h3>2</h3><p>Research Projects</p></div>
-    <div class="stat"><i class="fas fa-chalkboard-teacher"></i><h3>26,000+</h3><p>Students Impacted</p></div>
-    <div class="stat"><i class="fas fa-industry"></i><h3>50 Ktons</h3><p>CO₂ Offset Target</p></div>
-  </div>
-</section>
+  <section class="section news-section">
+    <div class="section-head">
+      <div class="section-kicker">News & updates</div>
+      <h2>Latest from Green Leaders.</h2>
+      <p>Explore announcements, studies, newsletters, and live environmental monitoring updates.</p>
+    </div>
 
-<section class="section">
-  <h2>Live Air Quality - Verdun, Beirut</h2>
-  <div class="air-quality-grid">
-    <iframe
-      src="https://lobbyview.senseware.co/dashboards/12110235f1b594666ebefdc23192c5b3316430/"
-      width="100%"
-      height="1200"
-      style="border:0; border-radius: 12px;"
-      loading="lazy"
-    ></iframe>
+    <div class="news-grid">
+      <article class="news-card">
+        <img src="images/nl4.png" alt="Green Leaders newsletter" />
+        <div class="news-content">
+          <span class="news-tag">Newsletter</span>
+          <h3>Green Leaders is officially registered</h3>
+          <p>Read the latest newsletter issue and discover new updates from the Green Leaders community.</p>
+          <a href="NewsLetter.html" class="news-link">Read More</a>
+        </div>
+      </article>
 
-    <table class="who-table">
-      <thead>
-        <tr><th>Pollutant</th><th>WHO 24-Hour Guidelines</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>PM2.5 (µg/m³)</td><td>15</td></tr>
-        <tr><td>PM10 (µg/m³)</td><td>45</td></tr>
-        <tr><td>NO₂ (ppb)</td><td>13.3</td></tr>
-        <tr><td>SO₂ (ppb)</td><td>15.3</td></tr>
-        <tr><td>CO (ppm)</td><td>3.5</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+      <article class="news-card">
+        <img src="images/trend1.png" alt="Beirut air quality study" />
+        <div class="news-content">
+          <span class="news-tag">Research</span>
+          <h3>Trend observations from the Beirut Air Quality Study</h3>
+          <p>Review key observations and insights from Green Leaders' environmental research work in Beirut.</p>
+          <a href="Research&Studies.html" class="news-link">Read More</a>
+        </div>
+      </article>
+
+      <article class="news-card">
+        <img src="images/mesures.png" alt="Live air quality monitoring dashboard" />
+        <div class="news-content">
+          <span class="news-tag">Live monitoring</span>
+          <h3>Live air quality monitoring in Verdun, Beirut</h3>
+          <p>Access live measurements and follow air quality indicators through the monitoring dashboard.</p>
+          <a href="https://lobbyview.senseware.co/dashboards/12110235f1b594666ebefdc23192c5b3316430/" class="news-link">Explore</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section air-section">
+    <div class="section-head">
+      <div class="section-kicker">Live data</div>
+      <h2>Live Air Quality - Verdun, Beirut</h2>
+      <p>Green Leaders shares live air quality data to support public awareness and make environmental information more accessible.</p>
+    </div>
+
+    <div class="air-grid">
+      <div class="air-frame">
+        <iframe
+          src="https://lobbyview.senseware.co/dashboards/12110235f1b594666ebefdc23192c5b3316430/"
+          loading="lazy"
+          title="Live air quality dashboard"
+        ></iframe>
+      </div>
+
+      <table class="who-table">
+        <thead>
+          <tr><th>Pollutant</th><th>WHO 24-Hour Guidelines</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>PM2.5 (ug/m3)</td><td>15</td></tr>
+          <tr><td>PM10 (ug/m3)</td><td>45</td></tr>
+          <tr><td>NO2 (ppb)</td><td>13.3</td></tr>
+          <tr><td>SO2 (ppb)</td><td>15.3</td></tr>
+          <tr><td>CO (ppm)</td><td>3.5</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
 
 <footer>
-  <div style="max-width: 1200px; margin: auto; display:flex; flex-wrap:wrap; justify-content:space-between; gap:30px;">
+  <div class="footer-grid">
     <div>
-      <h4 style="margin-bottom: 10px;">Quick Links</h4>
-      <ul style="list-style:none; padding:0; line-height: 2;">
-        <li><a href="index.html" style="color:white; text-decoration:none;">Home</a></li>
-        <li><a href="WhoWeAre.html" style="color:white; text-decoration:none;">Who We Are</a></li>
-        <li><a href="OurImpact.html" style="color:white; text-decoration:none;">Our Impact</a></li>
-        <li><a href="Awarness&Education.html" style="color:white; text-decoration:none;">Awareness & Education</a></li>
-        <li><a href="Research&Studies.html" style="color:white; text-decoration:none;">Research & Studies</a></li>
-        <li><a href="GetInvolved.html" style="color:white; text-decoration:none;">Membership</a></li>
-        <li><a href="NewsLetter.html" style="color:white; text-decoration:none;">Newsletter</a></li>
+      <h4>Green Leaders</h4>
+      <p>Advancing sustainable development and environmental stewardship in Lebanon through action, research, and education.</p>
+    </div>
+
+    <div>
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="WhoWeAre.html">Who We Are</a></li>
+        <li><a href="OurImpact.html">Our Impact</a></li>
+        <li><a href="Awarness&Education.html">Awareness & Education</a></li>
+        <li><a href="Research&Studies.html">Research & Studies</a></li>
+        <li><a href="GetInvolved.html">Membership</a></li>
+        <li><a href="NewsLetter.html">Newsletter</a></li>
       </ul>
     </div>
 
     <div>
-      <h4 style="margin-bottom: 10px;">Contact Us</h4>
-      <p><i class="fas fa-envelope" style="margin-right: 8px;"></i> admin@grleaders.org</p>
-      <p><i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i> Lebanon</p>
-    </div>
-
-    <div>
-      <h4 style="margin-bottom: 10px;">Follow Us</h4>
-      <a href="https://www.linkedin.com/company/grleaders/" target="_blank" style="color:white; margin-right:12px; font-size:20px;"><i class="fab fa-linkedin"></i></a>
-      <a href="https://www.instagram.com/green_leaders.ngo" target="_blank" style="color:white; margin-right:12px; font-size:20px;"><i class="fab fa-instagram"></i></a>
-      <a href="https://x.com/gr_leaders" target="_blank" style="color:white; margin-right:12px; font-size:20px;"><i class="fa-solid fa-xmark"></i></a>
-      <a href="https://www.facebook.com/grleaders" target="_blank" style="color:white; margin-right:12px; font-size:20px;"><i class="fab fa-facebook"></i></a>
+      <h4>Contact Us</h4>
+      <p><i class="fas fa-envelope"></i> admin@grleaders.org</p>
+      <p><i class="fas fa-map-marker-alt"></i> Lebanon</p>
+      <div class="social">
+        <a href="https://www.linkedin.com/company/grleaders/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i></a>
+        <a href="https://www.instagram.com/green_leaders.ngo" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/gr_leaders" target="_blank" rel="noopener"><i class="fa-solid fa-xmark"></i></a>
+        <a href="https://www.facebook.com/grleaders" target="_blank" rel="noopener"><i class="fab fa-facebook"></i></a>
+      </div>
     </div>
   </div>
 
-  <div style="text-align:center; margin-top:30px; font-size:12px;">
-    &copy; 2026 Green Leaders. All Rights Reserved.
-  </div>
+  <div class="copyright">&copy; 2025 Green Leaders. All Rights Reserved.</div>
 </footer>
 
 <script>
@@ -744,13 +1347,14 @@
     const navToggle = document.getElementById('navToggle');
     const mainNav = document.getElementById('mainNav');
     const dropdowns = document.querySelectorAll('.dropdown');
+    const isMobile = () => window.matchMedia('(max-width: 940px)').matches;
 
     function closeAllDropdowns() {
-      dropdowns.forEach(d => d.classList.remove('open'));
+      dropdowns.forEach(dropdown => dropdown.classList.remove('open'));
     }
 
-    navToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
+    navToggle.addEventListener('click', event => {
+      event.stopPropagation();
       const isOpen = mainNav.classList.toggle('open');
       navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       if (!isOpen) closeAllDropdowns();
@@ -758,34 +1362,28 @@
 
     dropdowns.forEach(dropdown => {
       const toggle = dropdown.querySelector('.dropdown-toggle');
-      toggle.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isOpen = dropdown.classList.contains('open');
+      toggle.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (!isMobile()) return;
+        const shouldOpen = !dropdown.classList.contains('open');
         closeAllDropdowns();
-        if (!isOpen) dropdown.classList.add('open');
+        if (shouldOpen) dropdown.classList.add('open');
       });
     });
 
     document.addEventListener('click', () => {
-      closeAllDropdowns();
       mainNav.classList.remove('open');
       navToggle.setAttribute('aria-expanded', 'false');
+      closeAllDropdowns();
     });
 
-    mainNav.addEventListener('click', (e) => e.stopPropagation());
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeAllDropdowns();
-        mainNav.classList.remove('open');
-        navToggle.setAttribute('aria-expanded', 'false');
-      }
-    });
+    mainNav.addEventListener('click', event => event.stopPropagation());
 
     window.addEventListener('resize', () => {
-      closeAllDropdowns();
       mainNav.classList.remove('open');
       navToggle.setAttribute('aria-expanded', 'false');
+      closeAllDropdowns();
     });
   });
 </script>
